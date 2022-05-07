@@ -11,16 +11,26 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "next": "12.1.6",
+    "prop-types": "^15.8.1",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-conventional": "^16.2.4",
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1",
     "prettier": "^2.6.2"
+  },
+  "lint-staged": {
+    "*.{vue,js,jsx,cjs,mjs}": "eslint --cache --fix --cache-location ./node_modules/.cache/eslint/.eslintcache",
+    "*.{js,css,md}": "prettier --write"
   }
 }
