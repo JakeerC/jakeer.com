@@ -29,7 +29,7 @@
     "arrow-body-style": "error",
     "no-duplicate-imports": "error",
     "no-multiple-empty-lines": "warn",
-    "comma-spacing": ["error", { "before": false, "after": true }],
-    "react/prop-types": "error"
+    "comma-spacing": ["error", { "before": false, "after": true }]
+    // "react/prop-types": "error"
   }
 }
