@@ -1,6 +1,6 @@
 import { FiMail } from 'react-icons/fi';
 import { SiGithub, SiLinkedin, SiTwitter } from 'react-icons/si';
-import Accent from '../components/Accent';
+import Accent from '../components/common/typograpghy/Accent';
 
 export const socials = [
   {

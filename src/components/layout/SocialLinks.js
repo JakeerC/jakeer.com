@@ -1,6 +1,6 @@
 import { socials } from '../../constants';
-import UnstyledLink from '../links/UnstyledLink';
-import Tooltip from '../Tooltip';
+import Tooltip from '../common/feedback/Tooltip';
+import UnstyledLink from '../common/links/UnstyledLink';
 
 function SocialLinks() {
   return (
