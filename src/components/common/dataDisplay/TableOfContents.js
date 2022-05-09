@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import TOCLink from '../links/TOCLink';
@@ -49,15 +50,15 @@ export default function TableOfContents({ toc, activeSection, minLevel }) {
       <div className="mt-4 flex flex-col space-y-2 text-sm">
         {toc
           ? toc.map(({ id, level, text }) => (
-            <TOCLink
-              id={id}
-              key={id}
-              activeSection={activeSection}
-              level={level}
-              minLevel={minLevel}
-              text={text}
-            />
-          ))
+              <TOCLink
+                id={id}
+                key={id}
+                activeSection={activeSection}
+                level={level}
+                minLevel={minLevel}
+                text={text}
+              />
+            ))
           : null}
       </div>
     </div>

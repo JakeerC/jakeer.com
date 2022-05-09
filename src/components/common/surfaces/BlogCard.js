@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import * as React from 'react';
 import { HiOutlineClock, HiOutlineEye } from 'react-icons/hi';
-import CloudinaryImg from '../media/CloudinaryImg';
-import UnstyledLink from '../links/UnstyledLink';
 import Tag from '../dataDisplay/Tag';
+import UnstyledLink from '../links/UnstyledLink';
+import CloudinaryImg from '../media/CloudinaryImg';
 import Accent from '../typograpghy/Accent';
 
 export default function BlogCard({ post, className, checkTagged, onClick }) {
@@ -28,7 +28,7 @@ export default function BlogCard({ post, className, checkTagged, onClick }) {
           <CloudinaryImg
             noStyle
             className="pointer-events-none overflow-hidden rounded-t-md"
-            publicId={`theodorusclarence/banner/${post.banner}`}
+            publicId={`${post.slug}`}
             alt="Photo taken from unsplash"
             width={1200}
             height={(1200 * 2) / 5}
