@@ -18,7 +18,7 @@
   ],
   "rules": {
     "no-unused-vars": "error",
-    "indent": ["error", 2],
+    "indent": ["warn", 2],
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "no-trailing-spaces": [
       "error",

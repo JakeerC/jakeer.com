@@ -3,8 +3,8 @@ import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
-import Accent from '../Accent';
-import UnstyledLink from '../links/UnstyledLink';
+import UnstyledLink from '../common/links/UnstyledLink';
+import Accent from '../common/typograpghy/Accent';
 
 export default function Header({ large = false }) {
   const { theme, setTheme } = useTheme();
