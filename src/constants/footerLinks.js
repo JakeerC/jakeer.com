@@ -30,9 +30,4 @@ export const footerLinks = [
     text: 'Subscribe',
     tooltip: 'Get an email whenever I post, no spam',
   },
-  {
-    href: `${domain}/rss.xml`,
-    text: 'RSS',
-    tooltip: 'Add theodorusclarence.com blog to your feeds',
-  },
 ];
