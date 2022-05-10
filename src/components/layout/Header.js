@@ -62,7 +62,29 @@ export default function Header({ large = false }) {
             large && 'lg:max-w-[68rem]'
           )}
         >
-          <ul className="flex items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base">
+          <div className="text-xs md:space-x-4 md:text-base">
+            <UnstyledLink
+              href={'/'}
+              className={clsx(
+                'rounded-sm py-2 transition-colors',
+                'font-medium text-black dark:text-white',
+                'group dark:hover:text-primary-300',
+                'focus:outline-none focus-visible:ring focus-visible:ring-primary-300'
+              )}
+            >
+              <span
+                className={clsx(
+                  'transition-colors',
+                  'bg-primary-300/0 group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
+                  '/' === baseRoute &&
+                    '!bg-primary-300/50 dark:bg-gradient-to-tr dark:from-primary-300 dark:to-primary-400 dark:bg-clip-text dark:text-transparent'
+                )}
+              >
+                Jakeer
+              </span>
+            </UnstyledLink>
+          </div>
+          <ul className="flex  items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base">
             {links.map(({ href, label }) => (
               <li key={`${href}${label}`}>
                 <UnstyledLink
@@ -106,7 +128,7 @@ export default function Header({ large = false }) {
 }
 
 const links = [
-  { href: '/', label: 'Home' },
+  // { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
   { href: '/projects', label: 'Projects' },
   { href: '/library', label: 'Library' },
