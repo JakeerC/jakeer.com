@@ -31,7 +31,7 @@ export default function ProjectCard({ project, className }) {
 
         <CloudinaryImg
           className="pointer-events-none mt-3 w-full"
-          publicId={`theodorusclarence/${project.banner}`}
+          publicId={`jakeer/project/${project.banner}/main`}
           alt={project.title}
           width={1440}
           height={792}

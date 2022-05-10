@@ -27,7 +27,7 @@ export default function CloudinaryImg({
     },
     transformations: {
       effect: {
-        name: 'blur:1000',
+        name: 'blur:700',
       },
       quality: 1,
       rawTransformation: aspect
