@@ -10,7 +10,6 @@ import CustomLink from '../../components/common/links/CustomLink';
 import ShareTweetButton from '../../components/common/links/ShareTweetButton';
 import UnstyledLink from '../../components/common/links/UnstyledLink';
 import CloudinaryImg from '../../components/common/media/CloudinaryImg';
-import Comment from '../../components/common/misc/Comment';
 import MDXComponents from '../../components/common/misc/MDXComponents';
 import BlogCard from '../../components/common/surfaces/BlogCard';
 import Accent from '../../components/common/typograpghy/Accent';
@@ -184,10 +183,6 @@ export default function SingleBlogPage({ code, frontmatter, recommendations }) {
               title={frontmatter.title}
             />
 
-            <figure className="mt-12">
-              <Comment key={frontmatter.slug} />
-            </figure>
-
             {populatedRecommendations.length > 0 && (
               <div className="mt-20">
                 <h2>
@@ -235,8 +230,8 @@ export const getStaticProps = async ({ params }) => {
   const post = await getFileBySlug('blog', params?.slug);
 
   const recommendations = await getRecommendations(params?.slug);
-
+  const { code, frontmatter } = post;
   return {
-    props: { ...post, recommendations },
+    props: { code, frontmatter, recommendations, fallback: false },
   };
 };
