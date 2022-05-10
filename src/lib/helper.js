@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -23,27 +24,14 @@ export function openGraph({
      * @TODO return proper URL
      */
 
-    return `https://og.thcl.dev/api/blog?templateTitle=${ogTemplateTitle}&banner=${ogBanner}`;
+    return logo;
   }
 
   /**
    * @TODO return proper URL
    */
-  return `https://og.thcl.dev/api/gradient?siteName=${ogSiteName}&description=${ogDesc}&logo=${ogLogo}${
-    ogTemplateTitle ? `&templateTitle=${ogTemplateTitle}` : ''
-  }`;
+  return logo;
 }
-
-/**
- * Remove `id-` prefix
- */
-export const cleanBlogPrefix = slug => {
-  if (slug.slice(0, 3) === 'id-') {
-    return slug.slice(3);
-  } else {
-    return slug;
-  }
-};
 
 /**
  * Access session storage on browser
