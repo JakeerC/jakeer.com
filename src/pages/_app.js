@@ -3,7 +3,9 @@ import Router from 'next/router';
 import nProgress from 'nprogress';
 import PropTypes from 'prop-types';
 import * as React from 'react';
+import '../styles/dracula.css';
 import '../styles/globals.css';
+import '../styles/mdx.css';
 import '../styles/nprogress.css';
 
 Router.events.on('routeChangeStart', nProgress.start);

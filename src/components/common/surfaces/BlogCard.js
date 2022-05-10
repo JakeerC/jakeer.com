@@ -28,7 +28,7 @@ export default function BlogCard({ post, className, checkTagged, onClick }) {
           <CloudinaryImg
             noStyle
             className="pointer-events-none overflow-hidden rounded-t-md"
-            publicId={`${post.slug}`}
+            publicId={`jakeer/blog/${post.banner}/main`}
             alt="Photo taken from unsplash"
             width={1200}
             height={(1200 * 2) / 5}
@@ -59,10 +59,12 @@ export default function BlogCard({ post, className, checkTagged, onClick }) {
               <HiOutlineClock className="inline-block text-base" />
               <Accent>{post.readingTime.text}</Accent>
             </div>
-            <div className="flex items-center gap-1">
-              <HiOutlineEye className="inline-block text-base" />
-              <Accent>{post?.views ?? '–––'} views</Accent>
-            </div>
+            {post?.views && (
+              <div className="flex items-center gap-1">
+                <HiOutlineEye className="inline-block text-base" />
+                <Accent>{post?.views ?? '–––'} views</Accent>
+              </div>
+            )}
           </div>
           <p className="mt-4 mb-2 text-sm text-gray-600 dark:text-gray-300">
             <span className="font-bold text-gray-800 dark:text-gray-100">

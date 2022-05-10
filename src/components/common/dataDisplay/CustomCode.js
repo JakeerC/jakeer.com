@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { HiCheckCircle, HiClipboard } from 'react-icons/hi';
@@ -62,7 +61,3 @@ export default function CustomCode(props) {
     </code>
   );
 }
-
-CustomCode.propTypes = {
-  className: PropTypes.string,
-};

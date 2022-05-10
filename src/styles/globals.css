@@ -330,3 +330,22 @@ h6 {
   transition-delay: 800ms;
 }
 /* #endregion  /**======== Fade In =========== */
+
+/* scroll bar */
+/* Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: rgb(87, 86, 86);
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  /* @apply bg-gradient-to-t from-primary-300 to-primary-400; */
+  @apply bg-gradient-to-t from-primary-200 via-primary-300 to-primary-400;
+}

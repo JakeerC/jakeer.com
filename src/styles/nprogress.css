@@ -4,7 +4,7 @@
 }
 
 #nprogress .bar {
-  background: #071524;
+  @apply h-2 bg-gradient-to-r from-primary-300 via-primary-400 to-primary-500;
 
   position: fixed;
   z-index: 1031;
@@ -12,7 +12,7 @@
   left: 0;
 
   width: 100%;
-  height: 2px;
+  height: 4px;
 }
 
 /* Fancy blur effect */
@@ -22,7 +22,7 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #071524, 0 0 5px #071524;
+  box-shadow: 0 0 10px #00e887, 0 0 5px #00c4fd;
   opacity: 1;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
