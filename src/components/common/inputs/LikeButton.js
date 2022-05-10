@@ -1,7 +1,7 @@
 // Inspired by https://delba.dev/blog/a-like-button-that-likes-you-back
-import useContentMeta from '@/hooks/useContentMeta';
 import clsx from 'clsx';
 import * as React from 'react';
+import useContentMeta from '../../../hooks/useContentMeta';
 
 export default function LikeButton({ slug }) {
   const { isLoading, likesByUser, contentLikes, addLike } =
