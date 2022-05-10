@@ -3,11 +3,15 @@
 }
 
 .prose code:not(:where([data-code-type='code-block'])) {
-  @apply rounded-md border px-1 py-1 dark:border-gray-600;
+  @apply rounded-md  border bg-slate-200 px-1 py-[2px]  dark:border-gray-600 dark:bg-slate-800;
 }
 
 .prose a {
   text-decoration: none;
+}
+.prose code::before,
+.prose code::after {
+  content: '';
 }
 
 .prose > ol > li > :last-child,
@@ -25,6 +29,7 @@
 }
 
 .prose blockquote {
+  padding-block: 4px;
   border-style: solid;
   border-width: 0 0 0 0.25rem;
   border-image: linear-gradient(to top, #00ff94, #00e0f3, #00c4fd) 1;

@@ -335,6 +335,7 @@ h6 {
 /* Scrollbar Styling */
 .custom-scrollbar::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -347,5 +348,5 @@ h6 {
   -webkit-border-radius: 8px;
   border-radius: 8px;
   /* @apply bg-gradient-to-t from-primary-300 to-primary-400; */
-  @apply bg-gradient-to-t from-primary-200 via-primary-300 to-primary-400;
+  @apply bg-gradient-to-t from-primary-300 to-primary-500;
 }

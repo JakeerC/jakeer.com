@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { HiCheckCircle, HiClipboard } from 'react-icons/hi';
-
 export function Pre(props) {
   return (
     <pre {...props}>
@@ -27,7 +26,7 @@ export default function CustomCode(props) {
   return (
     <code {...props} data-code-type={language && 'code-block'}>
       {language ? (
-        <div ref={textRef} className="overflow-x-auto">
+        <div ref={textRef} className="custom-scrollbar overflow-x-auto">
           {props.children}
         </div>
       ) : (
