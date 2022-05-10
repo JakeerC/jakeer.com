@@ -53,7 +53,7 @@ export default function Header({ large = false }) {
       </a>
 
       {/* Gradient List */}
-      <div className="h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400" />
+      {/* <div className="h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400" /> */}
 
       <div className="bg-white transition-colors dark:bg-dark dark:text-white">
         <nav
