@@ -3,6 +3,7 @@ import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
+import CJ from '../CJ';
 import UnstyledLink from '../common/links/UnstyledLink';
 import Accent from '../common/typograpghy/Accent';
 
@@ -72,16 +73,15 @@ export default function Header({ large = false }) {
                 'focus:outline-none focus-visible:ring focus-visible:ring-primary-300'
               )}
             >
-              <span
+              <CJ
                 className={clsx(
-                  'transition-colors',
-                  'bg-primary-300/0 group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
-                  '/' === baseRoute &&
-                    '!bg-primary-300/50 dark:bg-gradient-to-tr dark:from-primary-300 dark:to-primary-400 dark:bg-clip-text dark:text-transparent'
+                  // 'translate-y-[37%] transform-gpu',
+                  // 'w-[calc(100%-3rem)] md:w-[600px] 2xl:w-[900px]',
+                  'z-[1132] '
                 )}
-              >
-                Jakeer
-              </span>
+                width="50"
+                height="30"
+              />
             </UnstyledLink>
           </div>
           <ul className="flex  items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base">
@@ -113,13 +113,13 @@ export default function Header({ large = false }) {
           <button
             className={clsx(
               'rounded-md p-2.5 focus:outline-none',
-              'border dark:border-gray-600',
+              'border-none',
               'hover:border-primary-300 hover:text-primary-300 dark:hover:border-primary-300 dark:hover:text-primary-300',
               'focus-visible:border-primary-300 focus-visible:text-primary-300 dark:focus-visible:border-primary-300 dark:focus-visible:text-primary-300'
             )}
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
-            {theme === 'light' ? <FiMoon size={20} /> : <FiSun size={20} />}
+            {theme === 'light' ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         </nav>
       </div>
