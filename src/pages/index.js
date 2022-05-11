@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { IoArrowDownOutline, IoNewspaperSharp } from 'react-icons/io5';
 import { SiGithub } from 'react-icons/si';
+import CJ from '../components/CJ';
 import ButtonLink from '../components/common/links/ButtonLink';
 import UnstyledLink from '../components/common/links/UnstyledLink';
 import Accent from '../components/common/typograpghy/Accent';
@@ -112,6 +113,15 @@ export default function Home() {
           >
             <IoArrowDownOutline className="h-8 w-8 animate-bounce md:h-10 md:w-10" />
           </UnstyledLink>
+
+          <CJ
+            className={clsx(
+              'absolute bottom-[40%] right-6',
+              'translate-y-[37%] transform-gpu',
+              'w-[calc(100%-3rem)] md:w-[600px] 2xl:w-[900px]',
+              'z-[-1] opacity-70 dark:opacity-30'
+            )}
+          />
         </section>
       </main>
     </Layout>
