@@ -18,7 +18,7 @@ class MyDocument extends Document {
             crossOrigin="anonymous"
           />
         </Head>
-        <body className="scrollbar-gray-2 dark:scrollbar-gradient-2  bg-white transition-colors dark:bg-dark">
+        <body className="scrollbar-gray-2 dark:scrollbar-gradient-2  bg-slate-100 transition-colors dark:bg-dark">
           <Main />
           <NextScript />
         </body>

@@ -17,7 +17,7 @@ export function PreloadProvider({ children }) {
     <PreloadContext.Provider value={preloaded}>
       <div
         className={clsx(
-          'fixed inset-0 flex items-center justify-center bg-white transition-opacity dark:bg-dark',
+          'fixed inset-0 flex items-center justify-center bg-slate-100 transition-opacity dark:bg-dark',
           preloaded && 'pointer-events-none opacity-0'
         )}
       />

@@ -9,7 +9,7 @@ export default function LibraryCard({ className, snippet }) {
   return (
     <li
       className={clsx(
-        'ring-vis-0 h-full rounded-md border bg-white dark:border-gray-600 dark:bg-dark',
+        'ring-vis-0 h-full rounded-md border bg-slate-100 dark:border-gray-600 dark:bg-dark',
         'scale-100 hover:scale-[1.04] active:scale-[0.97] motion-safe:transform-gpu',
         'transition duration-100',
         'motion-reduce:hover:scale-100',

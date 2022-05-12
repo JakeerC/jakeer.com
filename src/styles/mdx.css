@@ -3,7 +3,7 @@
 }
 
 .prose code:not(:where([data-code-type='code-block'])) {
-  @apply rounded-md  border bg-slate-200 px-1 py-[2px]  dark:border-gray-600 dark:bg-slate-800;
+  @apply rounded-md  border bg-slate-100 px-1 py-[2px]  dark:border-gray-600 dark:bg-slate-800;
 }
 
 .prose a {

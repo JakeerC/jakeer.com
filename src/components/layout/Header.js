@@ -43,7 +43,7 @@ export default function Header({ large = false }) {
         className={clsx(
           'rounded-sm p-2 transition',
           'font-medium text-black dark:text-white',
-          'bg-white dark:bg-dark',
+          'bg-slate-100 dark:bg-dark',
           'group dark:hover:text-primary-300',
           'focus:outline-none focus:ring focus:ring-primary-300',
           'absolute top-4 left-4',
@@ -56,7 +56,7 @@ export default function Header({ large = false }) {
       {/* Gradient List */}
       {/* <div className="h-2 bg-gradient-to-tr from-primary-200 via-primary-300 to-primary-400" /> */}
 
-      <div className="bg-white transition-colors dark:bg-dark dark:text-white">
+      <div className="bg-slate-100 transition-colors dark:bg-dark dark:text-white">
         <nav
           className={clsx(
             'layout flex items-center justify-between py-4',

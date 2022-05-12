@@ -142,7 +142,7 @@ export default function ReactTable({
                       key={index}
                       className={clsx(
                         index % 2 === 0
-                          ? 'bg-white dark:bg-dark'
+                          ? 'bg-slate-100 dark:bg-dark'
                           : 'bg-gray-50 dark:bg-gray-800'
                       )}
                     >

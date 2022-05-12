@@ -333,7 +333,18 @@ h6 {
 
 /* scroll bar */
 /* Scrollbar Styling */
+
 @layer utilities {
+  .bg-gradient-main {
+    background-color: rgb(45, 200, 112);
+    background: linear-gradient(
+      45deg,
+      rgb(45, 200, 112, 1) 0%,
+      rgb(115, 221, 157, 1) 37%,
+      rgb(42, 196, 199, 1) 68%,
+      rgb(0, 245, 255, 1) 100%
+    );
+  }
   .scrollbar-gradient-2::-webkit-scrollbar {
     width: 10px;
     height: 10px;

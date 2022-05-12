@@ -25,7 +25,7 @@ export default function Button({
         'transition duration-100',
         'animate-shadow',
         {
-          'bg-white text-gray-600 disabled:bg-gray-200 dark:bg-dark dark:text-gray-300 dark:disabled:bg-gray-700':
+          'bg-slate-100 text-gray-600 disabled:bg-gray-200 dark:bg-dark dark:text-gray-300 dark:disabled:bg-gray-700':
             variant === 'default',
         },
         'disabled:transform-none disabled:cursor-not-allowed',
