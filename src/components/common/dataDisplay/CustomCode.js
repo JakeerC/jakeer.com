@@ -9,6 +9,7 @@ export function Pre(props) {
         pre {
           position: relative;
           padding-top: 2.5rem;
+          padding-bottom: 0;
         }
       `}</style>
     </pre>
@@ -26,7 +27,7 @@ export default function CustomCode(props) {
   return (
     <code {...props} data-code-type={language && 'code-block'}>
       {language ? (
-        <div ref={textRef} className="custom-scrollbar overflow-x-auto">
+        <div ref={textRef} className="m-0 overflow-x-auto pb-6">
           {props.children}
         </div>
       ) : (

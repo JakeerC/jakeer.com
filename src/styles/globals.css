@@ -333,20 +333,85 @@ h6 {
 
 /* scroll bar */
 /* Scrollbar Styling */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
+@layer utilities {
+  .scrollbar-gradient-2::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background-color: rgb(87, 86, 86);
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-}
+  .scrollbar-gradient-2::-webkit-scrollbar-track {
+    @apply bg-slate-500;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+  }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-  /* @apply bg-gradient-to-t from-primary-300 to-primary-400; */
-  @apply bg-gradient-to-t from-primary-300 to-primary-500;
+  .scrollbar-gradient-2::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    @apply bg-gradient-to-t from-primary-300 via-primary-400 to-primary-500;
+  }
+  .scrollbar-gradient-1::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .scrollbar-gradient-2::-webkit-scrollbar-track {
+    @apply bg-slate-500;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+  }
+
+  .scrollbar-gradient-2::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    @apply bg-gradient-to-t from-primary-300 via-primary-400  to-primary-500;
+  }
+  .scrollbar-gray-1::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .scrollbar-gray-1::-webkit-scrollbar-track {
+    @apply bg-slate-300;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+  }
+
+  .scrollbar-gray-1::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    @apply bg-slate-600;
+  }
+  .scrollbar-gray-2::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar-gray-2::-webkit-scrollbar-track {
+    @apply bg-slate-300;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+  }
+
+  .scrollbar-gray-2::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    @apply bg-slate-600;
+  }
+  .scrollbar-code-1::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .scrollbar-code-2::-webkit-scrollbar-track {
+    @apply bg-slate-400;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+  }
+
+  .scrollbar-code-2::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    @apply bg-slate-700;
+  }
 }
