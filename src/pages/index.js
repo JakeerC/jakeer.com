@@ -119,7 +119,8 @@ export default function Home() {
               'absolute bottom-[40%] right-6',
               'translate-y-[37%] transform-gpu',
               'w-[calc(100%-3rem)] md:w-[600px] 2xl:w-[900px]',
-              'z-[-1] opacity-70 dark:opacity-30'
+              'z-[-1] opacity-70 dark:opacity-30',
+              'text-gray-400 dark:text-gray-300/40'
             )}
           />
         </section>

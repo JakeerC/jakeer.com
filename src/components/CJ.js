@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export default function CJ(props) {
   return (
-    <div className="text-primary-300">
+    <div className={props.className}>
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
@@ -57,31 +57,6 @@ c-37 -59 -68 -110 -68 -114 0 -6 -43 -81 -378 -659 -95 -163 -191 -330 -214
 -126 37 l-112 14 -12 -277z"
           />
         </g>
-        <defs>
-          <linearGradient
-            id="paint0_linear_606_425"
-            x1="1888.85"
-            y1="711.272"
-            x2="752.465"
-            y2="-321.779"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop
-              className="text-primary-400 dark:text-primary-400"
-              stopColor="currentColor"
-            />
-            <stop
-              className="text-primary-300 dark:text-primary-300"
-              offset="0.5"
-              stopColor="currentColor"
-            />
-            <stop
-              className="text-primary-300 dark:text-primary-200"
-              offset="1"
-              stopColor="currentColor"
-            />
-          </linearGradient>
-        </defs>
       </svg>
     </div>
   );

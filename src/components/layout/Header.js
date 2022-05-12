@@ -75,9 +75,9 @@ export default function Header({ large = false }) {
             >
               <CJ
                 className={clsx(
-                  // 'translate-y-[37%] transform-gpu',
-                  // 'w-[calc(100%-3rem)] md:w-[600px] 2xl:w-[900px]',
-                  'z-[1132] '
+                  'z-[1132]',
+                  'transition-colors',
+                  'text-primary-500 dark:text-primary-400'
                 )}
                 width="50"
                 height="30"
@@ -119,7 +119,7 @@ export default function Header({ large = false }) {
             )}
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
-            {theme === 'light' ? <FiSun size={20} /> : <FiMoon size={20} />}
+            {theme === 'light' ? <FiMoon size={20} /> : <FiSun size={20} />}
           </button>
         </nav>
       </div>
