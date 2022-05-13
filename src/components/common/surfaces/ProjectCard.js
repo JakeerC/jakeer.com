@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import * as React from 'react';
-import CloudinaryImg from '../images/CloudinaryImg';
+import TechIcons from '../dataDisplay/TechIcons';
 import UnstyledLink from '../links/UnstyledLink';
-import TechIcons from '../misc/TechIcons';
+import CloudinaryImg from '../media/CloudinaryImg';
 
 export default function ProjectCard({ project, className }) {
   return (

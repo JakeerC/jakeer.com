@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import { GiTechnoHeart } from 'react-icons/gi';
+import TechIcons from '../dataDisplay/TechIcons';
 import UnstyledLink from '../links/UnstyledLink';
-import TechIcons from '../misc/TechIcons';
 import Accent from '../typograpghy/Accent';
 
 export default function LibraryCard({ className, snippet }) {
@@ -25,11 +25,15 @@ export default function LibraryCard({ className, snippet }) {
           <h4 className="text-gray-800 dark:text-gray-100">{snippet.title}</h4>
 
           <div className="mt-1 flex items-center justify-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300">
-            <div className="flex items-center gap-1">
-              <GiTechnoHeart className="inline-block text-base" />
-              <Accent>{snippet?.likes ?? '–––'} likes</Accent>
-            </div>
-            <span>•</span>
+            {snippet?.likes && (
+              <>
+                <div className="flex items-center gap-1">
+                  <GiTechnoHeart className="inline-block text-base" />
+                  <Accent>{snippet?.likes} likes</Accent>
+                </div>
+                <span>•</span>
+              </>
+            )}
             <TechIcons techs={snippet.tags.split(',')} />
           </div>
 
