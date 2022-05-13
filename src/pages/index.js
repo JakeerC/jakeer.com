@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { IoArrowDownOutline, IoNewspaperSharp } from 'react-icons/io5';
+import { IoNewspaperSharp } from 'react-icons/io5';
 import { SiGithub } from 'react-icons/si';
 import CJ from '../components/CJ';
 import ButtonLink from '../components/common/links/ButtonLink';
@@ -74,7 +74,7 @@ export default function Home() {
             </div>
             <div
               data-fade="6"
-              className="mt-8 flex flex-wrap gap-4 gap-y-2 md:mt-8"
+              className="mt-8 flex flex-wrap gap-4 gap-y-2 md:mt-8 "
             >
               <UnstyledLink
                 href="#resume"
@@ -103,7 +103,7 @@ export default function Home() {
               </UnstyledLink>
             </div>
           </article>
-          <UnstyledLink
+          {/* <UnstyledLink
             href="#intro"
             className={clsx(
               'absolute bottom-2 left-1/2 -translate-x-1/2 md:bottom-10',
@@ -112,7 +112,7 @@ export default function Home() {
             )}
           >
             <IoArrowDownOutline className="h-8 w-8 animate-bounce md:h-10 md:w-10" />
-          </UnstyledLink>
+          </UnstyledLink> */}
 
           <CJ
             className={clsx(
