@@ -84,7 +84,7 @@ export default function Header({ large = false }) {
               />
             </UnstyledLink>
           </div>
-          <ul className="flex  items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base">
+          <ul className="flex  items-center justify-between  text-xs sm:space-x-3 md:space-x-4 md:text-base">
             {links.map(({ href, label }) => (
               <li key={`${href}${label}`}>
                 <UnstyledLink
@@ -129,7 +129,6 @@ export default function Header({ large = false }) {
 }
 
 const links = [
-  // { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
   { href: '/projects', label: 'Projects' },
   { href: '/library', label: 'Library' },
