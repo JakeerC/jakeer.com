@@ -4,7 +4,7 @@ import { SiGithub } from 'react-icons/si';
 import CJ from '../components/CJ';
 import ButtonLink from '../components/common/links/ButtonLink';
 import UnstyledLink from '../components/common/links/UnstyledLink';
-import Accent from '../components/common/typograpghy/Accent';
+import Accent from '../components/common/typography/Accent';
 import Layout from '../components/layout/Layout';
 import Seo from '../components/Seo';
 import useLoaded from '../hooks/useLoaded';

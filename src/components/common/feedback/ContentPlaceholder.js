@@ -1,4 +1,4 @@
-import Accent from '../typograpghy/Accent';
+import Accent from '../typography/Accent';
 
 export default function ContentPlaceholder() {
   return (

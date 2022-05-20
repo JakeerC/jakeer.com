@@ -12,7 +12,7 @@ import UnstyledLink from '../../components/common/links/UnstyledLink';
 import CloudinaryImg from '../../components/common/media/CloudinaryImg';
 import MDXComponents from '../../components/common/misc/MDXComponents';
 import BlogCard from '../../components/common/surfaces/BlogCard';
-import Accent from '../../components/common/typograpghy/Accent';
+import Accent from '../../components/common/typography/Accent';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/Seo';
 import useContentMeta from '../../hooks/useContentMeta';

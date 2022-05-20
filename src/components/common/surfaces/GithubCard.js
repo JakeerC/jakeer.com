@@ -5,7 +5,7 @@ import { HiOutlineStar } from 'react-icons/hi';
 import { SiGithub } from 'react-icons/si';
 import useSWR from 'swr';
 import UnstyledLink from '../links/UnstyledLink';
-import Accent from '../typograpghy/Accent';
+import Accent from '../typography/Accent';
 
 export default function GithubCard({ repo, className }) {
   const { data: repository, error } = useSWR(

@@ -6,7 +6,7 @@ export const isProd = process.env.NODE_ENV === 'production';
  * Show command service on contents
  * @see Comment.tsx
  */
-export const commentFlag = isProd;
+export const commentFlag = true;
 
 /**
  * Get content meta from the database

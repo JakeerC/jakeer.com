@@ -6,7 +6,7 @@ import ContentPlaceholder from '../../components/common/feedback/ContentPlacehol
 import StyledInput from '../../components/common/inputs/StyledInput';
 import SortListbox from '../../components/common/misc/SortListbox';
 import BlogCard from '../../components/common/surfaces/BlogCard';
-import Accent from '../../components/common/typograpghy/Accent';
+import Accent from '../../components/common/typography/Accent';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/Seo';
 import useInjectContentMeta from '../../hooks/useInjectContentMeta';

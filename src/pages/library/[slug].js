@@ -6,7 +6,7 @@ import TechIcons from '../../components/common/dataDisplay/TechIcons';
 import LikeButton from '../../components/common/inputs/LikeButton';
 import CustomLink from '../../components/common/links/CustomLink';
 import MDXComponents from '../../components/common/misc/MDXComponents';
-import Accent from '../../components/common/typograpghy/Accent';
+import Accent from '../../components/common/typography/Accent';
 import Layout from '../../components/layout/Layout';
 import Seo from '../../components/Seo';
 import useContentMeta from '../../hooks/useContentMeta';

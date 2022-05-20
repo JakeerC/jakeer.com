@@ -3,7 +3,7 @@ import * as React from 'react';
 import { GiTechnoHeart } from 'react-icons/gi';
 import TechIcons from '../dataDisplay/TechIcons';
 import UnstyledLink from '../links/UnstyledLink';
-import Accent from '../typograpghy/Accent';
+import Accent from '../typography/Accent';
 
 export default function LibraryCard({ className, snippet }) {
   return (

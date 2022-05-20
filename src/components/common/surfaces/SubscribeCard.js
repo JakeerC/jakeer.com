@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import { newsletterFlag } from '../../../constants/env';
 import Button from '../inputs/Button';
 import CustomLink from '../links/CustomLink';
-import Accent from '../typograpghy/Accent';
+import Accent from '../typography/Accent';
 
 export default function SubscribeCard({ className, title, description }) {
   //#region  //*=========== Count ===========

@@ -5,7 +5,7 @@ import * as React from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import CJ from '../CJ';
 import UnstyledLink from '../common/links/UnstyledLink';
-import Accent from '../common/typograpghy/Accent';
+import Accent from '../common/typography/Accent';
 
 export default function Header({ large = false }) {
   const { theme, setTheme } = useTheme();

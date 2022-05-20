@@ -5,7 +5,7 @@ import { HiOutlineClock, HiOutlineEye } from 'react-icons/hi';
 import Tag from '../dataDisplay/Tag';
 import UnstyledLink from '../links/UnstyledLink';
 import CloudinaryImg from '../media/CloudinaryImg';
-import Accent from '../typograpghy/Accent';
+import Accent from '../typography/Accent';
 
 export default function BlogCard({ post, className, checkTagged, onClick }) {
   return (
