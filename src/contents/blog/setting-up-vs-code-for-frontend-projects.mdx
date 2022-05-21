@@ -1,0 +1,93 @@
+---
+title: 'VS Code setup for frontend projects'
+publishedAt: '2022-05-21'
+description: 'Setting up VS Code for productive development of frontend projects'
+banner: 'vsCodeSetup'
+isPublished: 'false'
+tags: 'tools'
+---
+
+## Introduction
+
+We will be adding few extentions and configurations in VS Code settings.
+
+## Essential extentions
+
+Major factor for the popularity of VS Code is it's extensensibilty. There thousands of free extentions out there ,which we can leverage to add desired feature to our editor.
+Here are few popular and usefull extentions.
+
+### ESLint
+
+### Prettier
+
+### SonarLint
+
+### Gitlens
+
+### Auto rename tag
+
+### Code spell checker
+
+### Code Runner
+
+### Jest runner
+
+### TabOut
+
+> Here are few more extentions which are specific to respective libraries
+
+### Tailwind CSS IntelliSense
+
+### vscode-styled-components
+
+> For asthetic purpose
+
+### Material Icon theme or vscode-icons
+
+### Github theme
+
+### Colorize
+
+## Adding configuration to settings.json
+
+### To add bracket pair colors
+
+```json
+{
+  // rest of the json data
+
+  // enables vscode native bracket colorization
+  "editor.bracketPairColorization.enabled": true,
+  // enables vscode native bracket colorization
+  "editor.guides.bracketPairs": true
+}
+```
+
+### To highlight edited files/tabs
+
+```json
+{
+  // rest of the json data
+
+  //  highlight edited tab
+  "workbench.editor.highlightModifiedTabs": true
+}
+```
+
+### To add fonts , ligature
+
+> Note: Before adding fonts make sure that respective fonts are available in your system
+
+```json
+{
+  // rest of the json data
+
+  // use a font with font ligatures
+  "editor.fontFamily": "Fira Code, Jetbrains Mono, Menlo, Monaco, 'Courier New', monospace",
+  // enable font ligature
+  "editor.fontLigatures": true
+  // Add your preferred font for integrated terminal
+  "terminal.integrated.fontFamily": "Ubuntu Mono",
+
+}
+```
