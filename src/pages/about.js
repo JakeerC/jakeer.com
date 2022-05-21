@@ -64,7 +64,14 @@ export default function AboutPage() {
                   </ButtonLink>
                 </div>
                 <div className="group relative w-24" data-fade="7">
-                  <ButtonLink href="/about">Resume</ButtonLink>
+                  <ButtonLink
+                    href="/files/resume.pdf"
+                    alt="resume"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Resume
+                  </ButtonLink>
                 </div>
                 <div className="group relative w-24" data-fade="8">
                   <ButtonLink href="#contact">Contact</ButtonLink>

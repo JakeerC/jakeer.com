@@ -77,13 +77,16 @@ export default function Home() {
               className="mt-8 flex flex-wrap gap-4 gap-y-2 md:mt-8 "
             >
               <UnstyledLink
-                href="#resume"
+                href="/files/resume.pdf"
                 className={clsx(
                   'inline-flex items-center gap-1 text-sm font-medium md:text-base',
                   'text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white',
                   'focus:outline-none focus-visible:ring focus-visible:ring-primary-300',
                   'transition-colors'
                 )}
+                alt="resume"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <IoNewspaperSharp className="shrink-0" />
                 <span>Resume</span>
