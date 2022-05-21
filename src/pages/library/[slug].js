@@ -3,6 +3,7 @@ import * as React from 'react';
 import { HiOutlineEye } from 'react-icons/hi';
 import TableOfContents from '../../components/common/dataDisplay/TableOfContents';
 import TechIcons from '../../components/common/dataDisplay/TechIcons';
+import Comment from '../../components/common/feedback/Comment';
 import LikeButton from '../../components/common/inputs/LikeButton';
 import CustomLink from '../../components/common/links/CustomLink';
 import MDXComponents from '../../components/common/misc/MDXComponents';
@@ -102,6 +103,9 @@ export default function SingleLibraryPage({ code, frontmatter }) {
               </CustomLink>
               <CustomLink href="/library">← Back to library</CustomLink>
             </div>
+            <figure className="mt-12">
+              <Comment />
+            </figure>
           </div>
         </section>
       </main>

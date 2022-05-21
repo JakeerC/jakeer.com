@@ -3,6 +3,7 @@ import * as React from 'react';
 import { HiLink, HiOutlineEye, HiPlay, HiUser } from 'react-icons/hi';
 import { SiGithub } from 'react-icons/si';
 import TableOfContents from '../../components/common/dataDisplay/TableOfContents';
+import Comment from '../../components/common/feedback/Comment';
 import LikeButton from '../../components/common/inputs/LikeButton';
 import CustomLink from '../../components/common/links/CustomLink';
 import CloudinaryImg from '../../components/common/media/CloudinaryImg';
@@ -149,6 +150,9 @@ export default function SingleProjectPage({ code, frontmatter }) {
               <CustomLink href="/projects">← Back to projects</CustomLink>
             </div>
           </div>
+          <figure className="mt-12">
+            <Comment />
+          </figure>
         </section>
       </main>
     </Layout>

@@ -86,12 +86,10 @@ export default function AboutPage() {
             <h2>Contact</h2>
             <article className="prose mt-4 dark:prose-invert">
               <p>
-                Do
-                <Accent>
-                  <UnstyledLink href="mailto:jakeerchilakala@gmail.com">
-                    contact
-                  </UnstyledLink>
-                </Accent>{' '}
+                Do{' '}
+                <UnstyledLink href="mailto:jakeerchilakala@gmail.com">
+                  <Accent> contact </Accent>
+                </UnstyledLink>{' '}
                 me if you need my opinion or help about web development,
                 especially frontend works. I’ll be happy to help!
               </p>

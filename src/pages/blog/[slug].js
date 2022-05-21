@@ -5,6 +5,7 @@ import * as React from 'react';
 import { HiOutlineClock, HiOutlineEye } from 'react-icons/hi';
 import { MdHistory } from 'react-icons/md';
 import TableOfContents from '../../components/common/dataDisplay/TableOfContents';
+import Comment from '../../components/common/feedback/Comment';
 import Tooltip from '../../components/common/feedback/Tooltip';
 import CustomLink from '../../components/common/links/CustomLink';
 import ShareTweetButton from '../../components/common/links/ShareTweetButton';
@@ -207,6 +208,9 @@ export default function SingleBlogPage({ code, frontmatter, recommendations }) {
               </CustomLink>
               <CustomLink href="/blog">← Back to blog</CustomLink>
             </div>
+            <figure className="mt-12">
+              <Comment />
+            </figure>
           </div>
         </section>
       </main>
