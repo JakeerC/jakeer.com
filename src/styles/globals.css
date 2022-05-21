@@ -366,13 +366,13 @@ h6 {
     height: 5px;
   }
 
-  .scrollbar-gradient-2::-webkit-scrollbar-track {
+  .scrollbar-gradient-1::-webkit-scrollbar-track {
     @apply bg-slate-500;
     -webkit-border-radius: 4px;
     border-radius: 4px;
   }
 
-  .scrollbar-gradient-2::-webkit-scrollbar-thumb {
+  .scrollbar-gradient-1::-webkit-scrollbar-thumb {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     @apply bg-gradient-to-t from-primary-300 via-primary-400  to-primary-500;
@@ -424,5 +424,9 @@ h6 {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     @apply bg-slate-700;
+  }
+
+  .accent {
+    @apply bg-gradient-to-tr from-primary-300 via-primary-300 to-primary-400 bg-clip-text  text-transparent transition-colors  dark:from-primary-200 dark:via-primary-300 dark:to-primary-500 dark:bg-clip-text dark:text-transparent;
   }
 }
