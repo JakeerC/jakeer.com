@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json.schemastore.org/github-ruleset.json",
+  "name": "main-branch-protection",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": [
+        "refs/heads/main",
+        "refs/heads/master"
+      ],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "creation"
+    },
+    {
+      "type": "required_linear_history"
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": true,
+        "require_code_owner_review": false,
+        "require_last_push_approval": true,
+        "allowed_merge_methods": [
+          "squash",
+          "merge"
+        ]
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "build",
+            "integration_id": null
+          },
+          {
+            "context": "lint",
+            "integration_id": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "name": "Conventional Commits",
+        "negate": false,
+        "operator": "regex",
+        "pattern": "^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\\(.+\\))?: .{1,100}"
+      }
+    },
+    {
+      "type": "commit_author_email_pattern",
+      "parameters": {
+        "name": "No noreply emails",
+        "negate": true,
+        "operator": "ends_with",
+        "pattern": "@users.noreply.github.com"
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
+}

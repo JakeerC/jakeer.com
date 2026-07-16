@@ -43,8 +43,8 @@ A personal portfolio and technical blog built with **Next.js 16**, **React 19**,
 
 ```bash
 # Clone the repo
-git clone https://github.com/jakeerchilakala/jakeer-portfolio.git
-cd jakeer-portfolio
+git clone https://github.com/jakeerchilakala/jakeer.com.git
+cd jakeer.com
 
 # Install dependencies
 npm install
