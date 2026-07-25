@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Moon, Sun, Search, X, Menu } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,8 @@ export default function Navbar() {
   const [searchOpen,  setSearchOpen]  = useState(false);
   const [menuOpen,    setMenuOpen]    = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeStyle, setActiveStyle] = useState({ left: 0, width: 0, opacity: 0 });
+  const navRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -31,6 +33,28 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!navRef.current) return;
+    // Small delay to ensure the layout has rendered completely before getting the layout details
+    const timeoutId = setTimeout(() => {
+      if (navRef.current) {
+        const activeLink = navRef.current.querySelector('.active-nav-link') as HTMLElement;
+        if (activeLink) {
+          // Adjust position inside the Link padding (left: offsetLeft + 12px padding-left, width: offsetWidth - 24px total padding)
+          setActiveStyle({
+            left: activeLink.offsetLeft + 12,
+            width: activeLink.offsetWidth - 24,
+            opacity: 1
+          });
+        } else {
+          setActiveStyle(prev => ({ ...prev, opacity: 0 }));
+        }
+      }
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [pathname, mounted]);
 
   // ⌘K to open search
   const handleKeydown = useCallback((e: KeyboardEvent) => {
@@ -77,7 +101,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <ul className="hidden md:flex items-center gap-1">
+          <ul ref={navRef} className="hidden md:flex items-center gap-2 relative">
             {siteConfig.nav.map((item) => {
               const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
               return (
@@ -85,10 +109,10 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-150",
+                      "relative px-3 py-1.5 text-sm font-medium transition-all duration-200",
                       active
-                        ? "font-semibold underline underline-offset-4"
-                        : "hover:opacity-70",
+                        ? "font-medium active-nav-link"
+                        : "opacity-60 hover:opacity-100",
                     )}
                     style={{ color: "var(--text-primary)" }}
                   >
@@ -97,6 +121,17 @@ export default function Navbar() {
                 </li>
               );
             })}
+            
+            {/* Animated Floating Underline */}
+            <li
+              className="absolute -bottom-1 h-[2px] rounded-full bg-current transition-all duration-300 ease-out pointer-events-none"
+              style={{
+                left: `${activeStyle.left}px`,
+                width: `${activeStyle.width}px`,
+                opacity: activeStyle.opacity,
+                color: "var(--text-primary)",
+              }}
+            />
           </ul>
 
           {/* Right actions */}
@@ -154,11 +189,17 @@ export default function Navbar() {
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
                       className={cn(
-                        "block px-3 py-2 text-sm font-medium rounded-md transition-all",
-                        active ? "font-semibold" : "opacity-70",
+                        "relative block px-3 py-2 text-sm font-medium transition-all w-fit",
+                        active ? "font-medium" : "opacity-60",
                       )}
+                      style={{ color: "var(--text-primary)" }}
                     >
                       {item.label}
+                      {active && (
+                        <span 
+                          className="absolute left-3 right-3 -bottom-0 h-[2px] rounded-full bg-current"
+                        />
+                      )}
                     </Link>
                   </li>
                 );
