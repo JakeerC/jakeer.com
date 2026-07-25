@@ -89,48 +89,50 @@ export default function WritingClient() {
       <div className="divider mb-12" />
 
       {/* ── Featured post ────────────────────────────── */}
+      {/* ── Featured post ────────────────────────────── */}
       <div className="mb-12">
-        <p className="section-label mb-5">FEATURED</p>
+        <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 ml-1" style={{ color: "var(--accent)" }}>FEATURED</p>
         <Link href={`/writing/${featured.slug}`} className="block group">
-          <div
-            className="card p-7 md:p-10 grid grid-cols-1 md:grid-cols-[1fr_260px] gap-8"
-          >
-            <div>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {featured.tags.map((t) => (
-                  <span key={t} className="tag">
-                    <TechIcon tag={t} />
-                    {t}
-                  </span>
-                ))}
+          <div className="card grid grid-cols-1 md:grid-cols-[1fr_280px] min-h-[300px] overflow-hidden">
+            {/* Left side */}
+            <div className="p-8 md:p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r transition-colors group-hover:bg-black/[0.02] dark:group-hover:bg-white/[0.02]" style={{ borderColor: 'var(--border)' }}>
+              <div className="mb-6">
+                <span className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border" style={{ color: 'var(--accent)', borderColor: 'var(--accent)', backgroundColor: 'transparent' }}>
+                  {featured.tags[0].toUpperCase()}
+                </span>
               </div>
+              
               <h2
-                className="font-display text-2xl md:text-3xl font-semibold leading-snug mb-3 group-hover:underline underline-offset-4"
+                className="font-display text-2xl md:text-3xl font-semibold leading-tight mb-4 group-hover:underline underline-offset-4"
                 style={{ color: "var(--text-primary)" }}
               >
                 {featured.title}
               </h2>
-              <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--text-secondary)" }}>
+              
+              <p className="text-sm md:text-base leading-relaxed mb-10 line-clamp-2" style={{ color: "var(--text-secondary)" }}>
                 {featured.excerpt}
               </p>
-              <div
-                className="flex items-center gap-3 text-xs"
-                style={{ color: "var(--text-muted)" }}
-              >
-                <span>{featured.date}</span>
-                <span>·</span>
-                <span className="flex items-center gap-1">
-                  <Clock size={11} />
-                  {featured.readTime}
-                </span>
+              
+              <div className="flex items-center justify-between mt-auto text-xs md:text-sm font-mono" style={{ color: "var(--text-muted)" }}>
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1.5"><Calendar size={14} /> {featured.date}</span>
+                  <span className="flex items-center gap-1.5"><Clock size={14} /> {featured.readTime}</span>
+                </div>
+                <div className="flex items-center gap-1.5 font-sans font-medium transition-colors" style={{ color: "var(--accent)" }}>
+                  Read <ArrowRight size={14} />
+                </div>
               </div>
             </div>
-            <div className="hidden md:flex items-center justify-end">
-              <div
-                className="inline-flex items-center gap-2 text-sm font-medium"
-                style={{ color: "var(--accent)" }}
-              >
-                Read <ArrowRight size={14} />
+            
+            {/* Right side (Topics) */}
+            <div className="p-8 md:p-8 flex flex-col justify-center transition-colors group-hover:bg-black/[0.01] dark:group-hover:bg-white/[0.01]">
+              <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-5" style={{ color: "var(--accent)" }}>TOPICS</p>
+              <div className="flex flex-wrap gap-2">
+                {featured.tags.map((t) => (
+                  <span key={t} className="px-2.5 py-1 text-[11px] font-mono rounded border" style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)', backgroundColor: 'var(--surface)' }}>
+                    {t.toLowerCase().replace(/\s+/g, '-')}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -204,58 +206,72 @@ export default function WritingClient() {
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {rest.map((post, i) => (
-            <Link key={post.slug} href={`/writing/${post.slug}`} className="block group">
-              <article className="card p-6 h-full flex flex-col gap-4">
-                <span
-                  className="text-xs font-mono font-semibold"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="flex-1">
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {post.tags.slice(0, 2).map((t) => (
-                      <span key={t} className="tag">
-                        <TechIcon tag={t} />
-                        {t}
-                      </span>
-                    ))}
+            <Link key={post.slug} href={`/writing/${post.slug}`} className="block group h-full">
+              <article className="card h-full flex flex-col overflow-hidden transition-colors hover:bg-black/5 dark:hover:bg-white/5">
+                {/* Hero Image */}
+                <div className="w-full h-48 border-b relative shrink-0 overflow-hidden" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+                   <img src="/placeholder-hero.jpg" alt={post.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                </div>
+                
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-1">
+                  {/* Primary Category Tag */}
+                  <div className="mb-4">
+                    <span className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border" style={{ color: 'var(--accent)', borderColor: 'var(--accent)', backgroundColor: 'transparent' }}>
+                      {post.tags[0].toUpperCase()}
+                    </span>
                   </div>
+                  
+                  {/* Title */}
                   <h3
-                    className="font-display text-base font-semibold leading-snug mb-2 group-hover:underline underline-offset-4"
+                    className="font-display text-lg font-semibold leading-snug mb-3 group-hover:underline underline-offset-4"
                     style={{ color: "var(--text-primary)" }}
                   >
                     {post.title}
                   </h3>
+                  
+                  {/* Excerpt */}
                   <p
-                    className="text-sm leading-relaxed line-clamp-3"
+                    className="text-sm leading-relaxed mb-6 line-clamp-3"
                     style={{ color: "var(--text-secondary)" }}
                   >
                     {post.excerpt}
                   </p>
-                </div>
-                <div
-                  className="flex items-center gap-3 text-xs"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  <span>{post.date}</span>
-                  <span>·</span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={11} />
-                    {post.readTime}
-                  </span>
+                  
+                  {/* Meta (Date / Read time) */}
+                  <div
+                    className="flex items-center gap-4 text-xs font-mono mb-5 mt-auto"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    <span className="flex items-center gap-1.5"><Calendar size={13} /> {post.date}</span>
+                    <span className="flex items-center gap-1.5"><Clock size={13} /> {post.readTime}</span>
+                  </div>
+
+                  {/* Topics Pills */}
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.slice(1, 4).map((t) => (
+                      <span key={t} className="px-2 py-1 text-[11px] font-mono rounded border transition-colors group-hover:border-gray-400/30" style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)', backgroundColor: 'transparent' }}>
+                        {t.toLowerCase().replace(/\s+/g, '-')}
+                      </span>
+                    ))}
+                    {post.tags.length > 4 && (
+                      <span className="px-2 py-1 text-[11px] font-mono rounded border transition-colors group-hover:border-gray-400/30" style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)', backgroundColor: 'transparent' }}>
+                        +{post.tags.length - 4}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </article>
             </Link>
           ))}
         </div>
       ) : (
-        <div className="flex flex-col rounded-xl border bg-[var(--card)]" style={{ borderColor: 'var(--border)' }}>
+        <div className="flex flex-col rounded-xl border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           {rest.map((post, i) => (
-            <Link key={post.slug} href={`/writing/${post.slug}`} className={`block group p-5 border-b last:border-b-0`} style={{ borderColor: 'var(--border)' }}>
+            <Link key={post.slug} href={`/writing/${post.slug}`} className={`block group p-5 border-b last:border-b-0 transition-colors hover:bg-black/5 dark:hover:bg-white/5`} style={{ borderColor: 'var(--border)' }}>
               <article className="flex flex-col sm:flex-row gap-5 items-start">
-                <div className="w-full sm:w-48 h-28 rounded-lg border flex items-center justify-center shrink-0 transition-opacity group-hover:opacity-90" style={{ background: "var(--surface)", borderColor: "var(--border)" }}>
-                   <TechIcon tag={post.tags[0]} />
+                <div className="w-full sm:w-48 h-32 sm:h-28 rounded-lg border overflow-hidden relative shrink-0 transition-opacity group-hover:opacity-90" style={{ background: "var(--surface)", borderColor: "var(--border)" }}>
+                   <img src="/placeholder-hero.jpg" alt={post.title} className="absolute inset-0 w-full h-full object-cover" />
                 </div>
                 
                 <div className="flex-1 flex flex-col justify-center h-full py-1">
