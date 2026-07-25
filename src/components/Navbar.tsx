@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Moon, Sun, Search, X, Menu } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import CommandPalette from "./CommandPalette";
 
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -167,38 +168,7 @@ export default function Navbar() {
         )}
       </header>
 
-      {/* ── Search Modal ──────────────────────────────────── */}
-      {searchOpen && (
-        <div
-          className="fixed inset-0 z-[100] flex items-start justify-center pt-24 px-4"
-          style={{ background: "rgba(0,0,0,0.5)" }}
-          onClick={(e) => { if (e.target === e.currentTarget) setSearchOpen(false); }}
-        >
-          <div
-            className="w-full max-w-xl rounded-2xl border overflow-hidden shadow-2xl"
-            style={{ background: "var(--bg-primary)", borderColor: "var(--border-strong)" }}
-          >
-            <div className="flex items-center gap-3 px-4 py-3 border-b" style={{ borderColor: "var(--border)" }}>
-              <Search size={18} style={{ color: "var(--text-muted)" }} />
-              <input
-                autoFocus
-                type="text"
-                placeholder="Search writing, snippets, projects…"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent text-sm outline-none placeholder:opacity-50"
-                style={{ color: "var(--text-primary)" }}
-              />
-              <button onClick={() => setSearchOpen(false)} className="opacity-50 hover:opacity-100">
-                <X size={16} />
-              </button>
-            </div>
-            <div className="px-4 py-8 text-center text-sm" style={{ color: "var(--text-muted)" }}>
-              {searchQuery ? `Searching for "${searchQuery}"…` : "Start typing to search…"}
-            </div>
-          </div>
-        </div>
-      )}
+      <CommandPalette open={searchOpen} setOpen={setSearchOpen} />
     </>
   );
 }

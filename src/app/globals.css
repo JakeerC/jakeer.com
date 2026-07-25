@@ -246,3 +246,169 @@ code {
 .delay-300 { animation-delay: 0.3s; }
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
+
+/* ─── Command Palette (cmdk) ───────────────────────────── */
+[cmdk-dialog] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: 0 16px 70px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  overflow: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+  animation: dialogIn 0.2s ease-out forwards;
+}
+
+[cmdk-overlay] {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  animation: overlayIn 0.2s ease-out forwards;
+}
+
+@keyframes dialogIn {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cmdk-header {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cmdk-search-icon {
+  color: var(--text-muted);
+  margin-right: 12px;
+}
+
+[cmdk-input] {
+  font-family: "Inter", system-ui, sans-serif;
+  border: none;
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 20px 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+[cmdk-input]::placeholder {
+  color: var(--text-muted);
+}
+
+.cmdk-esc {
+  font-size: 10px;
+  background: var(--surface-raised);
+  color: var(--text-muted);
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+[cmdk-list] {
+  height: min(300px, calc(var(--cmdk-list-height)));
+  max-height: 400px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  transition: 100ms ease;
+  transition-property: height;
+  padding: 8px;
+}
+
+[cmdk-group-heading] {
+  user-select: none;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 8px 4px 8px;
+  font-weight: 500;
+}
+
+[cmdk-item] {
+  content-visibility: auto;
+  cursor: pointer;
+  height: 44px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--text-secondary);
+  user-select: none;
+  will-change: background, color;
+  transition: all 150ms ease;
+}
+
+[cmdk-item][data-selected="true"] {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+[cmdk-item][data-disabled="true"] {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+[cmdk-item]:active {
+  transition-duration: 0s;
+  background: var(--border);
+}
+
+[cmdk-empty] {
+  font-size: 14px;
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.cmdk-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.cmdk-shortcuts {
+  display: flex;
+  gap: 16px;
+}
+
+.cmdk-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cmdk-shortcut kbd {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.cmdk-footer-logo {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
