@@ -17,26 +17,30 @@ export default function CodeBlockClient({ code, lang, html }: { code: string; la
     <div className="rounded-xl overflow-hidden border group" style={{ borderColor: "var(--border)" }}>
       {/* Mac window header */}
       <div 
-        className="flex items-center justify-between px-4 py-2 border-b" 
+        className="flex items-end justify-between px-4 pt-2 border-b" 
         style={{ 
           background: "var(--surface-raised)", 
           borderColor: "var(--border)" 
         }}
       >
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2 mb-2.5">
             <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
             <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
           </div>
           <div 
-            className="text-[11px] font-medium font-mono lowercase tracking-wide" 
-            style={{ color: "var(--text-muted)" }}
+            className="text-[13px] font-medium font-mono lowercase tracking-wide border-b-2 pb-2 px-1" 
+            style={{ 
+              color: "var(--text-primary)",
+              borderColor: "var(--text-primary)",
+              marginBottom: "-1px"
+            }}
           >
             {lang}
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-1.5">
            <button
              onClick={() => setIsWrapped(!isWrapped)}
              className="p-1.5 rounded-md transition-all cursor-pointer"
@@ -71,7 +75,7 @@ export default function CodeBlockClient({ code, lang, html }: { code: string; la
         }}
       >
         <div 
-          className={`p-4 overflow-x-auto text-sm font-mono [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0 [&>pre]:!font-mono [&>pre]:!border-0 [&>pre]:!rounded-none ${
+          className={`p-4 overflow-x-auto text-sm font-mono [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0 [&>pre]:!font-mono [&>pre]:!border-0 [&>pre]:!rounded-none [&_code]:[counter-reset:line] [&_.line::before]:[counter-increment:line] [&_.line::before]:[content:counter(line)] [&_.line::before]:inline-block [&_.line::before]:w-6 [&_.line::before]:mr-4 [&_.line::before]:text-right [&_.line::before]:text-[#4b5563] ${
             isWrapped ? "[&>pre]:!whitespace-pre-wrap [&>pre]:!break-words" : "[&>pre]:!whitespace-pre"
           }`}
           dangerouslySetInnerHTML={{ __html: html }}
