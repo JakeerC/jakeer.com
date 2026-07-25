@@ -28,7 +28,6 @@ export const siteConfig = {
     { href: "/writing",     label: "Writing"       },
     { href: "/snippets",    label: "Snippets"      },
     { href: "/projects",    label: "Projects"      },
-    { href: "/notes",       label: "System Design" },
     { href: "/tools",       label: "Tools"         },
   ],
 

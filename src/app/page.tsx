@@ -397,12 +397,6 @@ export default function HomePage() {
               description: "Copy-paste ready code snippets for React, Java, Git, AWS, and more.",
             },
             {
-              icon:        FileText,
-              label:       "System Design",
-              href:        "/notes",
-              description: "Evergreen notes on distributed systems, caching, databases, and architecture trade-offs.",
-            },
-            {
               icon:        Wrench,
               label:       "Developer Tools",
               href:        "/tools",

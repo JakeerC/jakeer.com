@@ -117,10 +117,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
             <Code size={14} className="mr-3 opacity-60" />
             Go to Snippets
           </Command.Item>
-          <Command.Item onSelect={() => runCommand(() => router.push("/notes"))}>
-            <GitBranch size={14} className="mr-3 opacity-60" />
-            Go to System Design Notes
-          </Command.Item>
+
           <Command.Item onSelect={() => runCommand(() => router.push("/tools"))}>
             <Wrench size={14} className="mr-3 opacity-60" />
             Go to Tools
