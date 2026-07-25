@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -162,7 +163,7 @@ export default function NotesPage() {
                   className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                   style={{ background: "var(--surface-raised)" }}
                 >
-                  <BookOpen size={16} style={{ color: "var(--accent)" }} />
+                  <TechIcon tag={topic.label} size={18} />
                 </div>
                 <div>
                   <h2

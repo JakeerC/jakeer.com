@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Search, ExternalLink, Key, Shield, Wrench, Code2, Globe } from "lucide-react";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 const tools = [
@@ -167,6 +168,7 @@ export default function ToolsPage() {
                 : {}
             }
           >
+            <TechIcon tag={cat} />
             {cat} ({cat === "All" ? tools.length : tools.filter((t) => t.category === cat).length})
           </button>
         ))}
@@ -179,7 +181,6 @@ export default function ToolsPage() {
       {/* Tool grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filtered.map((tool) => {
-          const Icon = tool.icon;
           return (
             <a
               key={tool.slug}
@@ -192,7 +193,7 @@ export default function ToolsPage() {
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
                 style={{ background: "var(--surface-raised)" }}
               >
-                <Icon size={18} style={{ color: "var(--accent)" }} />
+                <TechIcon tag={tool.name} size={18} />
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-2 mb-1.5">

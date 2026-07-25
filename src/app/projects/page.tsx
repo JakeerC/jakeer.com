@@ -1,4 +1,4 @@
-import { ExternalLink, Code2 } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
@@ -117,7 +117,7 @@ export default function ProjectsPage() {
                     className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                     style={{ background: "var(--surface-raised)" }}
                   >
-                    <Code2 size={20} style={{ color: "var(--accent)" }} />
+                    <TechIcon tag={project.tags[0]} size={20} />
                   </div>
                   <div>
                     <h2

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Clock, Search, Filter } from "lucide-react";
 import { siteConfig } from "@/lib/config";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -115,7 +116,10 @@ export default function WritingPage() {
             <div>
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {featured.tags.map((t) => (
-                  <span key={t} className="tag">{t}</span>
+                  <span key={t} className="tag">
+                    <TechIcon tag={t} />
+                    {t}
+                  </span>
                 ))}
               </div>
               <h2
@@ -186,6 +190,7 @@ export default function WritingPage() {
         </button>
         {allTags.map((tag) => (
           <button key={tag} className="tag hover:opacity-80 transition-opacity cursor-pointer">
+            <TechIcon tag={tag} />
             {tag}
           </button>
         ))}
@@ -205,7 +210,10 @@ export default function WritingPage() {
               <div className="flex-1">
                 <div className="flex flex-wrap gap-1 mb-3">
                   {post.tags.slice(0, 2).map((t) => (
-                    <span key={t} className="tag">{t}</span>
+                    <span key={t} className="tag">
+                      <TechIcon tag={t} />
+                      {t}
+                    </span>
                   ))}
                 </div>
                 <h3

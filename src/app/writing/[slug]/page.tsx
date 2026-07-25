@@ -1,5 +1,6 @@
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import Link from "next/link";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Article" };
@@ -89,7 +90,10 @@ export default function ArticlePage() {
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-6">
         {article.tags.map((t) => (
-          <span key={t} className="tag">{t}</span>
+          <span key={t} className="tag">
+            <TechIcon tag={t} />
+            {t}
+          </span>
         ))}
       </div>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Code2, Terminal, GitBranch, Cloud, Cpu, Globe } from "lucide-react";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 };
 
 const categories = [
-  { slug: "react",        label: "React",        icon: Globe,     count: 12, description: "Hooks, patterns, optimization" },
-  { slug: "java",         label: "Java",         icon: Cpu,       count: 8,  description: "Spring Boot, streams, patterns" },
-  { slug: "typescript",   label: "TypeScript",   icon: Code2,     count: 10, description: "Types, generics, utilities" },
-  { slug: "git",          label: "Git",          icon: GitBranch, count: 15, description: "Aliases, workflows, fixups" },
-  { slug: "aws",          label: "AWS CLI",      icon: Cloud,     count: 9,  description: "S3, EC2, IAM, Lambda" },
-  { slug: "shell",        label: "Shell / Bash",  icon: Terminal,  count: 11, description: "One-liners, scripts, utils" },
+  { slug: "react",        label: "React",        count: 12, description: "Hooks, patterns, optimization" },
+  { slug: "java",         label: "Java",         count: 8,  description: "Spring Boot, streams, patterns" },
+  { slug: "typescript",   label: "TypeScript",   count: 10, description: "Types, generics, utilities" },
+  { slug: "git",          label: "Git",          count: 15, description: "Aliases, workflows, fixups" },
+  { slug: "aws",          label: "AWS CLI",      count: 9,  description: "S3, EC2, IAM, Lambda" },
+  { slug: "shell",        label: "Shell / Bash", count: 11, description: "One-liners, scripts, utils" },
 ];
 
 export default function SnippetsPage() {
@@ -54,7 +54,6 @@ export default function SnippetsPage() {
       {/* Category grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {categories.map((cat) => {
-          const Icon = cat.icon;
           return (
             <Link
               key={cat.slug}
@@ -66,7 +65,7 @@ export default function SnippetsPage() {
                   className="w-12 h-12 rounded-2xl flex items-center justify-center"
                   style={{ background: "var(--surface-raised)" }}
                 >
-                  <Icon size={22} style={{ color: "var(--accent)" }} />
+                  <TechIcon tag={cat.label} size={22} />
                 </div>
                 <span
                   className="font-display font-bold text-3xl"

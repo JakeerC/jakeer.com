@@ -303,7 +303,7 @@ export default function HomePage() {
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{ background: "var(--surface-raised)" }}
                     >
-                      <Code2 size={18} style={{ color: "var(--accent)" }} />
+                      <TechIcon tag={project.tags[0]} size={18} />
                     </div>
                     <h3
                       className="font-display text-lg font-semibold"
