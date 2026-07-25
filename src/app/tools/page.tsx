@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { Search, ExternalLink, Key, Shield, Wrench, Code2, Globe } from "lucide-react";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
+import PageHeader from "@/components/PageHeader";
 
 const tools = [
   {
@@ -94,47 +96,21 @@ export default function ToolsPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-        <div>
-          <p className="section-label mb-3">TOOLS</p>
-          <h1
-            className="font-display font-bold"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 3.75rem)", color: "var(--text-primary)" }}
-          >
-            Developer Tools
-          </h1>
-          <p
-            className="mt-2 text-base max-w-lg"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            A curated collection of utilities for developers and engineers. The ones I actually use.
-          </p>
-        </div>
-        <div className="flex gap-8 md:text-right">
-          <div>
-            <span
-              className="font-display font-bold block"
-              style={{ fontSize: "3rem", color: "var(--accent)", lineHeight: 1 }}
-            >
-              {tools.length}
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-              Tools
-            </span>
-          </div>
-          <div>
-            <span
-              className="font-display font-bold block"
-              style={{ fontSize: "3rem", color: "var(--accent)", lineHeight: 1 }}
-            >
-              {categories.length - 1}
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-              Categories
-            </span>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        label="TOOLS"
+        title="Developer Tools"
+        description="A curated collection of utilities for developers and engineers. The ones I actually use."
+        stats={[
+          {
+            value: tools.length,
+            label: "Tools"
+          },
+          {
+            value: categories.length - 1,
+            label: "Categories"
+          }
+        ]}
+      />
 
       <div className="divider mb-10" />
 
@@ -167,6 +143,7 @@ export default function ToolsPage() {
                 : {}
             }
           >
+            <TechIcon tag={cat} />
             {cat} ({cat === "All" ? tools.length : tools.filter((t) => t.category === cat).length})
           </button>
         ))}
@@ -179,7 +156,6 @@ export default function ToolsPage() {
       {/* Tool grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filtered.map((tool) => {
-          const Icon = tool.icon;
           return (
             <a
               key={tool.slug}
@@ -192,7 +168,7 @@ export default function ToolsPage() {
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
                 style={{ background: "var(--surface-raised)" }}
               >
-                <Icon size={18} style={{ color: "var(--accent)" }} />
+                <TechIcon tag={tool.name} size={18} />
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-2 mb-1.5">

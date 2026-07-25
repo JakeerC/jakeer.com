@@ -6,6 +6,7 @@ import {
 import { siteConfig } from "@/lib/config";
 import StatCounter from "@/components/StatCounter";
 import ArticleCard from "@/components/ArticleCard";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 const GithubIcon = () => (
@@ -302,7 +303,7 @@ export default function HomePage() {
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{ background: "var(--surface-raised)" }}
                     >
-                      <Code2 size={18} style={{ color: "var(--accent)" }} />
+                      <TechIcon tag={project.tags[0]} size={18} />
                     </div>
                     <h3
                       className="font-display text-lg font-semibold"
@@ -323,7 +324,7 @@ export default function HomePage() {
                   <div className="flex flex-wrap gap-1.5 mb-5">
                     {project.tags.map((tag) => (
                       <span key={tag} className="tag">
-                        <Code2 size={10} />
+                        <TechIcon tag={tag} />
                         {tag}
                       </span>
                     ))}
@@ -394,12 +395,6 @@ export default function HomePage() {
               label:       "Snippets",
               href:        "/snippets",
               description: "Copy-paste ready code snippets for React, Java, Git, AWS, and more.",
-            },
-            {
-              icon:        FileText,
-              label:       "System Design",
-              href:        "/notes",
-              description: "Evergreen notes on distributed systems, caching, databases, and architecture trade-offs.",
             },
             {
               icon:        Wrench,

@@ -9,8 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify/react": "^6.0.2",
     "@vercel/analytics": "^2.0.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "date-fns": "^4.4.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^1.24.0",

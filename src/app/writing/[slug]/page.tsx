@@ -1,6 +1,9 @@
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import Link from "next/link";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import CodeBlock from "@/components/CodeBlock";
 
 export const metadata: Metadata = { title: "Article" };
 
@@ -73,6 +76,35 @@ const HeavyChart = dynamic(() => import('./HeavyChart'), {
   `,
 };
 
+const components = {
+  h2: (props: any) => <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, margin: "2.5rem 0 1rem", color: "var(--text-primary)" }} {...props} />,
+  h3: (props: any) => <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", fontWeight: 600, margin: "2rem 0 0.75rem", color: "var(--text-primary)" }} {...props} />,
+  strong: (props: any) => <strong {...props} />,
+  code: (props: any) => {
+    return <code style={{ background: "var(--tag-bg)", border: "1px solid var(--tag-border)", borderRadius: "4px", padding: "0.15em 0.4em", color: "var(--accent)", fontSize: "0.85em" }} {...props} />;
+  },
+  li: (props: any) => <li style={{ margin: "0.4rem 0", color: "var(--text-secondary)" }} {...props} />,
+  ul: (props: any) => <ul style={{ paddingLeft: "1.25rem", margin: "1rem 0", listStyle: "disc" }} {...props} />,
+  p: (props: any) => <p style={{ margin: "1rem 0", color: "var(--text-secondary)" }} {...props} />,
+  pre: (props: any) => {
+    const child = props.children;
+    if (child && child.props) {
+      const className = child.props.className || "";
+      const langMatch = className.match(/language-(.*)/);
+      const lang = langMatch ? langMatch[1] : "text";
+      
+      const codeString = typeof child.props.children === 'string' 
+        ? child.props.children 
+        : Array.isArray(child.props.children) 
+          ? child.props.children.join('') 
+          : child.props.children || "";
+
+      return <CodeBlock code={String(codeString).trim()} lang={lang} />;
+    }
+    return <pre {...props} />;
+  }
+};
+
 export default function ArticlePage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
@@ -89,7 +121,10 @@ export default function ArticlePage() {
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-6">
         {article.tags.map((t) => (
-          <span key={t} className="tag">{t}</span>
+          <span key={t} className="tag">
+            <TechIcon tag={t} />
+            {t}
+          </span>
         ))}
       </div>
 
@@ -121,8 +156,9 @@ export default function ArticlePage() {
       <div
         className="prose prose-sm md:prose-base"
         style={{ color: "var(--text-primary)" }}
-        dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
-      />
+      >
+        <MDXRemote source={article.content} components={components} />
+      </div>
 
       {/* Footer nav */}
       <div
@@ -140,22 +176,4 @@ export default function ArticlePage() {
       </div>
     </div>
   );
-}
-
-// Simple markdown-to-html for demo (replace with MDX in production)
-function formatContent(md: string): string {
-  return md
-    .replace(/^## (.+)$/gm, '<h2 style="font-family: \'Playfair Display\', serif; font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--text-primary);">$1</h2>')
-    .replace(/^### (.+)$/gm, '<h3 style="font-family: \'Playfair Display\', serif; font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.75rem; color: var(--text-primary);">$1</h3>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\`\`\`tsx?\n([\s\S]*?)\`\`\`/g, (_, code) => `<pre style="background:var(--surface-raised);border:1px solid var(--border);border-radius:0.75rem;padding:1.25rem 1.5rem;overflow-x:auto;margin:1.5rem 0;"><code style="font-family:JetBrains Mono,monospace;font-size:0.85rem;color:var(--text-primary);">${escapeHtml(code.trim())}</code></pre>`)
-    .replace(/\`([^`]+)\`/g, '<code style="background:var(--tag-bg);border:1px solid var(--tag-border);border-radius:4px;padding:0.15em 0.4em;color:var(--accent);font-size:0.85em;">$1</code>')
-    .replace(/^- (.+)$/gm, '<li style="margin:0.4rem 0;color:var(--text-secondary);">$1</li>')
-    .replace(/(<li.*<\/li>\n?)+/g, (m) => `<ul style="padding-left:1.25rem;margin:1rem 0;list-style:disc;">${m}</ul>`)
-    .replace(/\n\n/g, '</p><p style="margin:1rem 0;color:var(--text-secondary);">')
-    .replace(/^(.)/m, '<p style="margin:1rem 0;color:var(--text-secondary);">$1');
-}
-
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }

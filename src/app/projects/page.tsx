@@ -1,4 +1,5 @@
-import { ExternalLink, Code2 } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 const GithubIcon = () => (
@@ -75,6 +76,8 @@ const projects = [
   },
 ];
 
+import PageHeader from "@/components/PageHeader";
+
 const statusColors: Record<string, string> = {
   Production:  "#22c55e",
   Active:      "#3b82f6",
@@ -86,21 +89,11 @@ export default function ProjectsPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Header */}
-      <div className="mb-12">
-        <p className="section-label mb-3">PROJECTS</p>
-        <h1
-          className="font-display font-bold"
-          style={{ fontSize: "clamp(2.5rem, 5vw, 3.75rem)", color: "var(--text-primary)" }}
-        >
-          Featured Work
-        </h1>
-        <p
-          className="mt-2 text-base max-w-lg"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          Systems and tools I built to solve real problems — open-source and production-grade.
-        </p>
-      </div>
+      <PageHeader
+        label="PROJECTS"
+        title="Featured Work"
+        description="Systems and tools I built to solve real problems — open-source and production-grade."
+      />
 
       <div className="divider mb-12" />
 
@@ -116,7 +109,7 @@ export default function ProjectsPage() {
                     className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                     style={{ background: "var(--surface-raised)" }}
                   >
-                    <Code2 size={20} style={{ color: "var(--accent)" }} />
+                    <TechIcon tag={project.tags[0]} size={20} />
                   </div>
                   <div>
                     <h2
@@ -170,7 +163,7 @@ export default function ProjectsPage() {
               <div className="flex flex-wrap gap-1.5">
                 {project.tags.map((tag) => (
                   <span key={tag} className="tag">
-                    <Code2 size={10} />
+                    <TechIcon tag={tag} />
                     {tag}
                   </span>
                 ))}

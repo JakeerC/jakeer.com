@@ -3,21 +3,56 @@
 
 /* ─── CSS Custom Properties (Design Tokens) ──────────────── */
 :root {
-  /* Light mode */
-  --bg-primary:      #ece6d8;
-  --bg-secondary:    #e4ddd0;
-  --surface:         #ddd5c5;
-  --surface-raised:  #d5ccb8;
-  --text-primary:    #1a2744;
-  --text-secondary:  #4a5568;
-  --text-muted:      #718096;
-  --accent:          #2d4a8a;
-  --accent-hover:    #1e3370;
-  --accent-light:    #6b8fd4;
-  --border:          rgba(26, 39, 68, 0.12);
-  --border-strong:   rgba(26, 39, 68, 0.22);
-  --tag-bg:          rgba(26, 39, 68, 0.07);
-  --tag-border:      rgba(26, 39, 68, 0.15);
+  /* Light Mode (User Provided) */
+  --background: lab(98.26% 0 0);
+  --foreground: lab(7.78201% -.0000149012 0);
+  --card: lab(100% 0 0);
+  --card-foreground: lab(7.78201% -.0000149012 0);
+  --popover: lab(100% 0 0);
+  --popover-foreground: lab(7.78201% -.0000149012 0);
+  --primary: lab(44.7773% 21.0043 -75.5261);
+  --primary-foreground: lab(98.26% 0 0);
+  --secondary: lab(95.94% 0 0);
+  --secondary-foreground: lab(12.42% -.00000745058 .00000298023);
+  --muted: lab(95.36% 0 0);
+  --muted-foreground: lab(37.36% .0000149012 -.00000596046);
+  --accent-token: lab(94.78% 0 0); /* Renamed from --accent to avoid collision with legacy */
+  --accent-foreground: lab(7.78201% -.0000149012 0);
+  --destructive: lab(48.4493% 77.4328 61.5452);
+  --border: lab(88.4% 0 .0000119209);
+  --input: lab(88.4% 0 .0000119209);
+  --ring: lab(44.7773% 21.0043 -75.5261 / .4);
+  --amber: lab(55.1021% 37.5004 89.3979);
+  --emerald: lab(55.8166% -57.8711 22.5965);
+  --code-bg: lab(94.78% 0 0);
+  --chart-1: lab(57.1026% 64.2584 89.8886);
+  --chart-2: lab(55.0223% -41.0774 -3.90277);
+  --chart-3: lab(30.372% -13.1853 -18.7887);
+  --chart-4: lab(80.1641% 16.6016 99.2089);
+  --chart-5: lab(72.7183% 31.8672 97.9407);
+  --sidebar: lab(97.1% -.0000298023 -.0000119209);
+  --sidebar-foreground: lab(7.78201% -.0000149012 0);
+  --sidebar-primary: lab(44.7773% 21.0043 -75.5261);
+  --sidebar-primary-foreground: lab(98.26% 0 0);
+  --sidebar-accent: lab(94.78% 0 0);
+  --sidebar-accent-foreground: lab(12.42% -.00000745058 .00000298023);
+  --sidebar-border: lab(88.4% 0 .0000119209);
+  --sidebar-ring: lab(44.7773% 21.0043 -75.5261 / .4);
+
+  /* Legacy variable mappings */
+  --bg-primary:      var(--background);
+  --bg-secondary:    var(--secondary);
+  --surface:         var(--card);
+  --surface-raised:  var(--muted);
+  --text-primary:    var(--foreground);
+  --text-secondary:  var(--secondary-foreground);
+  --text-muted:      var(--muted-foreground);
+  --accent:          var(--primary);
+  --accent-hover:    var(--primary);
+  --accent-light:    var(--accent-token);
+  --border-strong:   var(--ring);
+  --tag-bg:          var(--muted);
+  --tag-border:      var(--border);
 }
 
 .dark {
@@ -86,6 +121,10 @@ a {
   transition: color 0.15s ease;
 }
 
+a:hover {
+  color: var(--accent);
+}
+
 /* ─── Tag Pill ─────────────────────────────────────────── */
 .tag {
   display: inline-flex;
@@ -114,6 +153,10 @@ a {
   border-color: var(--border-strong);
   box-shadow: 0 8px 24px -4px rgba(26,39,68,0.12);
   transform: translateY(-2px);
+}
+.card:hover h2,
+.card:hover h3 {
+  color: var(--accent) !important;
 }
 .dark .card:hover {
   box-shadow: 0 8px 24px -4px rgba(0,0,0,0.4);
@@ -203,3 +246,169 @@ code {
 .delay-300 { animation-delay: 0.3s; }
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
+
+/* ─── Command Palette (cmdk) ───────────────────────────── */
+[cmdk-dialog] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: 0 16px 70px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  overflow: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+  animation: dialogIn 0.2s ease-out forwards;
+}
+
+[cmdk-overlay] {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  animation: overlayIn 0.2s ease-out forwards;
+}
+
+@keyframes dialogIn {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cmdk-header {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cmdk-search-icon {
+  color: var(--text-muted);
+  margin-right: 12px;
+}
+
+[cmdk-input] {
+  font-family: "Inter", system-ui, sans-serif;
+  border: none;
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 20px 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+[cmdk-input]::placeholder {
+  color: var(--text-muted);
+}
+
+.cmdk-esc {
+  font-size: 10px;
+  background: var(--surface-raised);
+  color: var(--text-muted);
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+[cmdk-list] {
+  height: min(300px, calc(var(--cmdk-list-height)));
+  max-height: 400px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  transition: 100ms ease;
+  transition-property: height;
+  padding: 8px;
+}
+
+[cmdk-group-heading] {
+  user-select: none;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 8px 4px 8px;
+  font-weight: 500;
+}
+
+[cmdk-item] {
+  content-visibility: auto;
+  cursor: pointer;
+  height: 44px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--text-secondary);
+  user-select: none;
+  will-change: background, color;
+  transition: all 150ms ease;
+}
+
+[cmdk-item][data-selected="true"] {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+[cmdk-item][data-disabled="true"] {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+[cmdk-item]:active {
+  transition-duration: 0s;
+  background: var(--border);
+}
+
+[cmdk-empty] {
+  font-size: 14px;
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.cmdk-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.cmdk-shortcuts {
+  display: flex;
+  gap: 16px;
+}
+
+.cmdk-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cmdk-shortcut kbd {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.cmdk-footer-logo {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
