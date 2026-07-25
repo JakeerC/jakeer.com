@@ -76,6 +76,8 @@ const projects = [
   },
 ];
 
+import PageHeader from "@/components/PageHeader";
+
 const statusColors: Record<string, string> = {
   Production:  "#22c55e",
   Active:      "#3b82f6",
@@ -87,21 +89,11 @@ export default function ProjectsPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Header */}
-      <div className="mb-12">
-        <p className="section-label mb-3">PROJECTS</p>
-        <h1
-          className="font-display font-bold"
-          style={{ fontSize: "clamp(2.5rem, 5vw, 3.75rem)", color: "var(--text-primary)" }}
-        >
-          Featured Work
-        </h1>
-        <p
-          className="mt-2 text-base max-w-lg"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          Systems and tools I built to solve real problems — open-source and production-grade.
-        </p>
-      </div>
+      <PageHeader
+        label="PROJECTS"
+        title="Featured Work"
+        description="Systems and tools I built to solve real problems — open-source and production-grade."
+      />
 
       <div className="divider mb-12" />
 

@@ -122,10 +122,6 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
             <Wrench size={14} className="mr-3 opacity-60" />
             Go to Tools
           </Command.Item>
-          <Command.Item onSelect={() => runCommand(() => router.push("/snippets"))}>
-             <Send size={14} className="mr-3 opacity-60" />
-             Submit a Snippet
-          </Command.Item>
           
           <Command.Item onSelect={() => runCommand(() => setTheme(isDark ? "light" : "dark"))}>
             {isDark ? <Sun size={14} className="mr-3 opacity-60" /> : <Moon size={14} className="mr-3 opacity-60" />}

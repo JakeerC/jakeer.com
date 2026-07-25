@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Clock, Search, Filter, Calendar, List, LayoutGrid } from "lucide-react";
 import TechIcon from "@/components/TechIcon";
+import PageHeader from "@/components/PageHeader";
 
 const posts = [
   {
@@ -73,34 +74,17 @@ export default function WritingClient() {
     <div className="max-w-7xl mx-auto px-6 py-16">
 
       {/* ── Page header ─────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-        <div>
-          <p className="section-label mb-3">WRITING</p>
-          <h1
-            className="font-display font-bold"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 3.75rem)", color: "var(--text-primary)" }}
-          >
-            Writing
-          </h1>
-          <p
-            className="mt-2 text-base max-w-lg"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            Technical deep-dives, tutorials, and perspectives on software engineering, tooling, and building products.
-          </p>
-        </div>
-        <div className="text-right">
-          <span
-            className="font-display font-bold block"
-            style={{ fontSize: "3rem", color: "var(--accent)", lineHeight: 1 }}
-          >
-            {posts.length}
-          </span>
-          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-            Posts Published
-          </span>
-        </div>
-      </div>
+      <PageHeader
+        label="WRITING"
+        title="Writing"
+        description="Technical deep-dives, tutorials, and perspectives on software engineering, tooling, and building products."
+        stats={[
+          {
+            value: posts.length,
+            label: "Posts Published"
+          }
+        ]}
+      />
 
       <div className="divider mb-12" />
 

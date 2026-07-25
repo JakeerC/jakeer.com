@@ -2,6 +2,8 @@ import Link from "next/link";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
+import PageHeader from "@/components/PageHeader";
+
 export const metadata: Metadata = {
   title:       "Snippets",
   description: "Ready-to-use code snippets for React, Java, Spring Boot, Git, AWS, and more.",
@@ -20,34 +22,17 @@ export default function SnippetsPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-        <div>
-          <p className="section-label mb-3">SNIPPETS</p>
-          <h1
-            className="font-display font-bold"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 3.75rem)", color: "var(--text-primary)" }}
-          >
-            Code Snippets
-          </h1>
-          <p
-            className="mt-2 text-base max-w-lg"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            Copy-paste ready snippets organized by category. No fluff, just the code.
-          </p>
-        </div>
-        <div className="text-right">
-          <span
-            className="font-display font-bold block"
-            style={{ fontSize: "3rem", color: "var(--accent)", lineHeight: 1 }}
-          >
-            {categories.reduce((s, c) => s + c.count, 0)}
-          </span>
-          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-            Total Snippets
-          </span>
-        </div>
-      </div>
+      <PageHeader
+        label="SNIPPETS"
+        title="Code Snippets"
+        description="Copy-paste ready snippets organized by category. No fluff, just the code."
+        stats={[
+          {
+            value: categories.reduce((s, c) => s + c.count, 0),
+            label: "Total Snippets"
+          }
+        ]}
+      />
 
       <div className="divider mb-12" />
 
