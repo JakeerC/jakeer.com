@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
+import TechIcon from "./TechIcon";
 
 export interface ArticleCardProps {
   index:    number;
@@ -45,7 +46,10 @@ export default function ArticleCard({ index, slug, title, excerpt, date, readTim
         {tags && tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {tags.map((t) => (
-              <span key={t} className="tag">{t}</span>
+              <span key={t} className="tag">
+                <TechIcon tag={t} />
+                {t}
+              </span>
             ))}
           </div>
         )}

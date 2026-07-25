@@ -6,6 +6,7 @@ import {
 import { siteConfig } from "@/lib/config";
 import StatCounter from "@/components/StatCounter";
 import ArticleCard from "@/components/ArticleCard";
+import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
 const GithubIcon = () => (
@@ -323,7 +324,7 @@ export default function HomePage() {
                   <div className="flex flex-wrap gap-1.5 mb-5">
                     {project.tags.map((tag) => (
                       <span key={tag} className="tag">
-                        <Code2 size={10} />
+                        <TechIcon tag={tag} />
                         {tag}
                       </span>
                     ))}
