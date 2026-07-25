@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { ArrowLeft, Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -168,10 +168,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function SnippetCategoryPage({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
-  const cat = snippets[params.category] ?? {
-    label: params.category,
+  const resolvedParams = use(params);
+  const cat = snippets[resolvedParams.category] ?? {
+    label: resolvedParams.category,
     items: [],
   };
 
