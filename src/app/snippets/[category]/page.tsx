@@ -1,8 +1,7 @@
-"use client";
-
-import { useState, use } from "react";
 import Link from "next/link";
-import { ArrowLeft, Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import CodeBlock from "@/components/CodeBlock";
+import FaqItem from "@/components/FaqItem";
 
 const snippets: Record<string, {
   label: string;
@@ -96,81 +95,14 @@ String result = Retry.decorateSupplier(retry,
   },
 };
 
-function CodeBlock({ code, lang }: { code: string; lang: string }) {
-  const [copied, setCopied] = useState(false);
 
-  const copy = async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
-  return (
-    <div className="relative group">
-      <pre
-        style={{
-          background:   "var(--surface-raised)",
-          border:       "1px solid var(--border)",
-          borderRadius: "0.75rem",
-          padding:      "1.25rem 1.5rem",
-          overflowX:    "auto",
-          fontSize:     "0.875rem",
-          lineHeight:   1.7,
-          color:        "var(--text-primary)",
-          fontFamily:   "JetBrains Mono, monospace",
-        }}
-      >
-        <code>{code}</code>
-      </pre>
-      <button
-        onClick={copy}
-        className="absolute top-3 right-3 p-1.5 rounded-md border transition-all opacity-0 group-hover:opacity-100"
-        style={{
-          background:   "var(--surface)",
-          borderColor:  "var(--border-strong)",
-          color:        copied ? "#22c55e" : "var(--text-muted)",
-        }}
-        aria-label="Copy code"
-      >
-        {copied ? <Check size={14} /> : <Copy size={14} />}
-      </button>
-    </div>
-  );
-}
-
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div
-      className="border rounded-xl overflow-hidden"
-      style={{ borderColor: "var(--border)" }}
-    >
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-3.5 text-left text-sm font-medium"
-        style={{ color: "var(--text-primary)" }}
-      >
-        {q}
-        {open ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-      </button>
-      {open && (
-        <div
-          className="px-5 py-3 text-sm border-t"
-          style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
-        >
-          {a}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default function SnippetCategoryPage({
+export default async function SnippetCategoryPage({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
-  const resolvedParams = use(params);
+  const resolvedParams = await params;
   const cat = snippets[resolvedParams.category] ?? {
     label: resolvedParams.category,
     items: [],
