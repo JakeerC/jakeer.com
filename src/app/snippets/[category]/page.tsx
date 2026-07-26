@@ -3,98 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import CodeBlock from "@/components/CodeBlock";
 import FaqItem from "@/components/FaqItem";
 
-const snippets: Record<string, {
-  label: string;
-  items: { title: string; code: string; lang: string; description: string; faqs: { q: string; a: string }[] }[];
-}> = {
-  react: {
-    label: "React",
-    items: [
-      {
-        title:       "useLocalStorage Hook",
-        lang:        "tsx",
-        description: "A typed hook that syncs state to localStorage and handles SSR safely.",
-        code: `import { useState, useEffect } from "react";
-
-function useLocalStorage<T>(key: string, initialValue: T) {
-  const [stored, setStored] = useState<T>(() => {
-    if (typeof window === "undefined") return initialValue;
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? (JSON.parse(item) as T) : initialValue;
-    } catch {
-      return initialValue;
-    }
-  });
-
-  const setValue = (value: T | ((val: T) => T)) => {
-    const valueToStore = value instanceof Function ? value(stored) : value;
-    setStored(valueToStore);
-    window.localStorage.setItem(key, JSON.stringify(valueToStore));
-  };
-
-  return [stored, setValue] as const;
-}
-
-export default useLocalStorage;`,
-        faqs: [
-          { q: "Is this SSR safe?",   a: "Yes — the initial state is read lazily and guards against window being undefined." },
-          { q: "Can I store objects?", a: "Yes — values are JSON serialized. Avoid storing non-serializable values like functions." },
-        ],
-      },
-      {
-        title:       "useDebounce Hook",
-        lang:        "tsx",
-        description: "Debounce any value — ideal for search inputs to avoid firing on every keystroke.",
-        code: `import { useState, useEffect } from "react";
-
-function useDebounce<T>(value: T, delay: number = 300): T {
-  const [debounced, setDebounced] = useState<T>(value);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-
-  return debounced;
-}
-
-export default useDebounce;`,
-        faqs: [
-          { q: "When should I use this?", a: "Whenever you react to fast-changing inputs: search fields, resize events, or window scroll." },
-        ],
-      },
-    ],
-  },
-  java: {
-    label: "Java",
-    items: [
-      {
-        title:       "Retry with Exponential Backoff",
-        lang:        "java",
-        description: "A generic retry utility using Resilience4j — configure max attempts and wait duration.",
-        code: `@Bean
-public Retry retryConfig() {
-    RetryConfig config = RetryConfig.custom()
-        .maxAttempts(3)
-        .waitDuration(Duration.ofMillis(500))
-        .retryExceptions(HttpServerErrorException.class)
-        .ignoreExceptions(IllegalArgumentException.class)
-        .build();
-    return Retry.of("paymentService", config);
-}
-
-// Usage
-String result = Retry.decorateSupplier(retry,
-    () -> paymentClient.process(request)).get();`,
-        faqs: [
-          { q: "Which dependency do I need?", a: "Add io.github.resilience4j:resilience4j-spring-boot3 to your pom.xml." },
-        ],
-      },
-    ],
-  },
-};
-
+import { snippets } from "@/lib/snippets";
 
 
 export default async function SnippetCategoryPage({
@@ -109,7 +18,7 @@ export default async function SnippetCategoryPage({
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
+    <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Back */}
       <Link
         href="/snippets"
@@ -121,45 +30,72 @@ export default async function SnippetCategoryPage({
       </Link>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="section-label mb-3">SNIPPETS · {cat.label.toUpperCase()}</p>
-        <h1
-          className="font-display font-bold"
-          style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "var(--text-primary)" }}
-        >
-          {cat.label} Snippets
-        </h1>
+      <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <p className="section-label mb-3">SNIPPETS / {cat.label.toUpperCase()}</p>
+          <h1
+            className="font-display font-bold"
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "var(--text-primary)" }}
+          >
+            {cat.label}
+          </h1>
+          <p className="mt-4 max-w-xl" style={{ color: "var(--text-secondary)" }}>
+            Battle-tested {cat.label} utilities, patterns, and building blocks you can paste straight into production code.
+          </p>
+        </div>
+        <div className="text-right">
+          <div className="font-display font-bold text-4xl" style={{ color: "var(--text-primary)" }}>{cat.items.length}</div>
+          <div className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>SNIPPETS</div>
+        </div>
       </div>
+      
+      <div className="divider mb-12" />
 
       {/* Snippets */}
       {cat.items.length > 0 ? (
-        <div className="flex flex-col gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-[var(--border)] gap-[1px] border border-[var(--border)]">
           {cat.items.map((item) => (
-            <section key={item.title} className="flex flex-col gap-4">
-              <div>
-                <h2
-                  className="font-display text-xl font-semibold mb-1"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  {item.title}
-                </h2>
-                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                  {item.description}
-                </p>
-              </div>
-              <CodeBlock code={item.code} lang={item.lang} />
-              {item.faqs.length > 0 && (
-                <div className="flex flex-col gap-2 mt-2">
-                  <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
-                    FAQ
-                  </p>
-                  {item.faqs.map((faq) => (
-                    <FaqItem key={faq.q} {...faq} />
+            <Link
+              href={`/snippets/${resolvedParams.category}/${item.slug}`}
+              key={item.title}
+              className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] p-6 group flex flex-col transition-colors min-h-[220px]"
+            >
+              <h2
+                className="font-bold mb-2 text-lg"
+                style={{ color: "var(--text-primary)" }}
+              >
+                {item.title}
+              </h2>
+              <p className="text-sm mb-6 line-clamp-3" style={{ color: "var(--text-secondary)" }}>
+                {item.description}
+              </p>
+              
+              <div className="mt-auto">
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {item.tags?.map(tag => (
+                    <span key={tag} className="tag text-[10px] uppercase tracking-wider">{tag}</span>
                   ))}
                 </div>
-              )}
-              <div className="divider" />
-            </section>
+                
+                <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
+                  <div className="flex items-center gap-3">
+                    <span className="border border-amber-500 text-amber-500 px-2 py-0.5 rounded-sm">
+                      {item.level || "INTERMEDIATE"}
+                    </span>
+                    <span style={{ color: "var(--text-muted)" }}>
+                      {item.date || "Just now"}
+                    </span>
+                  </div>
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "var(--accent)" }}>
+                    →
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+          {/* Fill the remaining grid slots */}
+          {Array.from({ length: (3 - (cat.items.length % 3)) % 3 }).map((_, i) => (
+            <div key={`empty-${i}`} className="hidden lg:block bg-[var(--surface-raised)]" />
           ))}
         </div>
       ) : (

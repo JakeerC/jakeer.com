@@ -37,13 +37,13 @@ export default function SnippetsPage() {
       <div className="divider mb-12" />
 
       {/* Category grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[var(--border)] gap-[1px] border border-[var(--border)]">
         {categories.map((cat) => {
           return (
             <Link
               key={cat.slug}
               href={`/snippets/${cat.slug}`}
-              className="card p-6 group flex flex-col gap-5"
+              className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] p-6 group flex flex-col gap-5 transition-colors"
             >
               <div className="flex items-start justify-between">
                 <div
@@ -52,33 +52,30 @@ export default function SnippetsPage() {
                 >
                   <TechIcon tag={cat.label} size={22} />
                 </div>
-                <span
-                  className="font-display font-bold text-3xl"
-                  style={{ color: "var(--accent)", opacity: 0.2 }}
-                >
-                  {cat.count}
-                </span>
               </div>
               <div>
                 <h2
-                  className="font-semibold mb-1 group-hover:underline underline-offset-4"
+                  className="font-bold mb-1"
                   style={{ color: "var(--text-primary)" }}
                 >
                   {cat.label}
                 </h2>
-                <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+                <p className="text-sm line-clamp-2" style={{ color: "var(--text-muted)" }}>
                   {cat.description}
                 </p>
               </div>
               <div
-                className="text-xs font-medium flex items-center gap-1"
-                style={{ color: "var(--accent)" }}
+                className="text-xs font-mono font-medium flex items-center gap-1 mt-auto"
+                style={{ color: "var(--text-muted)" }}
               >
-                {cat.count} snippets →
+                {cat.count} snippets
               </div>
             </Link>
           );
         })}
+        {/* Fill the remaining grid slots with empty background in large screens (since we have 6 categories, 4 cols means 2 empty slots) */}
+        <div className="hidden lg:block bg-[var(--surface-raised)]" />
+        <div className="hidden lg:block bg-[var(--surface-raised)]" />
       </div>
     </div>
   );
