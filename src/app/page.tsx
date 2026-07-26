@@ -234,7 +234,9 @@ export default function HomePage() {
         {/* Section header */}
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="section-label mb-3">02 · Latest Writing</p>
+            <p className="text-xs font-mono font-semibold mb-3 tracking-[0.15em] uppercase" style={{ color: "var(--accent)" }}>
+              02 . LATEST WRITING
+            </p>
             <h2
               className="font-display font-semibold"
               style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", color: "var(--text-primary)" }}
@@ -244,15 +246,15 @@ export default function HomePage() {
           </div>
           <Link
             href="/writing"
-            className="hidden md:inline-flex items-center gap-1.5 text-sm font-medium hover:underline underline-offset-4"
-            style={{ color: "var(--accent)" }}
+            className="hidden md:inline-flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
+            style={{ color: "var(--text-secondary)" }}
           >
             All posts <LuArrowRight size={14} />
           </Link>
         </div>
 
         {/* Article grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)] rounded-xl overflow-hidden">
           {recentPosts.map((post) => (
             <ArticleCard key={post.slug} {...post} />
           ))}
@@ -262,7 +264,7 @@ export default function HomePage() {
           <Link
             href="/writing"
             className="inline-flex items-center gap-1.5 text-sm font-medium"
-            style={{ color: "var(--accent)" }}
+            style={{ color: "var(--text-secondary)" }}
           >
             All posts <LuArrowRight size={14} />
           </Link>
@@ -286,11 +288,11 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col border border-[var(--border)] bg-[var(--border)] gap-[1px]">
           {featuredProjects.map((project) => (
             <div
               key={project.name}
-              className="card p-6 md:p-8"
+              className="p-6 md:p-8 bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors"
             >
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="flex-1">
@@ -298,7 +300,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 mb-3">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: "var(--surface-raised)" }}
+                      style={{ background: "var(--surface)" }}
                     >
                       <TechIcon tag={project.tags[0]} size={18} />
                     </div>
@@ -385,7 +387,7 @@ export default function HomePage() {
             What's Here
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)]">
           {[
             {
               icon:        LuCode,
@@ -399,15 +401,21 @@ export default function HomePage() {
               href:        "/tools",
               description: "A curated collection of utilities I use daily: JSON tools, formatters, converters.",
             },
+            {
+              icon:        FileText,
+              label:       "Writing",
+              href:        "/writing",
+              description: "Technical deep-dives, tutorials, and perspectives on software engineering.",
+            }
           ].map(({ icon: Icon, label, href, description }) => (
             <Link
               key={href}
               href={href}
-              className="card p-6 group flex flex-col gap-4"
+              className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors p-6 group flex flex-col gap-4"
             >
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: "var(--surface-raised)" }}
+                style={{ background: "var(--surface)" }}
               >
                 <Icon size={18} style={{ color: "var(--accent)" }} />
               </div>
