@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ExternalLink, Key, Shield, Wrench, Code2, Globe } from "lucide-react";
+import { LuSearch, LuExternalLink, LuKey, LuShield, LuWrench, LuCode, LuGlobe } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
@@ -11,7 +11,7 @@ const tools = [
     slug:        "json-formatter",
     name:        "JSON Formatter",
     description: "Format, validate, and minify JSON. Detects errors and highlights the problematic line.",
-    icon:        Code2,
+    icon:        LuCode,
     category:    "Development",
     link:        "https://jsonformatter.curiousconcept.com",
   },
@@ -19,7 +19,7 @@ const tools = [
     slug:        "regex-tester",
     name:        "Regex Tester",
     description: "Test and debug regular expressions in real-time with match highlighting and explanations.",
-    icon:        Key,
+    icon:        LuKey,
     category:    "Development",
     link:        "https://regex101.com",
   },
@@ -27,7 +27,7 @@ const tools = [
     slug:        "jwt-decoder",
     name:        "JWT Decoder",
     description: "Decode and verify JWT tokens — inspect header, payload, and signature without sending data to a server.",
-    icon:        Shield,
+    icon:        LuShield,
     category:    "Security",
     link:        "https://jwt.io",
   },
@@ -35,7 +35,7 @@ const tools = [
     slug:        "cron-parser",
     name:        "Cron Expression Parser",
     description: "Human-readable descriptions for cron schedules. See exactly when your job will run next.",
-    icon:        Wrench,
+    icon:        LuWrench,
     category:    "Development",
     link:        "https://crontab.guru",
   },
@@ -43,7 +43,7 @@ const tools = [
     slug:        "base64",
     name:        "Base64 Encoder / Decoder",
     description: "Encode or decode Base64 strings client-side — no data leaves your browser.",
-    icon:        Key,
+    icon:        LuKey,
     category:    "Development",
     link:        "https://www.base64decode.org",
   },
@@ -51,7 +51,7 @@ const tools = [
     slug:        "url-encoder",
     name:        "URL Encoder",
     description: "Encode and decode URL components quickly — useful when debugging query strings.",
-    icon:        Globe,
+    icon:        LuGlobe,
     category:    "Development",
     link:        "https://www.urlencoder.org",
   },
@@ -59,7 +59,7 @@ const tools = [
     slug:        "diff-checker",
     name:        "Diff Checker",
     description: "Compare two blocks of text side by side and see exactly what changed.",
-    icon:        Code2,
+    icon:        LuCode,
     category:    "Development",
     link:        "https://www.diffchecker.com",
   },
@@ -67,7 +67,7 @@ const tools = [
     slug:        "http-status",
     name:        "HTTP Status Reference",
     description: "Quick reference for all HTTP status codes — meanings, when to use them, and common mistakes.",
-    icon:        Globe,
+    icon:        LuGlobe,
     category:    "Development",
     link:        "https://httpstatuses.io",
   },
@@ -75,7 +75,7 @@ const tools = [
     slug:        "ssl-checker",
     name:        "SSL Certificate Checker",
     description: "Inspect SSL/TLS certificates, check expiry, and verify the chain for any hostname.",
-    icon:        Shield,
+    icon:        LuShield,
     category:    "Security",
     link:        "https://www.ssllabs.com/ssltest",
   },
@@ -114,15 +114,15 @@ export default function ToolsPage() {
 
       <div className="divider mb-10" />
 
-      {/* Search */}
+      {/* LuSearch */}
       <div
         className="flex items-center gap-3 rounded-xl border px-4 py-2.5 mb-6"
         style={{ background: "var(--surface)", borderColor: "var(--border)" }}
       >
-        <Search size={16} style={{ color: "var(--text-muted)" }} />
+        <LuSearch size={16} style={{ color: "var(--text-muted)" }} />
         <input
           type="text"
-          placeholder="Search tools…"
+          placeholder="LuSearch tools…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="flex-1 bg-transparent text-sm outline-none placeholder:opacity-50"
@@ -178,7 +178,7 @@ export default function ToolsPage() {
                   >
                     {tool.name}
                   </h3>
-                  <ExternalLink
+                  <LuExternalLink
                     size={14}
                     className="shrink-0 opacity-30 group-hover:opacity-70 transition-opacity mt-0.5"
                   />

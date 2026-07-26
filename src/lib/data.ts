@@ -1,4 +1,4 @@
-import { Code2, Terminal, GitBranch, Cloud, Cpu, Globe, Key, Shield, Wrench } from "lucide-react";
+import { LuCode, LuTerminal, LuGitBranch, LuCloud, LuCpu, LuGlobe, LuKey, LuShield, LuWrench } from "react-icons/lu";
 
 export const posts = [
   {
@@ -62,7 +62,7 @@ export const tools = [
     slug:        "json-formatter",
     name:        "JSON Formatter",
     description: "Format, validate, and minify JSON. Detects errors and highlights the problematic line.",
-    icon:        Code2,
+    icon:        LuCode,
     category:    "Development",
     link:        "https://jsonformatter.curiousconcept.com",
   },
@@ -70,7 +70,7 @@ export const tools = [
     slug:        "regex-tester",
     name:        "Regex Tester",
     description: "Test and debug regular expressions in real-time with match highlighting and explanations.",
-    icon:        Key,
+    icon:        LuKey,
     category:    "Development",
     link:        "https://regex101.com",
   },
@@ -78,7 +78,7 @@ export const tools = [
     slug:        "jwt-decoder",
     name:        "JWT Decoder",
     description: "Decode and verify JWT tokens — inspect header, payload, and signature without sending data to a server.",
-    icon:        Shield,
+    icon:        LuShield,
     category:    "Security",
     link:        "https://jwt.io",
   },
@@ -86,7 +86,7 @@ export const tools = [
     slug:        "cron-parser",
     name:        "Cron Expression Parser",
     description: "Human-readable descriptions for cron schedules. See exactly when your job will run next.",
-    icon:        Wrench,
+    icon:        LuWrench,
     category:    "Development",
     link:        "https://crontab.guru",
   },
@@ -94,7 +94,7 @@ export const tools = [
     slug:        "base64",
     name:        "Base64 Encoder / Decoder",
     description: "Encode or decode Base64 strings client-side — no data leaves your browser.",
-    icon:        Key,
+    icon:        LuKey,
     category:    "Development",
     link:        "https://www.base64decode.org",
   },
@@ -102,7 +102,7 @@ export const tools = [
     slug:        "url-encoder",
     name:        "URL Encoder",
     description: "Encode and decode URL components quickly — useful when debugging query strings.",
-    icon:        Globe,
+    icon:        LuGlobe,
     category:    "Development",
     link:        "https://www.urlencoder.org",
   },
@@ -110,7 +110,7 @@ export const tools = [
     slug:        "diff-checker",
     name:        "Diff Checker",
     description: "Compare two blocks of text side by side and see exactly what changed.",
-    icon:        Code2,
+    icon:        LuCode,
     category:    "Development",
     link:        "https://www.diffchecker.com",
   },
@@ -118,7 +118,7 @@ export const tools = [
     slug:        "http-status",
     name:        "HTTP Status Reference",
     description: "Quick reference for all HTTP status codes — meanings, when to use them, and common mistakes.",
-    icon:        Globe,
+    icon:        LuGlobe,
     category:    "Development",
     link:        "https://httpstatuses.io",
   },
@@ -126,19 +126,19 @@ export const tools = [
     slug:        "ssl-checker",
     name:        "SSL Certificate Checker",
     description: "Inspect SSL/TLS certificates, check expiry, and verify the chain for any hostname.",
-    icon:        Shield,
+    icon:        LuShield,
     category:    "Security",
     link:        "https://www.ssllabs.com/ssltest",
   },
 ];
 
 export const snippetCategories = [
-  { slug: "react",        label: "React",        icon: Globe,     count: 12, description: "Hooks, patterns, optimization" },
-  { slug: "java",         label: "Java",         icon: Cpu,       count: 8,  description: "Spring Boot, streams, patterns" },
-  { slug: "typescript",   label: "TypeScript",   icon: Code2,     count: 10, description: "Types, generics, utilities" },
-  { slug: "git",          label: "Git",          icon: GitBranch, count: 15, description: "Aliases, workflows, fixups" },
-  { slug: "aws",          label: "AWS CLI",      icon: Cloud,     count: 9,  description: "S3, EC2, IAM, Lambda" },
-  { slug: "shell",        label: "Shell / Bash", icon: Terminal,  count: 11, description: "One-liners, scripts, utils" },
+  { slug: "react",        label: "React",        icon: LuGlobe,     count: 12, description: "Hooks, patterns, optimization" },
+  { slug: "java",         label: "Java",         icon: LuCpu,       count: 8,  description: "Spring Boot, streams, patterns" },
+  { slug: "typescript",   label: "TypeScript",   icon: LuCode,     count: 10, description: "Types, generics, utilities" },
+  { slug: "git",          label: "Git",          icon: LuGitBranch, count: 15, description: "Aliases, workflows, fixups" },
+  { slug: "aws",          label: "AWS CLI",      icon: LuCloud,     count: 9,  description: "S3, EC2, IAM, Lambda" },
+  { slug: "shell",        label: "Shell / Bash", icon: LuTerminal,  count: 11, description: "One-liners, scripts, utils" },
 ];
 
 export const snippets: Record<string, {

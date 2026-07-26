@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { LuArrowRight } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
@@ -187,7 +187,7 @@ export default function NotesPage() {
                   className="inline-flex items-center gap-1 font-medium hover:underline underline-offset-4"
                   style={{ color: "var(--accent)" }}
                 >
-                  Start here <ArrowRight size={12} />
+                  Start here <LuArrowRight size={12} />
                 </Link>
               </div>
             </div>

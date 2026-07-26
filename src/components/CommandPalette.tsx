@@ -4,19 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Command } from "cmdk";
-import { 
-  Search, 
-  Home, 
-  FileText, 
-  Code, 
-  GitBranch, 
-  Wrench, 
-  Moon, 
-  Sun,
-  Link as LinkIcon,
-  Send,
-  Code2
-} from "lucide-react";
+import { LuSearch, LuHouse, LuFileText, LuCode, LuGitBranch, LuWrench, LuMoon, LuSun, LuLink as LinkIcon, LuSend } from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import { posts, tools, snippets } from "@/lib/data";
 
@@ -48,8 +36,8 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
       className="cmdk-dialog"
     >
       <div className="cmdk-header">
-        <Search size={18} className="cmdk-search-icon" />
-        <Command.Input placeholder="Search blogs, snippets, tools, anything..." />
+        <LuSearch size={18} className="cmdk-search-icon" />
+        <Command.Input placeholder="LuSearch blogs, snippets, tools, anything..." />
         <div className="cmdk-esc">ESC</div>
       </div>
       
@@ -58,7 +46,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 
         <Command.Group heading="Recent searches">
           <Command.Item onSelect={() => runCommand(() => {})}>
-            <Search size={14} className="mr-3 opacity-60" />
+            <LuSearch size={14} className="mr-3 opacity-60" />
             mcp
           </Command.Item>
         </Command.Group>
@@ -70,7 +58,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
               value={`writing ${post.title} ${post.excerpt}`} 
               onSelect={() => runCommand(() => router.push(`/writing/${post.slug}`))}
             >
-              <FileText size={14} className="mr-3 opacity-60" />
+              <LuFileText size={14} className="mr-3 opacity-60" />
               {post.title}
             </Command.Item>
           ))}
@@ -83,7 +71,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
               value={`tool ${tool.name} ${tool.description}`} 
               onSelect={() => runCommand(() => window.open(tool.link, "_blank"))}
             >
-              <Wrench size={14} className="mr-3 opacity-60" />
+              <LuWrench size={14} className="mr-3 opacity-60" />
               {tool.name}
             </Command.Item>
           ))}
@@ -97,7 +85,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
                 value={`snippet ${item.title} ${item.description}`} 
                 onSelect={() => runCommand(() => router.push(`/snippets/${category.label.toLowerCase()}`))}
               >
-                <Code2 size={14} className="mr-3 opacity-60" />
+                <LuCode size={14} className="mr-3 opacity-60" />
                 {item.title}
               </Command.Item>
             ))
@@ -106,25 +94,25 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 
         <Command.Group heading="Actions">
           <Command.Item onSelect={() => runCommand(() => router.push("/"))}>
-            <Home size={14} className="mr-3 opacity-60" />
-            Go to Home
+            <LuHouse size={14} className="mr-3 opacity-60" />
+            Go to LuHouse
           </Command.Item>
           <Command.Item onSelect={() => runCommand(() => router.push("/writing"))}>
-            <FileText size={14} className="mr-3 opacity-60" />
+            <LuFileText size={14} className="mr-3 opacity-60" />
             Go to Blogs
           </Command.Item>
           <Command.Item onSelect={() => runCommand(() => router.push("/snippets"))}>
-            <Code size={14} className="mr-3 opacity-60" />
+            <LuCode size={14} className="mr-3 opacity-60" />
             Go to Snippets
           </Command.Item>
 
           <Command.Item onSelect={() => runCommand(() => router.push("/tools"))}>
-            <Wrench size={14} className="mr-3 opacity-60" />
+            <LuWrench size={14} className="mr-3 opacity-60" />
             Go to Tools
           </Command.Item>
           
           <Command.Item onSelect={() => runCommand(() => setTheme(isDark ? "light" : "dark"))}>
-            {isDark ? <Sun size={14} className="mr-3 opacity-60" /> : <Moon size={14} className="mr-3 opacity-60" />}
+            {isDark ? <LuSun size={14} className="mr-3 opacity-60" /> : <LuMoon size={14} className="mr-3 opacity-60" />}
             Switch to {isDark ? "Light" : "Dark"} Mode
           </Command.Item>
           <Command.Item onSelect={() => runCommand(copyUrl)}>

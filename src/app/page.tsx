@@ -1,8 +1,5 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  ExternalLink, Code2, FileText, Wrench,
-} from "lucide-react";
+import { LuArrowRight, LuExternalLink, LuCode, LuFileText, LuWrench } from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import StatCounter from "@/components/StatCounter";
 import ArticleCard from "@/components/ArticleCard";
@@ -138,7 +135,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
                 style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
               >
-                Read the Blog <ArrowRight size={15} />
+                Read the Blog <LuArrowRight size={15} />
               </Link>
               <Link
                 href="/projects"
@@ -250,7 +247,7 @@ export default function HomePage() {
             className="hidden md:inline-flex items-center gap-1.5 text-sm font-medium hover:underline underline-offset-4"
             style={{ color: "var(--accent)" }}
           >
-            All posts <ArrowRight size={14} />
+            All posts <LuArrowRight size={14} />
           </Link>
         </div>
 
@@ -267,7 +264,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-1.5 text-sm font-medium"
             style={{ color: "var(--accent)" }}
           >
-            All posts <ArrowRight size={14} />
+            All posts <LuArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -370,7 +367,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-1.5 text-sm font-medium hover:underline underline-offset-4"
             style={{ color: "var(--accent)" }}
           >
-            All projects <ArrowRight size={14} />
+            All projects <LuArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -391,13 +388,13 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
             {
-              icon:        Code2,
+              icon:        LuCode,
               label:       "Snippets",
               href:        "/snippets",
               description: "Copy-paste ready code snippets for React, Java, Git, AWS, and more.",
             },
             {
-              icon:        Wrench,
+              icon:        LuWrench,
               label:       "Developer Tools",
               href:        "/tools",
               description: "A curated collection of utilities I use daily: JSON tools, formatters, converters.",
@@ -425,7 +422,7 @@ export default function HomePage() {
                   {description}
                 </p>
               </div>
-              <ArrowRight
+              <LuArrowRight
                 size={16}
                 className="mt-auto"
                 style={{ color: "var(--accent)", opacity: 0.6 }}
@@ -468,7 +465,7 @@ export default function HomePage() {
               className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
               style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
             >
-              Get in touch <ArrowRight size={15} />
+              Get in touch <LuArrowRight size={15} />
             </Link>
           </div>
 

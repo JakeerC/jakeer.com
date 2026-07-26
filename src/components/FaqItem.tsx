@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 
 export default function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function FaqItem({ q, a }: { q: string; a: string }) {
         style={{ color: "var(--text-primary)" }}
       >
         {q}
-        {open ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+        {open ? <LuChevronUp size={15} /> : <LuChevronDown size={15} />}
       </button>
       {open && (
         <div

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock } from "lucide-react";
+import { LuClock } from "react-icons/lu";
 import TechIcon from "./TechIcon";
 
 export interface ArticleCardProps {
@@ -62,7 +62,7 @@ export default function ArticleCard({ index, slug, title, excerpt, date, readTim
           <span>{date}</span>
           <span>·</span>
           <span className="flex items-center gap-1">
-            <Clock size={11} />
+            <LuClock size={11} />
             {readTime}
           </span>
         </div>

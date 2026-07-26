@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Moon, Sun, Search, X, Menu } from "lucide-react";
+import { LuMoon, LuSun, LuSearch, LuX, LuMenu } from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import CommandPalette from "./CommandPalette";
@@ -136,15 +136,15 @@ export default function Navbar() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
-            {/* Search button */}
+            {/* LuSearch button */}
             <button
               id="search-button"
               onClick={() => setSearchOpen(true)}
               className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm rounded-md border transition-all hover:opacity-80"
               style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
             >
-              <Search size={14} />
-              <span>Search</span>
+              <LuSearch size={14} />
+              <span>LuSearch</span>
               <kbd className="text-xs px-1 py-0.5 rounded border ml-1 opacity-60"
                 style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
                 ⌘K
@@ -159,7 +159,7 @@ export default function Navbar() {
                 className="p-2 rounded-md transition-all hover:opacity-70"
                 aria-label="Toggle dark mode"
               >
-                {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                {isDark ? <LuSun size={16} /> : <LuMoon size={16} />}
               </button>
             )}
 
@@ -169,7 +169,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+              {menuOpen ? <LuX size={18} /> : <LuMenu size={18} />}
             </button>
           </div>
         </nav>

@@ -1,42 +1,51 @@
 "use client";
 
-import { Icon } from "@iconify/react";
-import { Code2 } from "lucide-react";
+import { IconType } from "react-icons";
+import { 
+  SiReact, SiSpringboot, SiApachekafka, SiRedis, SiPostgresql, 
+  SiTypescript, SiStorybook, SiVite, SiNodedotjs, 
+  SiExpress, SiNextdotjs, SiGithub, SiGit, 
+  SiAuth0, SiJavascript 
+} from "react-icons/si";
+import { FaJava, FaAws, FaCss3Alt } from "react-icons/fa";
+import { SiGnubash } from "react-icons/si";
+import { TbBrandVscode } from "react-icons/tb";
+import { LuCode, LuServer } from "react-icons/lu";
 
-const iconMap: Record<string, string> = {
-  "React": "logos:react",
-  "Java": "logos:java",
-  "Spring Boot": "logos:spring-icon",
-  "Kafka": "logos:kafka",
-  "Redis": "logos:redis",
-  "PostgreSQL": "logos:postgresql",
-  "TypeScript": "logos:typescript-icon",
-  "Storybook": "logos:storybook-icon",
-  "Vite": "logos:vitejs",
-  "CSS Modules": "logos:css-3",
-  "Node.js": "logos:nodejs-icon",
-  "Express": "logos:express",
-  "Next.js": "logos:nextjs-icon",
-  "GitHub API": "logos:github-icon",
-  "System Design": "logos:aws-architecture-center",
-  "Architecture": "logos:aws-architecture-center",
-  "Git": "logos:git-icon",
-  "AWS CLI": "logos:aws",
-  "Shell / Bash": "logos:bash-icon",
-  "Development": "logos:visual-studio-code",
-  "Security": "logos:auth0-icon",
-  "Fundamentals": "logos:javascript",
-  "Caching & Load Distribution": "logos:redis",
-  "Databases": "logos:postgresql",
-  "Messaging & Event Streaming": "logos:kafka"
+const iconMap: Record<string, IconType> = {
+  "React": SiReact,
+  "Java": FaJava,
+  "Spring Boot": SiSpringboot,
+  "Kafka": SiApachekafka,
+  "Redis": SiRedis,
+  "PostgreSQL": SiPostgresql,
+  "TypeScript": SiTypescript,
+  "Storybook": SiStorybook,
+  "Vite": SiVite,
+  "CSS Modules": FaCss3Alt,
+  "Node.js": SiNodedotjs,
+  "Express": SiExpress,
+  "Next.js": SiNextdotjs,
+  "GitHub API": SiGithub,
+  "System Design": LuServer,
+  "Architecture": LuServer,
+  "Git": SiGit,
+  "AWS CLI": FaAws,
+  "Shell / Bash": SiGnubash,
+  "Development": TbBrandVscode,
+  "Security": SiAuth0,
+  "Fundamentals": SiJavascript,
+  "Caching & Load Distribution": SiRedis,
+  "Databases": SiPostgresql,
+  "Messaging & Event Streaming": SiApachekafka
 };
 
 export default function TechIcon({ tag, size = 12 }: { tag: string; size?: number }) {
-  const iconName = iconMap[tag];
+  const IconComponent = iconMap[tag];
 
-  if (iconName) {
-    return <Icon icon={iconName} width={size} height={size} />;
+  if (IconComponent) {
+    return <IconComponent size={size} />;
   }
 
-  return <Code2 size={size > 12 ? size - 2 : size - 2} />;
+  return <LuCode size={size > 12 ? size - 2 : size - 2} />;
 }
