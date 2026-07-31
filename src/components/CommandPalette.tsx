@@ -15,9 +15,9 @@ import {
 } from "react-icons/lu";
 
 import { siteConfig } from "@/lib/config";
-import { posts, tools, snippets } from "@/lib/data";
 import { BiCode } from "react-icons/bi";
 import { HiHome } from "react-icons/hi";
+import { getSearchData } from "@/app/actions";
 
 interface CommandPaletteProps {
   open: boolean;
@@ -27,6 +27,16 @@ interface CommandPaletteProps {
 export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
+  
+  const [data, setData] = useState<{
+    posts: any[];
+    snippets: any[];
+    tools: any[];
+  }>({ posts: [], snippets: [], tools: [] });
+
+  useEffect(() => {
+    getSearchData().then(setData).catch(console.error);
+  }, []);
 
   const runCommand = useCallback(
     (command: () => void) => {
@@ -66,7 +76,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
         </Command.Group>
 
         <Command.Group heading="Writing & Blogs">
-          {posts.map((post) => (
+          {data.posts.map((post) => (
             <Command.Item
               key={post.slug}
               value={`writing ${post.title} ${post.excerpt}`}
@@ -81,7 +91,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
         </Command.Group>
 
         <Command.Group heading="Tools">
-          {tools.map((tool) => (
+          {data.tools.map((tool) => (
             <Command.Item
               key={tool.slug}
               value={`tool ${tool.name} ${tool.description}`}
@@ -96,22 +106,20 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
         </Command.Group>
 
         <Command.Group heading="Snippets">
-          {Object.values(snippets).flatMap((category) =>
-            category.items.map((item) => (
-              <Command.Item
-                key={item.title}
-                value={`snippet ${item.title} ${item.description}`}
-                onSelect={() =>
-                  runCommand(() =>
-                    router.push(`/snippets/${category.label.toLowerCase()}`),
-                  )
-                }
-              >
-                <BiCode size={14} className="mr-3 opacity-60" />
-                {item.title}
-              </Command.Item>
-            )),
-          )}
+          {data.snippets.map((item) => (
+            <Command.Item
+              key={item.title}
+              value={`snippet ${item.title} ${item.description}`}
+              onSelect={() =>
+                runCommand(() =>
+                  router.push(`/snippets/${item.category.toLowerCase()}`),
+                )
+              }
+            >
+              <BiCode size={14} className="mr-3 opacity-60" />
+              {item.title}
+            </Command.Item>
+          ))}
         </Command.Group>
 
         <Command.Group heading="Actions">

@@ -3,18 +3,33 @@
 import { createClient } from "@/lib/supabase/server";
 import { Octokit } from "octokit";
 
+
 export async function submitContentToGitHub({
   title,
   slug,
   category,
   markdown,
   images,
+  description,
+  tags,
+  readTime,
+  lang,
+  level,
+  toolCategory,
+  link
 }: {
   title: string;
   slug: string;
   category: "writing" | "snippets" | "tools";
   markdown: string;
   images: { filename: string; base64Data: string }[];
+  description?: string;
+  tags?: string;
+  readTime?: string;
+  lang?: string;
+  level?: string;
+  toolCategory?: string;
+  link?: string;
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -56,33 +71,51 @@ export async function submitContentToGitHub({
 
   // Add the markdown file
   let path = "";
+  let frontmatter = "";
+  
   if (category === "writing") {
-    // Frontmatter
-    const frontmatter = `---
+    frontmatter = `---
 title: "${title}"
 date: "${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}"
-readTime: "5 min read"
-tags: []
+readTime: "${readTime || "5 min read"}"
+tags: [${(tags || "").split(",").map(t => `"${t.trim()}"`).filter(t => t !== '""').join(", ")}]
+description: "${description || ""}"
 ---
 
 `;
     path = `content/writing/${slug}.mdx`;
-    const fullContent = frontmatter + markdown;
-    tree.push({
-      path,
-      mode: "100644",
-      type: "blob",
-      content: fullContent,
-    });
-  } else if (category === "snippets" || category === "tools") {
-    path = `content/${category}/${slug}.mdx`;
-    tree.push({
-      path,
-      mode: "100644",
-      type: "blob",
-      content: markdown,
-    });
+  } else if (category === "snippets") {
+    frontmatter = `---
+title: "${title}"
+date: "${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}"
+description: "${description || ""}"
+lang: "${lang || "typescript"}"
+level: "${level || "BEGINNER"}"
+tags: [${(tags || "").split(",").map(t => `"${t.trim()}"`).filter(t => t !== '""').join(", ")}]
+---
+
+`;
+    path = `content/snippets/${slug}.mdx`;
+  } else if (category === "tools") {
+    frontmatter = `---
+name: "${title}"
+description: "${description || ""}"
+category: "${toolCategory || "Development"}"
+link: "${link || ""}"
+icon: "LuCode"
+---
+
+`;
+    path = `content/tools/${slug}.mdx`;
   }
+  
+  const fullContent = frontmatter + markdown;
+  tree.push({
+    path,
+    mode: "100644",
+    type: "blob",
+    content: fullContent,
+  });
 
   // Add images to tree
   for (const img of images) {
