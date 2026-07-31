@@ -24,7 +24,11 @@ import {
   frontmatterPlugin,
   InsertFrontmatter,
   linkPlugin,
-  linkDialogPlugin
+  linkDialogPlugin,
+  ListsToggle,
+  CodeToggle,
+  Separator,
+  InsertThematicBreak
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 import { FC, useRef } from "react";
@@ -46,8 +50,8 @@ export const Editor: FC<EditorProps> = ({ markdown, onChange, imageUploadHandler
         ref={ref}
         markdown={markdown}
         onChange={onChange}
-        className={resolvedTheme === 'dark' ? 'dark-theme' : 'light-theme'} 
-        contentEditableClassName="prose max-w-none p-4"
+        className={`min-h-[300px] prose max-w-none ${resolvedTheme === 'dark' ? 'dark-theme dark-editor prose-invert' : 'light-theme'}`} 
+        contentEditableClassName="p-4 outline-none"
         plugins={[
           headingsPlugin(),
           listsPlugin(),
@@ -65,14 +69,23 @@ export const Editor: FC<EditorProps> = ({ markdown, onChange, imageUploadHandler
           toolbarPlugin({
             toolbarContents: () => (
               <DiffSourceToggleWrapper>
-                <UndoRedo />
-                <BlockTypeSelect />
-                <BoldItalicUnderlineToggles />
-                <CreateLink />
-                <InsertImage />
-                <InsertTable />
-                <InsertFrontmatter />
-                <InsertCodeBlock />
+                <div className="flex flex-wrap items-center gap-1 w-full p-2 border-b" style={{ borderColor: "var(--border)" }}>
+                  <UndoRedo />
+                  <Separator />
+                  <BoldItalicUnderlineToggles />
+                  <CodeToggle />
+                  <Separator />
+                  <ListsToggle />
+                  <Separator />
+                  <BlockTypeSelect />
+                  <Separator />
+                  <CreateLink />
+                  <InsertImage />
+                  <InsertTable />
+                  <InsertThematicBreak />
+                  <InsertCodeBlock />
+                  <InsertFrontmatter />
+                </div>
               </DiffSourceToggleWrapper>
             )
           })
