@@ -4,21 +4,20 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Command } from "cmdk";
-import { 
-  Search, 
-  Home, 
-  FileText, 
-  Code, 
-  GitBranch, 
-  Wrench, 
-  Moon, 
-  Sun,
-  Link as LinkIcon,
-  Send,
-  Code2
-} from "lucide-react";
+import {
+  LuSearch,
+  LuFileText,
+  LuCode,
+  LuWrench,
+  LuMoon,
+  LuSun,
+  LuLink as LinkIcon,
+} from "react-icons/lu";
+
 import { siteConfig } from "@/lib/config";
 import { posts, tools, snippets } from "@/lib/data";
+import { BiCode } from "react-icons/bi";
+import { HiHome } from "react-icons/hi";
 
 interface CommandPaletteProps {
   open: boolean;
@@ -29,10 +28,13 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
 
-  const runCommand = useCallback((command: () => void) => {
-    setOpen(false);
-    command();
-  }, [setOpen]);
+  const runCommand = useCallback(
+    (command: () => void) => {
+      setOpen(false);
+      command();
+    },
+    [setOpen],
+  );
 
   const copyUrl = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -48,29 +50,31 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
       className="cmdk-dialog"
     >
       <div className="cmdk-header">
-        <Search size={18} className="cmdk-search-icon" />
+        <LuSearch size={18} className="cmdk-search-icon" />
         <Command.Input placeholder="Search blogs, snippets, tools, anything..." />
         <div className="cmdk-esc">ESC</div>
       </div>
-      
+
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
 
         <Command.Group heading="Recent searches">
           <Command.Item onSelect={() => runCommand(() => {})}>
-            <Search size={14} className="mr-3 opacity-60" />
+            <LuSearch size={14} className="mr-3 opacity-60" />
             mcp
           </Command.Item>
         </Command.Group>
 
         <Command.Group heading="Writing & Blogs">
           {posts.map((post) => (
-            <Command.Item 
-              key={post.slug} 
-              value={`writing ${post.title} ${post.excerpt}`} 
-              onSelect={() => runCommand(() => router.push(`/writing/${post.slug}`))}
+            <Command.Item
+              key={post.slug}
+              value={`writing ${post.title} ${post.excerpt}`}
+              onSelect={() =>
+                runCommand(() => router.push(`/writing/${post.slug}`))
+              }
             >
-              <FileText size={14} className="mr-3 opacity-60" />
+              <LuFileText size={14} className="mr-3 opacity-60" />
               {post.title}
             </Command.Item>
           ))}
@@ -78,53 +82,73 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 
         <Command.Group heading="Tools">
           {tools.map((tool) => (
-            <Command.Item 
-              key={tool.slug} 
-              value={`tool ${tool.name} ${tool.description}`} 
-              onSelect={() => runCommand(() => window.open(tool.link, "_blank"))}
+            <Command.Item
+              key={tool.slug}
+              value={`tool ${tool.name} ${tool.description}`}
+              onSelect={() =>
+                runCommand(() => window.open(tool.link, "_blank"))
+              }
             >
-              <Wrench size={14} className="mr-3 opacity-60" />
+              <LuWrench size={14} className="mr-3 opacity-60" />
               {tool.name}
             </Command.Item>
           ))}
         </Command.Group>
 
         <Command.Group heading="Snippets">
-          {Object.values(snippets).flatMap((category) => 
+          {Object.values(snippets).flatMap((category) =>
             category.items.map((item) => (
-              <Command.Item 
-                key={item.title} 
-                value={`snippet ${item.title} ${item.description}`} 
-                onSelect={() => runCommand(() => router.push(`/snippets/${category.label.toLowerCase()}`))}
+              <Command.Item
+                key={item.title}
+                value={`snippet ${item.title} ${item.description}`}
+                onSelect={() =>
+                  runCommand(() =>
+                    router.push(`/snippets/${category.label.toLowerCase()}`),
+                  )
+                }
               >
-                <Code2 size={14} className="mr-3 opacity-60" />
+                <BiCode size={14} className="mr-3 opacity-60" />
                 {item.title}
               </Command.Item>
-            ))
+            )),
           )}
         </Command.Group>
 
         <Command.Group heading="Actions">
           <Command.Item onSelect={() => runCommand(() => router.push("/"))}>
-            <Home size={14} className="mr-3 opacity-60" />
+            <HiHome size={14} className="mr-3 opacity-60" />
             Go to Home
           </Command.Item>
-          <Command.Item onSelect={() => runCommand(() => router.push("/writing"))}>
-            <FileText size={14} className="mr-3 opacity-60" />
+          <Command.Item
+            onSelect={() => runCommand(() => router.push("/writing"))}
+          >
+            <LuFileText size={14} className="mr-3 opacity-60" />
             Go to Blogs
           </Command.Item>
-          <Command.Item onSelect={() => runCommand(() => router.push("/snippets"))}>
-            <Code size={14} className="mr-3 opacity-60" />
+          <Command.Item
+            onSelect={() => runCommand(() => router.push("/snippets"))}
+          >
+            <LuCode size={14} className="mr-3 opacity-60" />
             Go to Snippets
           </Command.Item>
 
-          <Command.Item onSelect={() => runCommand(() => router.push("/tools"))}>
-            <Wrench size={14} className="mr-3 opacity-60" />
+          <Command.Item
+            onSelect={() => runCommand(() => router.push("/tools"))}
+          >
+            <LuWrench size={14} className="mr-3 opacity-60" />
             Go to Tools
           </Command.Item>
-          
-          <Command.Item onSelect={() => runCommand(() => setTheme(isDark ? "light" : "dark"))}>
-            {isDark ? <Sun size={14} className="mr-3 opacity-60" /> : <Moon size={14} className="mr-3 opacity-60" />}
+
+          <Command.Item
+            onSelect={() =>
+              runCommand(() => setTheme(isDark ? "light" : "dark"))
+            }
+          >
+            {isDark ? (
+              <LuSun size={14} className="mr-3 opacity-60" />
+            ) : (
+              <LuMoon size={14} className="mr-3 opacity-60" />
+            )}
             Switch to {isDark ? "Light" : "Dark"} Mode
           </Command.Item>
           <Command.Item onSelect={() => runCommand(copyUrl)}>
@@ -136,9 +160,15 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 
       <div className="cmdk-footer">
         <div className="cmdk-shortcuts">
-          <span className="cmdk-shortcut"><kbd>↑↓</kbd> navigate</span>
-          <span className="cmdk-shortcut"><kbd>↵</kbd> open</span>
-          <span className="cmdk-shortcut"><kbd>esc</kbd> close</span>
+          <span className="cmdk-shortcut">
+            <kbd>↑↓</kbd> navigate
+          </span>
+          <span className="cmdk-shortcut">
+            <kbd>↵</kbd> open
+          </span>
+          <span className="cmdk-shortcut">
+            <kbd>esc</kbd> close
+          </span>
         </div>
         <div className="cmdk-footer-logo">ready</div>
       </div>

@@ -1,94 +1,116 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ExternalLink, Key, Shield, Wrench, Code2, Globe } from "lucide-react";
+import {
+  LuSearch,
+  LuExternalLink,
+  LuKey,
+  LuShield,
+  LuWrench,
+  LuCode,
+  LuGlobe,
+} from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 
 const tools = [
   {
-    slug:        "json-formatter",
-    name:        "JSON Formatter",
-    description: "Format, validate, and minify JSON. Detects errors and highlights the problematic line.",
-    icon:        Code2,
-    category:    "Development",
-    link:        "https://jsonformatter.curiousconcept.com",
+    slug: "json-formatter",
+    name: "JSON Formatter",
+    description:
+      "Format, validate, and minify JSON. Detects errors and highlights the problematic line.",
+    icon: LuCode,
+    category: "Development",
+    link: "https://jsonformatter.curiousconcept.com",
   },
   {
-    slug:        "regex-tester",
-    name:        "Regex Tester",
-    description: "Test and debug regular expressions in real-time with match highlighting and explanations.",
-    icon:        Key,
-    category:    "Development",
-    link:        "https://regex101.com",
+    slug: "regex-tester",
+    name: "Regex Tester",
+    description:
+      "Test and debug regular expressions in real-time with match highlighting and explanations.",
+    icon: LuKey,
+    category: "Development",
+    link: "https://regex101.com",
   },
   {
-    slug:        "jwt-decoder",
-    name:        "JWT Decoder",
-    description: "Decode and verify JWT tokens — inspect header, payload, and signature without sending data to a server.",
-    icon:        Shield,
-    category:    "Security",
-    link:        "https://jwt.io",
+    slug: "jwt-decoder",
+    name: "JWT Decoder",
+    description:
+      "Decode and verify JWT tokens — inspect header, payload, and signature without sending data to a server.",
+    icon: LuShield,
+    category: "Security",
+    link: "https://jwt.io",
   },
   {
-    slug:        "cron-parser",
-    name:        "Cron Expression Parser",
-    description: "Human-readable descriptions for cron schedules. See exactly when your job will run next.",
-    icon:        Wrench,
-    category:    "Development",
-    link:        "https://crontab.guru",
+    slug: "cron-parser",
+    name: "Cron Expression Parser",
+    description:
+      "Human-readable descriptions for cron schedules. See exactly when your job will run next.",
+    icon: LuWrench,
+    category: "Development",
+    link: "https://crontab.guru",
   },
   {
-    slug:        "base64",
-    name:        "Base64 Encoder / Decoder",
-    description: "Encode or decode Base64 strings client-side — no data leaves your browser.",
-    icon:        Key,
-    category:    "Development",
-    link:        "https://www.base64decode.org",
+    slug: "base64",
+    name: "Base64 Encoder / Decoder",
+    description:
+      "Encode or decode Base64 strings client-side — no data leaves your browser.",
+    icon: LuKey,
+    category: "Development",
+    link: "https://www.base64decode.org",
   },
   {
-    slug:        "url-encoder",
-    name:        "URL Encoder",
-    description: "Encode and decode URL components quickly — useful when debugging query strings.",
-    icon:        Globe,
-    category:    "Development",
-    link:        "https://www.urlencoder.org",
+    slug: "url-encoder",
+    name: "URL Encoder",
+    description:
+      "Encode and decode URL components quickly — useful when debugging query strings.",
+    icon: LuGlobe,
+    category: "Development",
+    link: "https://www.urlencoder.org",
   },
   {
-    slug:        "diff-checker",
-    name:        "Diff Checker",
-    description: "Compare two blocks of text side by side and see exactly what changed.",
-    icon:        Code2,
-    category:    "Development",
-    link:        "https://www.diffchecker.com",
+    slug: "diff-checker",
+    name: "Diff Checker",
+    description:
+      "Compare two blocks of text side by side and see exactly what changed.",
+    icon: LuCode,
+    category: "Development",
+    link: "https://www.diffchecker.com",
   },
   {
-    slug:        "http-status",
-    name:        "HTTP Status Reference",
-    description: "Quick reference for all HTTP status codes — meanings, when to use them, and common mistakes.",
-    icon:        Globe,
-    category:    "Development",
-    link:        "https://httpstatuses.io",
+    slug: "http-status",
+    name: "HTTP Status Reference",
+    description:
+      "Quick reference for all HTTP status codes — meanings, when to use them, and common mistakes.",
+    icon: LuGlobe,
+    category: "Development",
+    link: "https://httpstatuses.io",
   },
   {
-    slug:        "ssl-checker",
-    name:        "SSL Certificate Checker",
-    description: "Inspect SSL/TLS certificates, check expiry, and verify the chain for any hostname.",
-    icon:        Shield,
-    category:    "Security",
-    link:        "https://www.ssllabs.com/ssltest",
+    slug: "ssl-checker",
+    name: "SSL Certificate Checker",
+    description:
+      "Inspect SSL/TLS certificates, check expiry, and verify the chain for any hostname.",
+    icon: LuShield,
+    category: "Security",
+    link: "https://www.ssllabs.com/ssltest",
   },
 ];
 
-const categories = ["All", ...Array.from(new Set(tools.map((t) => t.category)))];
+const categories = [
+  "All",
+  ...Array.from(new Set(tools.map((t) => t.category))),
+];
 
 export default function ToolsPage() {
-  const [query,    setQuery]    = useState("");
+  const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
 
   const filtered = tools.filter((t) => {
-    const matchesQuery    = t.name.toLowerCase().includes(query.toLowerCase()) || t.description.toLowerCase().includes(query.toLowerCase());
+    const matchesQuery =
+      t.name.toLowerCase().includes(query.toLowerCase()) ||
+      t.description.toLowerCase().includes(query.toLowerCase());
     const matchesCategory = category === "All" || t.category === category;
     return matchesQuery && matchesCategory;
   });
@@ -103,12 +125,12 @@ export default function ToolsPage() {
         stats={[
           {
             value: tools.length,
-            label: "Tools"
+            label: "Tools",
           },
           {
             value: categories.length - 1,
-            label: "Categories"
-          }
+            label: "Categories",
+          },
         ]}
       />
 
@@ -119,7 +141,7 @@ export default function ToolsPage() {
         className="flex items-center gap-3 rounded-xl border px-4 py-2.5 mb-6"
         style={{ background: "var(--surface)", borderColor: "var(--border)" }}
       >
-        <Search size={16} style={{ color: "var(--text-muted)" }} />
+        <LuSearch size={16} style={{ color: "var(--text-muted)" }} />
         <input
           type="text"
           placeholder="Search tools…"
@@ -139,12 +161,20 @@ export default function ToolsPage() {
             className="tag cursor-pointer transition-all hover:opacity-80"
             style={
               category === cat
-                ? { background: "var(--accent)", borderColor: "var(--accent)", color: "#fff" }
+                ? {
+                    background: "var(--accent)",
+                    borderColor: "var(--accent)",
+                    color: "#fff",
+                  }
                 : {}
             }
           >
             <TechIcon tag={cat} />
-            {cat} ({cat === "All" ? tools.length : tools.filter((t) => t.category === cat).length})
+            {cat} (
+            {cat === "All"
+              ? tools.length
+              : tools.filter((t) => t.category === cat).length}
+            )
           </button>
         ))}
       </div>
@@ -178,12 +208,15 @@ export default function ToolsPage() {
                   >
                     {tool.name}
                   </h3>
-                  <ExternalLink
+                  <LuExternalLink
                     size={14}
                     className="shrink-0 opacity-30 group-hover:opacity-70 transition-opacity mt-0.5"
                   />
                 </div>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   {tool.description}
                 </p>
               </div>
@@ -195,7 +228,9 @@ export default function ToolsPage() {
 
       {filtered.length === 0 && (
         <div className="text-center py-16">
-          <p style={{ color: "var(--text-muted)" }}>No tools match your search.</p>
+          <p style={{ color: "var(--text-muted)" }}>
+            No tools match your search.
+          </p>
         </div>
       )}
     </div>

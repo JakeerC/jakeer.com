@@ -1,8 +1,11 @@
 import Link from "next/link";
 import {
-  ArrowRight,
-  ExternalLink, Code2, FileText, Wrench,
-} from "lucide-react";
+  LuArrowRight,
+  LuExternalLink,
+  LuCode,
+  LuFileText,
+  LuWrench,
+} from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import StatCounter from "@/components/StatCounter";
 import ArticleCard from "@/components/ArticleCard";
@@ -33,61 +36,74 @@ export const metadata: Metadata = {
 // ── Sample data (replace with MDX/DB queries later) ──────
 const recentPosts = [
   {
-    index:    1,
-    slug:     "react-performance-optimization",
-    title:    "React Performance Optimization: From Good to Great",
-    excerpt:  "Deep dive into memoization, lazy loading, and virtual DOM optimization techniques that cut render time by 60% in production.",
-    date:     "Jul 10, 2026",
+    index: 1,
+    slug: "react-performance-optimization",
+    title: "React Performance Optimization: From Good to Great",
+    excerpt:
+      "Deep dive into memoization, lazy loading, and virtual DOM optimization techniques that cut render time by 60% in production.",
+    date: "Jul 10, 2026",
     readTime: "8 min read",
-    tags:     ["React", "Performance"],
+    tags: ["React", "Performance"],
   },
   {
-    index:    2,
-    slug:     "spring-boot-microservices",
-    title:    "Building Resilient Microservices with Spring Boot & Resilience4j",
-    excerpt:  "How circuit breakers, bulkheads, and retry patterns keep your financial services alive when dependencies fail.",
-    date:     "Jun 28, 2026",
+    index: 2,
+    slug: "spring-boot-microservices",
+    title: "Building Resilient Microservices with Spring Boot & Resilience4j",
+    excerpt:
+      "How circuit breakers, bulkheads, and retry patterns keep your financial services alive when dependencies fail.",
+    date: "Jun 28, 2026",
     readTime: "12 min read",
-    tags:     ["Java", "Spring Boot"],
+    tags: ["Java", "Spring Boot"],
   },
   {
-    index:    3,
-    slug:     "system-design-api-gateway",
-    title:    "Designing an API Gateway: Patterns and Anti-Patterns",
-    excerpt:  "Rate limiting, auth aggregation, request routing — what a well-designed gateway buys you and where teams go wrong.",
-    date:     "Jun 15, 2026",
+    index: 3,
+    slug: "system-design-api-gateway",
+    title: "Designing an API Gateway: Patterns and Anti-Patterns",
+    excerpt:
+      "Rate limiting, auth aggregation, request routing — what a well-designed gateway buys you and where teams go wrong.",
+    date: "Jun 15, 2026",
     readTime: "10 min read",
-    tags:     ["System Design", "Architecture"],
+    tags: ["System Design", "Architecture"],
   },
 ];
 
 const featuredProjects = [
   {
-    name:        "Resilient Payment Processor",
-    description: "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and DLQ support.",
-    tags:        ["Java", "Spring Boot", "Kafka", "Redis"],
-    link:        siteConfig.socials.github,
-    features:    ["Idempotent API design", "Distributed tracing with Zipkin", "Auto-scaling on AWS ECS", "99.99% uptime SLA"],
+    name: "Resilient Payment Processor",
+    description:
+      "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and DLQ support.",
+    tags: ["Java", "Spring Boot", "Kafka", "Redis"],
+    link: siteConfig.socials.github,
+    features: [
+      "Idempotent API design",
+      "Distributed tracing with Zipkin",
+      "Auto-scaling on AWS ECS",
+      "99.99% uptime SLA",
+    ],
   },
   {
-    name:        "React Design System",
-    description: "A battle-tested component library used across 5 internal Wells Fargo apps — accessible, theme-able, and fully typed.",
-    tags:        ["React", "TypeScript", "Storybook", "Vite"],
-    link:        siteConfig.socials.github,
-    features:    ["WCAG 2.1 AA compliant", "Dark & light themes", "Comprehensive Storybook docs", "Tree-shakeable exports"],
+    name: "React Design System",
+    description:
+      "A battle-tested component library used across 5 internal Wells Fargo apps — accessible, theme-able, and fully typed.",
+    tags: ["React", "TypeScript", "Storybook", "Vite"],
+    link: siteConfig.socials.github,
+    features: [
+      "WCAG 2.1 AA compliant",
+      "Dark & light themes",
+      "Comprehensive Storybook docs",
+      "Tree-shakeable exports",
+    ],
   },
 ];
 
 export default function HomePage() {
   return (
     <div className="max-w-7xl mx-auto px-6">
-
       {/* ══════════════════════════════════════════════════
           01 · HERO
       ══════════════════════════════════════════════════ */}
       <section className="min-h-[88vh] flex items-center py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-
           {/* Left — text */}
           <div className="flex flex-col gap-8">
             {/* Eyebrow */}
@@ -102,18 +118,20 @@ export default function HomePage() {
             <h1
               className="font-display animate-fade-up"
               style={{
-                fontSize:   "clamp(2.5rem, 6vw, 4.5rem)",
+                fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
                 lineHeight: 1.05,
                 fontWeight: 700,
-                color:      "var(--text-primary)",
+                color: "var(--text-primary)",
                 animationDelay: "100ms",
               }}
             >
               {siteConfig.tagline.split(" ").map((word, i) => (
                 <span key={i}>
-                  {i === siteConfig.tagline.split(" ").length - 1
-                    ? <span style={{ color: "var(--accent)" }}>{word}</span>
-                    : `${word} `}
+                  {i === siteConfig.tagline.split(" ").length - 1 ? (
+                    <span style={{ color: "var(--accent)" }}>{word}</span>
+                  ) : (
+                    `${word} `
+                  )}
                 </span>
               ))}
               <span style={{ color: "var(--accent)" }}>.</span>
@@ -122,7 +140,10 @@ export default function HomePage() {
             {/* Bio */}
             <p
               className="text-base md:text-lg leading-relaxed max-w-xl animate-fade-up"
-              style={{ color: "var(--text-secondary)", animationDelay: "200ms" }}
+              style={{
+                color: "var(--text-secondary)",
+                animationDelay: "200ms",
+              }}
             >
               {siteConfig.description}
             </p>
@@ -136,15 +157,21 @@ export default function HomePage() {
                 href="/writing"
                 id="hero-read-blog"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
-                style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
+                style={{
+                  background: "var(--text-primary)",
+                  color: "var(--bg-primary)",
+                }}
               >
-                Read the Blog <ArrowRight size={15} />
+                Read the Blog <LuArrowRight size={15} />
               </Link>
               <Link
                 href="/projects"
                 id="hero-view-projects"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border transition-all hover:opacity-80 active:scale-95"
-                style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  color: "var(--text-primary)",
+                }}
               >
                 View Projects
               </Link>
@@ -156,9 +183,21 @@ export default function HomePage() {
               style={{ animationDelay: "400ms" }}
             >
               {[
-                { href: siteConfig.socials.github,   icon: GithubIcon,   label: "GitHub"   },
-                { href: siteConfig.socials.linkedin,  icon: LinkedinIcon,  label: "LinkedIn" },
-                { href: siteConfig.socials.twitter,   icon: TwitterIcon,   label: "Twitter"  },
+                {
+                  href: siteConfig.socials.github,
+                  icon: GithubIcon,
+                  label: "GitHub",
+                },
+                {
+                  href: siteConfig.socials.linkedin,
+                  icon: LinkedinIcon,
+                  label: "LinkedIn",
+                },
+                {
+                  href: siteConfig.socials.twitter,
+                  icon: TwitterIcon,
+                  label: "Twitter",
+                },
               ].map(({ href, icon: Icon, label }) => (
                 <a
                   key={label}
@@ -194,7 +233,12 @@ export default function HomePage() {
               <div className="text-center">
                 <span
                   className="font-display font-bold block"
-                  style={{ fontSize: "5rem", color: "var(--accent)", opacity: 0.15, lineHeight: 1 }}
+                  style={{
+                    fontSize: "5rem",
+                    color: "var(--accent)",
+                    opacity: 0.15,
+                    lineHeight: 1,
+                  }}
                 >
                   JC
                 </span>
@@ -225,7 +269,12 @@ export default function HomePage() {
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {siteConfig.stats.map((stat, i) => (
-            <StatCounter key={stat.label} value={stat.value} label={stat.label} delay={i * 100} />
+            <StatCounter
+              key={stat.label}
+              value={stat.value}
+              label={stat.label}
+              delay={i * 100}
+            />
           ))}
         </div>
       </section>
@@ -237,12 +286,18 @@ export default function HomePage() {
         {/* Section header */}
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-xs font-mono font-semibold mb-3 tracking-[0.15em] uppercase" style={{ color: "var(--accent)" }}>
+            <p
+              className="text-xs font-mono font-semibold mb-3 tracking-[0.15em] uppercase"
+              style={{ color: "var(--accent)" }}
+            >
               02 . LATEST WRITING
             </p>
             <h2
               className="font-display font-semibold"
-              style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", color: "var(--text-primary)" }}
+              style={{
+                fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+                color: "var(--text-primary)",
+              }}
             >
               Recent Writing
             </h2>
@@ -252,7 +307,7 @@ export default function HomePage() {
             className="hidden md:inline-flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
             style={{ color: "var(--text-secondary)" }}
           >
-            All posts <ArrowRight size={14} />
+            All posts <LuArrowRight size={14} />
           </Link>
         </div>
 
@@ -269,7 +324,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-1.5 text-sm font-medium"
             style={{ color: "var(--text-secondary)" }}
           >
-            All posts <ArrowRight size={14} />
+            All posts <LuArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -282,11 +337,17 @@ export default function HomePage() {
           <p className="section-label mb-3">03 · Selected Work</p>
           <h2
             className="font-display font-semibold"
-            style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", color: "var(--text-primary)" }}
+            style={{
+              fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+              color: "var(--text-primary)",
+            }}
           >
             Featured Work
           </h2>
-          <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p
+            className="mt-2 text-sm"
+            style={{ color: "var(--text-secondary)" }}
+          >
             Systems I built to solve real problems — cleaned up enough to share.
           </p>
         </div>
@@ -356,7 +417,10 @@ export default function HomePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80 shrink-0 self-start"
-                  style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+                  style={{
+                    borderColor: "var(--border-strong)",
+                    color: "var(--text-primary)",
+                  }}
                 >
                   <GithubIcon />
                   View Source
@@ -372,7 +436,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-1.5 text-sm font-medium hover:underline underline-offset-4"
             style={{ color: "var(--accent)" }}
           >
-            All projects <ArrowRight size={14} />
+            All projects <LuArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -385,31 +449,37 @@ export default function HomePage() {
           <p className="section-label mb-3">04 · Explore</p>
           <h2
             className="font-display font-semibold"
-            style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", color: "var(--text-primary)" }}
+            style={{
+              fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+              color: "var(--text-primary)",
+            }}
           >
-            What's Here
+            What is Here
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)]">
           {[
             {
-              icon:        Code2,
-              label:       "Snippets",
-              href:        "/snippets",
-              description: "Copy-paste ready code snippets for React, Java, Git, AWS, and more.",
+              icon: LuCode,
+              label: "Snippets",
+              href: "/snippets",
+              description:
+                "Copy-paste ready code snippets for React, Java, Git, AWS, and more.",
             },
             {
-              icon:        Wrench,
-              label:       "Developer Tools",
-              href:        "/tools",
-              description: "A curated collection of utilities I use daily: JSON tools, formatters, converters.",
+              icon: LuWrench,
+              label: "Developer Tools",
+              href: "/tools",
+              description:
+                "A curated collection of utilities I use daily: JSON tools, formatters, converters.",
             },
             {
-              icon:        FileText,
-              label:       "Writing",
-              href:        "/writing",
-              description: "Technical deep-dives, tutorials, and perspectives on software engineering.",
-            }
+              icon: LuFileText,
+              label: "Writing",
+              href: "/writing",
+              description:
+                "Technical deep-dives, tutorials, and perspectives on software engineering.",
+            },
           ].map(({ icon: Icon, label, href, description }) => (
             <Link
               key={href}
@@ -429,11 +499,14 @@ export default function HomePage() {
                 >
                   {label}
                 </h3>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   {description}
                 </p>
               </div>
-              <ArrowRight
+              <LuArrowRight
                 size={16}
                 className="mt-auto"
                 style={{ color: "var(--accent)", opacity: 0.6 }}
@@ -452,13 +525,14 @@ export default function HomePage() {
             <p className="section-label mb-4">05 · Collaborations</p>
             <h2
               className="font-display font-bold"
-              style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "var(--text-primary)", lineHeight: 1.1 }}
+              style={{
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                color: "var(--text-primary)",
+                lineHeight: 1.1,
+              }}
             >
               Let's build{" "}
-              <span
-                className="italic"
-                style={{ color: "var(--accent)" }}
-              >
+              <span className="italic" style={{ color: "var(--accent)" }}>
                 something great
               </span>
               .
@@ -467,23 +541,30 @@ export default function HomePage() {
               className="mt-4 text-base leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
             >
-              I'm open to consulting, technical writing collaborations, and speaking engagements
-              about full-stack engineering, system design, and developer tooling.
+              I'm open to consulting, technical writing collaborations, and
+              speaking engagements about full-stack engineering, system design,
+              and developer tooling.
             </p>
             <Link
               href="mailto:jakeer@example.com"
               id="cta-contact"
               className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
+              style={{
+                background: "var(--text-primary)",
+                color: "var(--bg-primary)",
+              }}
             >
-              Get in touch <ArrowRight size={15} />
+              Get in touch <LuArrowRight size={15} />
             </Link>
           </div>
 
           {/* Collaboration markdown mock */}
           <div
             className="rounded-2xl border overflow-hidden"
-            style={{ background: "var(--surface-raised)", borderColor: "var(--border-strong)" }}
+            style={{
+              background: "var(--surface-raised)",
+              borderColor: "var(--border-strong)",
+            }}
           >
             {/* Fake window chrome */}
             <div
@@ -524,7 +605,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

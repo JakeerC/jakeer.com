@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, WrapText } from "lucide-react";
+import { LuCopy, LuCheck, LuWrapText } from "react-icons/lu";
 
 export default function CodeBlockClient({ code, lang, html }: { code: string; lang: string; html: string }) {
   const [copied, setCopied] = useState(false);
@@ -52,7 +52,7 @@ export default function CodeBlockClient({ code, lang, html }: { code: string; la
              aria-label="Wrap text"
              title="Wrap text"
            >
-             <WrapText size={14} />
+             <LuWrapText size={14} />
            </button>
            <button
              onClick={copy}
@@ -62,10 +62,10 @@ export default function CodeBlockClient({ code, lang, html }: { code: string; la
                border: "1px solid var(--border-strong)",
                color: copied ? "#22c55e" : "var(--text-muted)",
              }}
-             aria-label="Copy code"
-             title="Copy code"
+             aria-label="LuCopy code"
+             title="LuCopy code"
            >
-             {copied ? <Check size={14} /> : <Copy size={14} />}
+             {copied ? <LuCheck size={14} /> : <LuCopy size={14} />}
            </button>
         </div>
       </div>
