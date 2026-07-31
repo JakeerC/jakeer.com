@@ -1,0 +1,40 @@
+---
+title: "Test admin 1"
+date: "Jul 31, 2026"
+readTime: "5 min read"
+tags: []
+---
+
+# GitHub Setup Guide for Admin Panel
+
+To allow the Admin Dashboard to automatically commit your Markdown content and open Pull Requests, you need to provide a **GitHub Personal Access Token (PAT)**. Since you are using Email/Password authentication for your Supabase login, the server relies on this token to interact with the GitHub API securely.
+
+## 1. Generate a GitHub Personal Access Token
+
+1. Go to your GitHub account settings: [Settings > Developer Settings > Personal access tokens > Tokens (classic)](https://github.com/settings/tokens).
+2. Click **Generate new token** -> **Generate new token (classic)**.
+3. Give it a descriptive Note (e.g., `jakeer.com admin dashboard`).
+4. Set the Expiration (we recommend an expiration date for security, but you will need to update it when it expires).
+5. Under **Select scopes**, check the `repo` scope. This gives the token full control of private and public repositories, which is required to create branches, blobs, trees, and pull requests.
+6. Scroll down and click **Generate token**.
+7. **Copy the generated token immediately**. You will not be able to see it again!
+
+## 2. Add Token to Environment Variables
+
+1. Open the `.env.local` file in the root of your project directory.
+2. Add your newly created token to the `GITHUB_TOKEN` variable:
+
+```env
+GITHUB_TOKEN=ghp_your_personal_access_token_here
+```
+
+## 3. Verify
+
+1. Make sure your local server is running (`npm run dev`).
+2. Log in to your `/admin` panel using your email and password.
+3. Write a test post and hit **Publish to GitHub**.
+4. If successful, you will see a green success banner with a link to your newly opened Pull Request!
+
+***
+
+*Note for Deployment: When you deploy your application to Vercel (or another host), make sure to add `GITHUB_TOKEN` to your production Environment Variables.*
