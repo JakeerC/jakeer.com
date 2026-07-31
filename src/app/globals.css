@@ -210,6 +210,10 @@ code {
   font-family: "Space Grotesk", system-ui, sans-serif;
   color: var(--text-primary);
 }
+.prose strong, .prose b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
 .prose a {
   color: var(--accent);
   text-decoration: underline;

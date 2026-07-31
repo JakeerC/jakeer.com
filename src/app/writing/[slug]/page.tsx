@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 const components = {
   h2: (props: any) => <h2 style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: "1.5rem", fontWeight: 700, margin: "2.5rem 0 1rem", color: "var(--text-primary)" }} {...props} />,
   h3: (props: any) => <h3 style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: "1.2rem", fontWeight: 600, margin: "2rem 0 0.75rem", color: "var(--text-primary)" }} {...props} />,
-  strong: (props: any) => <strong {...props} />,
+  strong: (props: any) => <strong style={{ color: "var(--text-primary)", fontWeight: 600 }} {...props} />,
   code: (props: any) => {
     return <code style={{ background: "var(--tag-bg)", border: "1px solid var(--tag-border)", borderRadius: "4px", padding: "0.15em 0.4em", color: "var(--accent)", fontSize: "0.85em" }} {...props} />;
   },
