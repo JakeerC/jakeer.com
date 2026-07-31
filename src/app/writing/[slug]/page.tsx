@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, Calendar } from "lucide-react";
+import { LuArrowLeft, LuClock, LuCalendar } from "react-icons/lu";
 import Link from "next/link";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
@@ -114,7 +114,7 @@ export default function ArticlePage() {
         className="inline-flex items-center gap-2 text-sm mb-10 hover:underline underline-offset-4 transition-all"
         style={{ color: "var(--text-muted)" }}
       >
-        <ArrowLeft size={14} />
+        <LuArrowLeft size={14} />
         All Writing
       </Link>
 
@@ -142,12 +142,12 @@ export default function ArticlePage() {
         style={{ color: "var(--text-muted)", borderColor: "var(--border)" }}
       >
         <span className="flex items-center gap-1.5">
-          <Calendar size={13} />
+          <LuCalendar size={13} />
           {article.date}
         </span>
         <span>·</span>
         <span className="flex items-center gap-1.5">
-          <Clock size={13} />
+          <LuClock size={13} />
           {article.readTime}
         </span>
       </div>
@@ -170,7 +170,7 @@ export default function ArticlePage() {
           className="inline-flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
           style={{ color: "var(--accent)" }}
         >
-          <ArrowLeft size={14} />
+          <LuArrowLeft size={14} />
           Back to Writing
         </Link>
       </div>

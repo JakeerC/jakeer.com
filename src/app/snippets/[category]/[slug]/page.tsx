@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { LuArrowLeft } from "react-icons/lu";
 import CodeBlock from "@/components/CodeBlock";
 import FaqItem from "@/components/FaqItem";
 import { snippets } from "@/lib/snippets";
@@ -27,7 +27,7 @@ export default async function SnippetDetailPage({
         className="inline-flex items-center gap-2 text-sm mb-10 hover:underline underline-offset-4"
         style={{ color: "var(--text-muted)" }}
       >
-        <ArrowLeft size={14} />
+        <LuArrowLeft size={14} />
         {catData.label} Snippets
       </Link>
 

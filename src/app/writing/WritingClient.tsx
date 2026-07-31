@@ -4,14 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  ArrowRight,
-  Clock,
-  Search,
-  Filter,
-  Calendar,
-  List,
-  LayoutGrid,
-} from "lucide-react";
+  LuArrowRight,
+  LuClock,
+  LuSearch,
+  LuFilter,
+  LuCalendar,
+  LuList,
+  LuLayoutGrid,
+} from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import PageHeader from "@/components/PageHeader";
 
@@ -151,17 +151,17 @@ export default function WritingClient() {
               >
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1.5">
-                    <Calendar size={14} /> {featured.date}
+                    <LuCalendar size={14} /> {featured.date}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Clock size={14} /> {featured.readTime}
+                    <LuClock size={14} /> {featured.readTime}
                   </span>
                 </div>
                 <div
                   className="flex items-center gap-1.5 font-sans font-medium transition-colors"
                   style={{ color: "var(--accent)" }}
                 >
-                  Read <ArrowRight size={14} />
+                  Read <LuArrowRight size={14} />
                 </div>
               </div>
             </div>
@@ -194,13 +194,13 @@ export default function WritingClient() {
         </Link>
       </div>
 
-      {/* ── Search bar ──────────────────────────────── */}
+      {/* ── LuSearch bar ──────────────────────────────── */}
       <div className="flex flex-col md:flex-row gap-3 mb-8">
         <div
           className="flex-1 flex items-center gap-3 rounded-xl border px-4 py-2.5"
           style={{ background: "var(--surface)", borderColor: "var(--border)" }}
         >
-          <Search size={16} style={{ color: "var(--text-muted)" }} />
+          <LuSearch size={16} style={{ color: "var(--text-muted)" }} />
           <input
             type="text"
             placeholder="Search articles, tags, topics…"
@@ -218,7 +218,7 @@ export default function WritingClient() {
               color: "var(--text-secondary)",
             }}
           >
-            <Filter size={15} />
+            <LuFilter size={15} />
             Filters
           </button>
 
@@ -232,16 +232,16 @@ export default function WritingClient() {
             <button
               onClick={() => setViewMode("list")}
               className={`p-1.5 rounded-lg transition-colors ${viewMode === "list" ? "bg-[var(--accent)] text-white" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}
-              aria-label="List view"
+              aria-label="LuList view"
             >
-              <List size={16} />
+              <LuList size={16} />
             </button>
             <button
               onClick={() => setViewMode("grid")}
               className={`p-1.5 rounded-lg transition-colors ${viewMode === "grid" ? "bg-[var(--accent)] text-white" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}
               aria-label="Grid view"
             >
-              <LayoutGrid size={16} />
+              <LuLayoutGrid size={16} />
             </button>
           </div>
         </div>
@@ -341,10 +341,10 @@ export default function WritingClient() {
                     style={{ color: "var(--text-muted)" }}
                   >
                     <span className="flex items-center gap-1.5">
-                      <Calendar size={13} /> {post.date}
+                      <LuCalendar size={13} /> {post.date}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Clock size={13} /> {post.readTime}
+                      <LuClock size={13} /> {post.readTime}
                     </span>
                   </div>
 
@@ -427,10 +427,10 @@ export default function WritingClient() {
                     style={{ color: "var(--text-muted)" }}
                   >
                     <span className="flex items-center gap-1.5">
-                      <Calendar size={13} /> {post.date}
+                      <LuCalendar size={13} /> {post.date}
                     </span>
                     <span className="flex items-center gap-1.5 ml-2">
-                      <Clock size={13} /> {post.readTime}
+                      <LuClock size={13} /> {post.readTime}
                     </span>
                   </div>
                 </div>

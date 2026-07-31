@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { LuExternalLink } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all hover:opacity-90"
                       style={{ background: "var(--text-primary)", color: "var(--bg-primary)" }}
                     >
-                      <ExternalLink size={14} />
+                      <LuExternalLink size={14} />
                       Live Demo
                     </a>
                   )}

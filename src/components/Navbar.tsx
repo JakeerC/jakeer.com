@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Moon, Sun, Search, X, Menu } from "lucide-react";
+import { LuMoon, LuSun, LuSearch, LuX, LuMenu } from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import CommandPalette from "./CommandPalette";
@@ -16,17 +16,23 @@ const GithubIcon = () => (
 );
 
 export default function Navbar() {
-  const pathname      = usePathname();
+  const pathname = usePathname();
   const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted,     setMounted]     = useState(false);
-  const [scrolled,    setScrolled]    = useState(false);
-  const [searchOpen,  setSearchOpen]  = useState(false);
-  const [menuOpen,    setMenuOpen]    = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeStyle, setActiveStyle] = useState({ left: 0, width: 0, opacity: 0 });
+  const [activeStyle, setActiveStyle] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
   const navRef = useRef<HTMLUListElement>(null);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -39,16 +45,18 @@ export default function Navbar() {
     // Small delay to ensure the layout has rendered completely before getting the layout details
     const timeoutId = setTimeout(() => {
       if (navRef.current) {
-        const activeLink = navRef.current.querySelector('.active-nav-link') as HTMLElement;
+        const activeLink = navRef.current.querySelector(
+          ".active-nav-link",
+        ) as HTMLElement;
         if (activeLink) {
           // Adjust position inside the Link padding (left: offsetLeft + 12px padding-left, width: offsetWidth - 24px total padding)
           setActiveStyle({
             left: activeLink.offsetLeft + 12,
             width: activeLink.offsetWidth - 24,
-            opacity: 1
+            opacity: 1,
           });
         } else {
-          setActiveStyle(prev => ({ ...prev, opacity: 0 }));
+          setActiveStyle((prev) => ({ ...prev, opacity: 0 }));
         }
       }
     }, 50);
@@ -86,8 +94,10 @@ export default function Navbar() {
             : "border-b border-transparent",
         )}
         style={{
-          backgroundColor: scrolled ? "color-mix(in srgb, var(--bg-primary) 88%, transparent)" : "transparent",
-          borderColor:     scrolled ? "var(--border)" : "transparent",
+          backgroundColor: scrolled
+            ? "color-mix(in srgb, var(--bg-primary) 88%, transparent)"
+            : "transparent",
+          borderColor: scrolled ? "var(--border)" : "transparent",
         }}
       >
         <nav className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
@@ -101,9 +111,14 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <ul ref={navRef} className="hidden md:flex items-center gap-2 relative">
+          <ul
+            ref={navRef}
+            className="hidden md:flex items-center gap-2 relative"
+          >
             {siteConfig.nav.map((item) => {
-              const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+              const active =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href));
               return (
                 <li key={item.href}>
                   <Link
@@ -121,7 +136,7 @@ export default function Navbar() {
                 </li>
               );
             })}
-            
+
             {/* Animated Floating Underline */}
             <li
               className="absolute -bottom-1 h-[2px] rounded-full bg-current transition-all duration-300 ease-out pointer-events-none"
@@ -141,12 +156,20 @@ export default function Navbar() {
               id="search-button"
               onClick={() => setSearchOpen(true)}
               className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm rounded-md border transition-all hover:opacity-80"
-              style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
+              style={{
+                borderColor: "var(--border)",
+                color: "var(--text-secondary)",
+              }}
             >
-              <Search size={14} />
+              <LuSearch size={14} />
               <span>Search</span>
-              <kbd className="text-xs px-1 py-0.5 rounded border ml-1 opacity-60"
-                style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+              <kbd
+                className="text-xs px-1 py-0.5 rounded border ml-1 opacity-60"
+                style={{
+                  borderColor: "var(--border)",
+                  background: "var(--surface)",
+                }}
+              >
                 ⌘K
               </kbd>
             </button>
@@ -159,7 +182,7 @@ export default function Navbar() {
                 className="p-2 rounded-md transition-all hover:opacity-70"
                 aria-label="Toggle dark mode"
               >
-                {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                {isDark ? <LuSun size={16} /> : <LuMoon size={16} />}
               </button>
             )}
 
@@ -169,7 +192,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+              {menuOpen ? <LuX size={18} /> : <LuMenu size={18} />}
             </button>
           </div>
         </nav>
@@ -178,11 +201,16 @@ export default function Navbar() {
         {menuOpen && (
           <div
             className="md:hidden border-t"
-            style={{ background: "var(--bg-primary)", borderColor: "var(--border)" }}
+            style={{
+              background: "var(--bg-primary)",
+              borderColor: "var(--border)",
+            }}
           >
             <ul className="flex flex-col px-6 py-3 gap-1">
               {siteConfig.nav.map((item) => {
-                const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+                const active =
+                  pathname === item.href ||
+                  (item.href !== "/" && pathname.startsWith(item.href));
                 return (
                   <li key={item.href}>
                     <Link
@@ -196,9 +224,7 @@ export default function Navbar() {
                     >
                       {item.label}
                       {active && (
-                        <span 
-                          className="absolute left-3 right-3 -bottom-0 h-[2px] rounded-full bg-current"
-                        />
+                        <span className="absolute left-3 right-3 -bottom-0 h-[2px] rounded-full bg-current" />
                       )}
                     </Link>
                   </li>
