@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { LuArrowLeft } from "react-icons/lu";
-import CodeBlock from "@/components/CodeBlock";
-import FaqItem from "@/components/FaqItem";
+import TechIcon from "@/components/TechIcon";
 
-import { snippets } from "@/lib/snippets";
-
+import { getAllContent } from "@/lib/mdx";
 
 export default async function SnippetCategoryPage({
   params,
@@ -12,10 +10,20 @@ export default async function SnippetCategoryPage({
   params: Promise<{ category: string }>;
 }) {
   const resolvedParams = await params;
-  const cat = snippets[resolvedParams.category] ?? {
-    label: resolvedParams.category,
-    items: [],
-  };
+  
+  const allSnippets = getAllContent("snippets");
+  const items = allSnippets
+    .filter(s => (s.frontmatter.tags || []).includes(resolvedParams.category))
+    .map(s => ({
+      title: s.frontmatter.title,
+      description: s.frontmatter.description,
+      slug: s.slug,
+      tags: s.frontmatter.tags,
+      level: s.frontmatter.level,
+      date: s.frontmatter.date
+    }));
+
+  const catLabel = resolvedParams.category.charAt(0).toUpperCase() + resolvedParams.category.slice(1);
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
@@ -32,19 +40,19 @@ export default async function SnippetCategoryPage({
       {/* Header */}
       <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <p className="section-label mb-3">SNIPPETS / {cat.label.toUpperCase()}</p>
+          <p className="section-label mb-3">SNIPPETS / {catLabel.toUpperCase()}</p>
           <h1
             className="font-display font-bold"
             style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "var(--text-primary)" }}
           >
-            {cat.label}
+            {catLabel}
           </h1>
           <p className="mt-4 max-w-xl" style={{ color: "var(--text-secondary)" }}>
-            Battle-tested {cat.label} utilities, patterns, and building blocks you can paste straight into production code.
+            Battle-tested {catLabel} utilities, patterns, and building blocks you can paste straight into production code.
           </p>
         </div>
         <div className="text-right">
-          <div className="font-display font-bold text-4xl" style={{ color: "var(--text-primary)" }}>{cat.items.length}</div>
+          <div className="font-display font-bold text-4xl" style={{ color: "var(--text-primary)" }}>{items.length}</div>
           <div className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--accent)" }}>SNIPPETS</div>
         </div>
       </div>
@@ -52,9 +60,9 @@ export default async function SnippetCategoryPage({
       <div className="divider mb-12" />
 
       {/* Snippets */}
-      {cat.items.length > 0 ? (
+      {items.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-[var(--border)] gap-[1px] border border-[var(--border)]">
-          {cat.items.map((item) => (
+          {items.map((item) => (
             <Link
               href={`/snippets/${resolvedParams.category}/${item.slug}`}
               key={item.title}
@@ -72,7 +80,7 @@ export default async function SnippetCategoryPage({
               
               <div className="mt-auto">
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {item.tags?.map(tag => (
+                  {item.tags?.map((tag: string) => (
                     <span key={tag} className="tag text-[10px] uppercase tracking-wider">{tag}</span>
                   ))}
                 </div>
@@ -94,7 +102,7 @@ export default async function SnippetCategoryPage({
             </Link>
           ))}
           {/* Fill the remaining grid slots */}
-          {Array.from({ length: (3 - (cat.items.length % 3)) % 3 }).map((_, i) => (
+          {Array.from({ length: (3 - (items.length % 3)) % 3 }).map((_, i) => (
             <div key={`empty-${i}`} className="hidden lg:block bg-[var(--surface-raised)]" />
           ))}
         </div>

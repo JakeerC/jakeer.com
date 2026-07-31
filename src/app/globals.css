@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* ─── CSS Custom Properties (Design Tokens) ──────────────── */
 :root {
@@ -208,6 +209,10 @@ code {
 .prose h1, .prose h2, .prose h3, .prose h4 {
   font-family: "Space Grotesk", system-ui, sans-serif;
   color: var(--text-primary);
+}
+.prose strong, .prose b {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 .prose a {
   color: var(--accent);

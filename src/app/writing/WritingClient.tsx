@@ -15,75 +15,22 @@ import {
 import TechIcon from "@/components/TechIcon";
 import PageHeader from "@/components/PageHeader";
 
-const posts = [
-  {
-    slug: "react-performance-optimization",
-    title: "React Performance Optimization: From Good to Great",
-    excerpt:
-      "Deep dive into memoization, lazy loading, and virtual DOM optimization techniques that cut render time by 60% in production.",
-    date: "Jul 10, 2026",
-    readTime: "8 min read",
-    tags: ["React", "Performance", "JavaScript"],
-    featured: true,
-  },
-  {
-    slug: "spring-boot-microservices",
-    title: "Building Resilient Microservices with Spring Boot & Resilience4j",
-    excerpt:
-      "How circuit breakers, bulkheads, and retry patterns keep your financial services alive when dependencies fail.",
-    date: "Jun 28, 2026",
-    readTime: "12 min read",
-    tags: ["Java", "Spring Boot", "Microservices"],
-    featured: false,
-  },
-  {
-    slug: "system-design-api-gateway",
-    title: "Designing an API Gateway: Patterns and Anti-Patterns",
-    excerpt:
-      "Rate limiting, auth aggregation, request routing — what a well-designed gateway buys you and where teams go wrong.",
-    date: "Jun 15, 2026",
-    readTime: "10 min read",
-    tags: ["System Design", "Architecture"],
-    featured: false,
-  },
-  {
-    slug: "typescript-advanced-types",
-    title: "Advanced TypeScript Patterns for Large Codebases",
-    excerpt:
-      "Conditional types, mapped types, template literal types, and infer — practical patterns that make your types work harder.",
-    date: "Jun 5, 2026",
-    readTime: "9 min read",
-    tags: ["TypeScript", "JavaScript"],
-    featured: false,
-  },
-  {
-    slug: "kafka-consumer-groups",
-    title: "Kafka Consumer Groups: What Nobody Tells You",
-    excerpt:
-      "Rebalancing, offset commits, partition assignment strategies — the gaps between the docs and production reality.",
-    date: "May 20, 2026",
-    readTime: "11 min read",
-    tags: ["Kafka", "Distributed Systems"],
-    featured: false,
-  },
-  {
-    slug: "postgres-indexing-guide",
-    title: "A Practical Guide to PostgreSQL Indexing",
-    excerpt:
-      "B-Tree vs GIN vs BRIN — when to use each, how to spot missing indexes, and the queries that catch slow paths.",
-    date: "May 8, 2026",
-    readTime: "7 min read",
-    tags: ["PostgreSQL", "Database"],
-    featured: false,
-  },
-];
+interface Post {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readTime: string;
+  tags: string[];
+  featured: boolean;
+}
 
-export default function WritingClient() {
+export default function WritingClient({ posts }: { posts: Post[] }) {
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
 
-  const featured = posts.find((p) => p.featured)!;
-  const rest = posts.filter((p) => !p.featured);
-  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
+  const featured = posts.find((p) => p.featured);
+  const rest = posts.filter((p) => p !== featured);
+  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags || [])));
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
@@ -111,24 +58,27 @@ export default function WritingClient() {
         >
           FEATURED
         </p>
-        <Link
-          href={`/writing/${featured.slug}`}
-          className="block group border border-[var(--border)] bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors"
-        >
+        {featured && (
+          <Link
+            href={`/writing/${featured.slug}`}
+            className="block group border border-[var(--border)] bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors"
+          >
           <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] min-h-[300px] overflow-hidden">
             {/* Left side */}
             <div className="p-8 md:p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r border-[var(--border)]">
               <div className="mb-6">
-                <span
-                  className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border"
-                  style={{
-                    color: "var(--accent)",
-                    borderColor: "var(--accent)",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  {featured.tags[0].toUpperCase()}
-                </span>
+                {featured.tags && featured.tags.length > 0 && (
+                  <span
+                    className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border"
+                    style={{
+                      color: "var(--accent)",
+                      borderColor: "var(--accent)",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    {featured.tags[0].toUpperCase()}
+                  </span>
+                )}
               </div>
 
               <h2
@@ -175,7 +125,7 @@ export default function WritingClient() {
                 TOPICS
               </p>
               <div className="flex flex-wrap gap-2">
-                {featured.tags.map((t) => (
+                {(featured.tags || []).map((t) => (
                   <span
                     key={t}
                     className="px-2.5 py-1 text-[11px] font-mono rounded border"
@@ -189,9 +139,10 @@ export default function WritingClient() {
                   </span>
                 ))}
               </div>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        )}
       </div>
 
       {/* ── LuSearch bar ──────────────────────────────── */}
@@ -307,16 +258,18 @@ export default function WritingClient() {
                 <div className="flex flex-col flex-1">
                   {/* Primary Category Tag */}
                   <div className="mb-4">
-                    <span
-                      className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border"
-                      style={{
-                        color: "var(--accent)",
-                        borderColor: "var(--accent)",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      {post.tags[0].toUpperCase()}
-                    </span>
+                    {post.tags && post.tags.length > 0 && (
+                      <span
+                        className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border"
+                        style={{
+                          color: "var(--accent)",
+                          borderColor: "var(--accent)",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        {post.tags[0].toUpperCase()}
+                      </span>
+                    )}
                   </div>
 
                   {/* Title */}
@@ -350,7 +303,7 @@ export default function WritingClient() {
 
                   {/* Topics Pills */}
                   <div className="flex flex-wrap gap-2">
-                    {post.tags.slice(1, 4).map((t) => (
+                    {(post.tags || []).slice(1, 4).map((t) => (
                       <span
                         key={t}
                         className="px-2 py-1 text-[11px] font-mono rounded border transition-colors group-hover:border-gray-400/30"
@@ -363,7 +316,7 @@ export default function WritingClient() {
                         {t.toLowerCase().replace(/\s+/g, "-")}
                       </span>
                     ))}
-                    {post.tags.length > 4 && (
+                    {(post.tags || []).length > 4 && (
                       <span
                         className="px-2 py-1 text-[11px] font-mono rounded border transition-colors group-hover:border-gray-400/30"
                         style={{

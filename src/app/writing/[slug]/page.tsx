@@ -5,81 +5,20 @@ import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import CodeBlock from "@/components/CodeBlock";
 
-export const metadata: Metadata = { title: "Article" };
+import { notFound } from "next/navigation";
+import { getContentBySlug } from "@/lib/mdx";
 
-// Sample article content — replace with MDX/CMS later
-const article = {
-  title:    "React Performance Optimization: From Good to Great",
-  date:     "Jul 10, 2026",
-  readTime: "8 min read",
-  tags:     ["React", "Performance", "JavaScript"],
-  content: `
-React apps can become sluggish over time — not because React is slow, but because of how we use it. In this post, we'll explore the most impactful optimizations you can apply today.
-
-## Why React Re-renders
-
-React re-renders a component when:
-- Its **state** changes
-- Its **props** change (by reference)
-- Its **parent** re-renders
-
-The key insight: most performance issues come from **unnecessary re-renders** — renders triggered by reference changes, not value changes.
-
-## 1. useMemo and useCallback
-
-\`\`\`tsx
-// Before — new reference on every render
-const filteredItems = items.filter(item => item.active);
-
-// After — memoized
-const filteredItems = useMemo(
-  () => items.filter(item => item.active),
-  [items]
-);
-\`\`\`
-
-Use \`useCallback\` for functions you pass as props to memoized children:
-
-\`\`\`tsx
-const handleClick = useCallback((id: string) => {
-  dispatch({ type: "SELECT", payload: id });
-}, [dispatch]);
-\`\`\`
-
-## 2. React.memo for Pure Components
-
-Wrap components that receive the same props frequently:
-
-\`\`\`tsx
-const ListItem = React.memo(({ item }: { item: Item }) => (
-  <li>{item.name}</li>
-));
-\`\`\`
-
-## 3. Code Splitting
-
-Use dynamic imports for heavy components:
-
-\`\`\`tsx
-const HeavyChart = dynamic(() => import('./HeavyChart'), {
-  loading: () => <Skeleton />,
-  ssr: false,
-});
-\`\`\`
-
-## Key Takeaways
-
-- Profile first with React DevTools before optimizing
-- \`useMemo\` is for expensive computations, not all values
-- \`React.memo\` only helps when props are stable references
-- Code splitting should be your first win — it's free
-  `,
-};
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getContentBySlug("writing", resolvedParams.slug);
+  if (!post) return { title: "Not Found" };
+  return { title: post.frontmatter.title, description: post.frontmatter.description };
+}
 
 const components = {
   h2: (props: any) => <h2 style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: "1.5rem", fontWeight: 700, margin: "2.5rem 0 1rem", color: "var(--text-primary)" }} {...props} />,
   h3: (props: any) => <h3 style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: "1.2rem", fontWeight: 600, margin: "2rem 0 0.75rem", color: "var(--text-primary)" }} {...props} />,
-  strong: (props: any) => <strong {...props} />,
+  strong: (props: any) => <strong style={{ color: "var(--text-primary)", fontWeight: 600 }} {...props} />,
   code: (props: any) => {
     return <code style={{ background: "var(--tag-bg)", border: "1px solid var(--tag-border)", borderRadius: "4px", padding: "0.15em 0.4em", color: "var(--accent)", fontSize: "0.85em" }} {...props} />;
   },
@@ -105,7 +44,16 @@ const components = {
   }
 };
 
-export default function ArticlePage() {
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const post = getContentBySlug("writing", resolvedParams.slug);
+  
+  if (!post) {
+    return notFound();
+  }
+
+  const tags = post.frontmatter.tags || [];
+
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       {/* Back */}
@@ -120,7 +68,7 @@ export default function ArticlePage() {
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {article.tags.map((t) => (
+        {tags.map((t: string) => (
           <span key={t} className="tag">
             <TechIcon tag={t} />
             {t}
@@ -133,7 +81,7 @@ export default function ArticlePage() {
         className="font-display font-bold leading-tight mb-6"
         style={{ fontSize: "clamp(2rem, 5vw, 3rem)", color: "var(--text-primary)" }}
       >
-        {article.title}
+        {post.frontmatter.title}
       </h1>
 
       {/* Meta */}
@@ -143,12 +91,12 @@ export default function ArticlePage() {
       >
         <span className="flex items-center gap-1.5">
           <LuCalendar size={13} />
-          {article.date}
+          {post.frontmatter.date}
         </span>
         <span>·</span>
         <span className="flex items-center gap-1.5">
           <LuClock size={13} />
-          {article.readTime}
+          {post.frontmatter.readTime || "5 min read"}
         </span>
       </div>
 
@@ -157,7 +105,7 @@ export default function ArticlePage() {
         className="prose prose-sm md:prose-base"
         style={{ color: "var(--text-primary)" }}
       >
-        <MDXRemote source={article.content} components={components} />
+        <MDXRemote source={post.content} components={components} />
       </div>
 
       {/* Footer nav */}

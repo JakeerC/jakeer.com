@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
+import { getContentBySlug } from "@/lib/mdx";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import CodeBlock from "@/components/CodeBlock";
-import FaqItem from "@/components/FaqItem";
-import { snippets } from "@/lib/snippets";
 
+const components = {
+  pre: (props: any) => {
+    // If MDX parses a code block, it usually passes it as <pre><code className="language-xyz">...</code></pre>
+    // We can just use our CodeBlock component.
+    const codeNode = props.children;
+    const codeStr = codeNode?.props?.children || "";
+    const className = codeNode?.props?.className || "";
+    const lang = className.replace("language-", "") || "typescript";
+    
+    return <CodeBlock code={codeStr.trim()} lang={lang} />;
+  },
+};
 export default async function SnippetDetailPage({
   params,
 }: {
@@ -13,11 +25,13 @@ export default async function SnippetDetailPage({
   const resolvedParams = await params;
   const { category, slug } = resolvedParams;
 
-  const catData = snippets[category];
-  if (!catData) return notFound();
-
-  const snippet = catData.items.find((item) => item.slug === slug);
-  if (!snippet) return notFound();
+  const post = getContentBySlug("snippets", slug);
+  if (!post) return notFound();
+  
+  // Optional: check if the tags actually match the category route
+  if (!post.frontmatter.tags?.includes(category)) {
+    return notFound();
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -28,13 +42,13 @@ export default async function SnippetDetailPage({
         style={{ color: "var(--text-muted)" }}
       >
         <LuArrowLeft size={14} />
-        {catData.label} Snippets
+        {category.charAt(0).toUpperCase() + category.slice(1)} Snippets
       </Link>
 
       <section className="flex flex-col gap-4">
         <div>
           <div className="flex flex-wrap gap-2 mb-4">
-            {snippet.tags?.map(tag => (
+            {post.frontmatter.tags?.map((tag: string) => (
               <span key={tag} className="tag text-xs uppercase tracking-wider">{tag}</span>
             ))}
           </div>
@@ -42,27 +56,13 @@ export default async function SnippetDetailPage({
             className="font-display text-3xl md:text-4xl font-bold mb-4"
             style={{ color: "var(--text-primary)" }}
           >
-            {snippet.title}
+            {post.frontmatter.title}
           </h1>
-          <p className="text-lg" style={{ color: "var(--text-secondary)" }}>
-            {snippet.description}
-          </p>
         </div>
         
-        <div className="mt-4">
-          <CodeBlock code={snippet.code} lang={snippet.lang} />
+        <div className="mt-4 prose prose-sm md:prose-base max-w-none" style={{ color: "var(--text-primary)" }}>
+          <MDXRemote source={post.content} components={components} />
         </div>
-
-        {snippet.faqs && snippet.faqs.length > 0 && (
-          <div className="flex flex-col gap-2 mt-8">
-            <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
-              FAQ
-            </p>
-            {snippet.faqs.map((faq) => (
-              <FaqItem key={faq.q} {...faq} />
-            ))}
-          </div>
-        )}
       </section>
     </div>
   );
