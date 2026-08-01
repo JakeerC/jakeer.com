@@ -65,6 +65,17 @@ describe('Navbar', () => {
     expect(mockSetTheme).toHaveBeenCalledWith('dark');
   });
 
+  it('toggles neo style', async () => {
+    const user = userEvent.setup();
+    render(<Navbar />);
+    
+    // Toggle neo style button
+    const toggleButton = screen.getByLabelText('Toggle neo style');
+    await user.click(toggleButton);
+    
+    expect(mockSetTheme).toHaveBeenCalledWith('neo-light');
+  });
+
   it('opens CommandPalette on search button click', async () => {
     const user = userEvent.setup();
     render(<Navbar />);
