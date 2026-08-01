@@ -33,10 +33,12 @@ export const recentPosts = [
   },
 ];
 
+/******* Projects *************/
 export const projects = [
   {
     name: "Resilient Payment Processor",
-    description: "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and dead-letter queue support for financial-grade reliability.",
+    description:
+      "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and dead-letter queue support for financial-grade reliability.",
     tags: ["Java", "Spring Boot", "Kafka", "Redis", "PostgreSQL"],
     github: "#",
     demo: "",
@@ -51,7 +53,8 @@ export const projects = [
   },
   {
     name: "React Design System",
-    description: "A battle-tested component library used across 5 internal Wells Fargo applications — accessible, theme-able, and fully typed with comprehensive Storybook documentation.",
+    description:
+      "A battle-tested component library used across 5 internal Wells Fargo applications — accessible, theme-able, and fully typed with comprehensive Storybook documentation.",
     tags: ["React", "TypeScript", "Storybook", "Vite", "CSS Modules"],
     github: "#",
     demo: "#",
@@ -66,7 +69,8 @@ export const projects = [
   },
   {
     name: "API Rate Limiter Middleware",
-    description: "Express.js middleware implementing token bucket and sliding window algorithms for precise API rate limiting with Redis-backed distributed counters.",
+    description:
+      "Express.js middleware implementing token bucket and sliding window algorithms for precise API rate limiting with Redis-backed distributed counters.",
     tags: ["Node.js", "Redis", "TypeScript", "Express"],
     github: "#",
     demo: "",
@@ -81,7 +85,8 @@ export const projects = [
   },
   {
     name: "DevDash — Developer Dashboard",
-    description: "A personal developer dashboard aggregating GitHub stats, Jira tickets, Confluence docs, and CI/CD pipeline status in a single unified interface.",
+    description:
+      "A personal developer dashboard aggregating GitHub stats, Jira tickets, Confluence docs, and CI/CD pipeline status in a single unified interface.",
     tags: ["Next.js", "React", "TypeScript", "GitHub API"],
     github: "#",
     demo: "#",
@@ -99,7 +104,8 @@ export const projects = [
 export const featuredProjects = [
   {
     name: "Resilient Payment Processor",
-    description: "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and DLQ support.",
+    description:
+      "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and DLQ support.",
     tags: ["Java", "Spring Boot", "Kafka", "Redis"],
     link: siteConfig.socials.github,
     features: [
@@ -111,7 +117,8 @@ export const featuredProjects = [
   },
   {
     name: "React Design System",
-    description: "A battle-tested component library used across 5 internal Wells Fargo apps — accessible, theme-able, and fully typed.",
+    description:
+      "A battle-tested component library used across 5 internal Wells Fargo apps — accessible, theme-able, and fully typed.",
     tags: ["React", "TypeScript", "Storybook", "Vite"],
     link: siteConfig.socials.github,
     features: [
@@ -124,61 +131,116 @@ export const featuredProjects = [
 ];
 
 export const statusColors: Record<string, string> = {
-  Production:  "#22c55e",
-  Active:      "#3b82f6",
+  Production: "#22c55e",
+  Active: "#3b82f6",
   "Open Source": "var(--accent)",
-  Personal:    "#f59e0b",
+  Personal: "#f59e0b",
 };
+/******* Projects *************/
 
 export const noteTopics = [
   {
-    slug:  "fundamentals",
+    slug: "fundamentals",
     label: "Fundamentals",
-    description: "CAP theorem, consistency models, latency numbers, and estimation skills that everything else builds on.",
+    description:
+      "CAP theorem, consistency models, latency numbers, and estimation skills that everything else builds on.",
     notes: [
-      { slug: "cap-theorem",             title: "CAP Theorem",                     minutes: 6  },
-      { slug: "latency-numbers",         title: "Latency Numbers Every Dev Knows", minutes: 4  },
-      { slug: "back-of-envelope",        title: "Back-of-Envelope Estimation",     minutes: 8  },
+      { slug: "cap-theorem", title: "CAP Theorem", minutes: 6 },
+      {
+        slug: "latency-numbers",
+        title: "Latency Numbers Every Dev Knows",
+        minutes: 4,
+      },
+      {
+        slug: "back-of-envelope",
+        title: "Back-of-Envelope Estimation",
+        minutes: 8,
+      },
     ],
   },
   {
-    slug:  "caching",
+    slug: "caching",
     label: "Caching & Load Distribution",
-    description: "Cache strategies, invalidation, consistent hashing, load balancing, and CDN architecture.",
+    description:
+      "Cache strategies, invalidation, consistent hashing, load balancing, and CDN architecture.",
     notes: [
-      { slug: "caching-fundamentals",    title: "Caching Fundamentals",            minutes: 10 },
-      { slug: "consistent-hashing",      title: "Consistent Hashing",              minutes: 8  },
-      { slug: "cdn-architecture",        title: "CDN Architecture",                minutes: 7  },
+      {
+        slug: "caching-fundamentals",
+        title: "Caching Fundamentals",
+        minutes: 10,
+      },
+      { slug: "consistent-hashing", title: "Consistent Hashing", minutes: 8 },
+      { slug: "cdn-architecture", title: "CDN Architecture", minutes: 7 },
     ],
   },
   {
-    slug:  "databases",
+    slug: "databases",
     label: "Databases",
-    description: "SQL vs NoSQL, indexing internals, sharding, replication, and choosing the right database.",
+    description:
+      "SQL vs NoSQL, indexing internals, sharding, replication, and choosing the right database.",
     notes: [
-      { slug: "sql-vs-nosql",            title: "SQL vs NoSQL Trade-offs",         minutes: 9  },
-      { slug: "database-indexing",       title: "Database Indexing Deep Dive",     minutes: 12 },
-      { slug: "sharding-strategies",     title: "Sharding Strategies",             minutes: 8  },
+      { slug: "sql-vs-nosql", title: "SQL vs NoSQL Trade-offs", minutes: 9 },
+      {
+        slug: "database-indexing",
+        title: "Database Indexing Deep Dive",
+        minutes: 12,
+      },
+      { slug: "sharding-strategies", title: "Sharding Strategies", minutes: 8 },
     ],
   },
   {
-    slug:  "messaging",
+    slug: "messaging",
     label: "Messaging & Event Streaming",
-    description: "Kafka, message queues, event sourcing, and the patterns that make async systems reliable.",
+    description:
+      "Kafka, message queues, event sourcing, and the patterns that make async systems reliable.",
     notes: [
-      { slug: "kafka-internals",         title: "Kafka Internals",                 minutes: 14 },
-      { slug: "message-queue-patterns",  title: "Message Queue Patterns",          minutes: 8  },
+      { slug: "kafka-internals", title: "Kafka Internals", minutes: 14 },
+      {
+        slug: "message-queue-patterns",
+        title: "Message Queue Patterns",
+        minutes: 8,
+      },
     ],
   },
 ];
 
 export const snippetCategories = [
-  { slug: "react",        label: "React",        count: 12, description: "Hooks, patterns, optimization" },
-  { slug: "java",         label: "Java",         count: 8,  description: "Spring Boot, streams, patterns" },
-  { slug: "typescript",   label: "TypeScript",   count: 10, description: "Types, generics, utilities" },
-  { slug: "git",          label: "Git",          count: 15, description: "Aliases, workflows, fixups" },
-  { slug: "aws",          label: "AWS CLI",      count: 9,  description: "S3, EC2, IAM, Lambda" },
-  { slug: "shell",        label: "Shell / Bash", count: 11, description: "One-liners, scripts, utils" },
+  {
+    slug: "react",
+    label: "React",
+    count: 12,
+    description: "Hooks, patterns, optimization",
+  },
+  {
+    slug: "java",
+    label: "Java",
+    count: 8,
+    description: "Spring Boot, streams, patterns",
+  },
+  {
+    slug: "typescript",
+    label: "TypeScript",
+    count: 10,
+    description: "Types, generics, utilities",
+  },
+  {
+    slug: "git",
+    label: "Git",
+    count: 15,
+    description: "Aliases, workflows, fixups",
+  },
+  {
+    slug: "aws",
+    label: "AWS CLI",
+    count: 9,
+    description: "S3, EC2, IAM, Lambda",
+  },
+  {
+    slug: "shell",
+    label: "Shell / Bash",
+    count: 11,
+    description: "One-liners, scripts, utils",
+  },
 ];
 
 export const ADMIN_TAG_OPTIONS = [
