@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { LuArrowLeft } from "react-icons/lu";
-import TechIcon from "@/components/TechIcon";
 import { Tag } from "@/components/Tag";
 
 import { getAllContent } from "@/lib/mdx";

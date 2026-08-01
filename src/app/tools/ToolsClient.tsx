@@ -4,14 +4,8 @@ import { useState } from "react";
 import {
   LuSearch,
   LuExternalLink,
-  LuKey,
-  LuShield,
-  LuWrench,
-  LuCode,
-  LuGlobe,
 } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
-import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import { FieldControl } from "@/components/FieldControl";
 import { Tag } from "@/components/Tag";

@@ -246,7 +246,7 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
       {/* ── Article list/grid ────────────────────────────── */}
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)]">
-          {rest.map((post, i) => (
+          {rest.map((post) => (
             <Link
               key={post.slug}
               href={`/writing/${post.slug}`}
@@ -345,7 +345,7 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
           className="flex flex-col rounded-xl border"
           style={{ background: "var(--surface)", borderColor: "var(--border)" }}
         >
-          {rest.map((post, i) => (
+          {rest.map((post) => (
             <Link
               key={post.slug}
               href={`/writing/${post.slug}`}

@@ -3,7 +3,7 @@ import { AdminClient } from "./components/AdminClient";
 
 export default async function AdminPage() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error: _error } = await supabase.auth.getUser();
   const user = data.user;
 
   return (

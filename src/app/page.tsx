@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   LuArrowRight,
-  LuExternalLink,
   LuCode,
   LuFileText,
   LuWrench,
@@ -471,7 +470,7 @@ export default function HomePage() {
                 lineHeight: 1.1,
               }}
             >
-              Let's build{" "}
+              Let&apos;s build{" "}
               <span className="italic" style={{ color: "var(--accent)" }}>
                 something great
               </span>
@@ -481,7 +480,7 @@ export default function HomePage() {
               className="mt-4 text-base leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
             >
-              I'm open to consulting, technical writing collaborations, and
+              I&apos;m open to consulting, technical writing collaborations, and
               speaking engagements about full-stack engineering, system design,
               and developer tooling.
             </p>
