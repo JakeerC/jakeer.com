@@ -14,7 +14,6 @@ import {
   LuLink as LinkIcon,
 } from "react-icons/lu";
 
-import { siteConfig } from "@/lib/config";
 import { BiCode } from "react-icons/bi";
 import { HiHome } from "react-icons/hi";
 import { getSearchData } from "@/app/actions";
@@ -35,7 +34,7 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   }>({ posts: [], snippets: [], tools: [] });
 
   useEffect(() => {
-    getSearchData().then(setData).catch(console.error);
+    getSearchData().then(setData).catch(() => {});
   }, []);
 
   const runCommand = useCallback(

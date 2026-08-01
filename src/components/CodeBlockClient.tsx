@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { LuCopy, LuCheck, LuWrapText } from "react-icons/lu";
+import { Button } from "./Button";
 
 export default function CodeBlockClient({ code, lang, html }: { code: string; lang: string; html: string }) {
   const [copied, setCopied] = useState(false);
@@ -41,32 +42,32 @@ export default function CodeBlockClient({ code, lang, html }: { code: string; la
           </div>
         </div>
         <div className="flex items-center gap-2 mb-1.5">
-           <button
+           <Button
              onClick={() => setIsWrapped(!isWrapped)}
-             className="p-1.5 rounded-md transition-all cursor-pointer"
+             variant="outline"
+             className="px-2 py-1.5"
              style={{
                background: isWrapped ? "var(--border-strong)" : "var(--surface)",
-               border: "1px solid var(--border-strong)",
                color: isWrapped ? "var(--text-primary)" : "var(--text-muted)",
              }}
              aria-label="Wrap text"
              title="Wrap text"
            >
              <LuWrapText size={14} />
-           </button>
-           <button
+           </Button>
+           <Button
              onClick={copy}
-             className="p-1.5 rounded-md transition-all cursor-pointer"
+             variant="outline"
+             className="px-2 py-1.5"
              style={{
                background: "var(--surface)",
-               border: "1px solid var(--border-strong)",
                color: copied ? "#22c55e" : "var(--text-muted)",
              }}
-             aria-label="LuCopy code"
-             title="LuCopy code"
+             aria-label="Copy code"
+             title="Copy code"
            >
              {copied ? <LuCheck size={14} /> : <LuCopy size={14} />}
-           </button>
+           </Button>
         </div>
       </div>
       <div 

@@ -8,7 +8,7 @@ export default async function CodeBlock({ code, lang }: { code: string; lang: st
       lang,
       theme: "github-dark",
     });
-  } catch (error) {
+  } catch {
     // Fallback if language is not supported by Shiki (e.g. "env")
     html = await codeToHtml(code, {
       lang: "text",

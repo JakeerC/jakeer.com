@@ -9,14 +9,7 @@ export const metadata: Metadata = {
   description: "Ready-to-use code snippets for React, Java, Spring Boot, Git, AWS, and more.",
 };
 
-const categories = [
-  { slug: "react",        label: "React",        count: 12, description: "Hooks, patterns, optimization" },
-  { slug: "java",         label: "Java",         count: 8,  description: "Spring Boot, streams, patterns" },
-  { slug: "typescript",   label: "TypeScript",   count: 10, description: "Types, generics, utilities" },
-  { slug: "git",          label: "Git",          count: 15, description: "Aliases, workflows, fixups" },
-  { slug: "aws",          label: "AWS CLI",      count: 9,  description: "S3, EC2, IAM, Lambda" },
-  { slug: "shell",        label: "Shell / Bash", count: 11, description: "One-liners, scripts, utils" },
-];
+import { snippetCategories as categories } from "@/lib/constants";
 
 export default function SnippetsPage() {
   return (

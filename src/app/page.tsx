@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   LuArrowRight,
-  LuExternalLink,
   LuCode,
   LuFileText,
   LuWrench,
@@ -11,6 +10,7 @@ import StatCounter from "@/components/StatCounter";
 import ArticleCard from "@/components/ArticleCard";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
+import { Tag } from "@/components/Tag";
 
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -33,68 +33,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-// ── Sample data (replace with MDX/DB queries later) ──────
-const recentPosts = [
-  {
-    index: 1,
-    slug: "react-performance-optimization",
-    title: "React Performance Optimization: From Good to Great",
-    excerpt:
-      "Deep dive into memoization, lazy loading, and virtual DOM optimization techniques that cut render time by 60% in production.",
-    date: "Jul 10, 2026",
-    readTime: "8 min read",
-    tags: ["React", "Performance"],
-  },
-  {
-    index: 2,
-    slug: "spring-boot-microservices",
-    title: "Building Resilient Microservices with Spring Boot & Resilience4j",
-    excerpt:
-      "How circuit breakers, bulkheads, and retry patterns keep your financial services alive when dependencies fail.",
-    date: "Jun 28, 2026",
-    readTime: "12 min read",
-    tags: ["Java", "Spring Boot"],
-  },
-  {
-    index: 3,
-    slug: "system-design-api-gateway",
-    title: "Designing an API Gateway: Patterns and Anti-Patterns",
-    excerpt:
-      "Rate limiting, auth aggregation, request routing — what a well-designed gateway buys you and where teams go wrong.",
-    date: "Jun 15, 2026",
-    readTime: "10 min read",
-    tags: ["System Design", "Architecture"],
-  },
-];
-
-const featuredProjects = [
-  {
-    name: "Resilient Payment Processor",
-    description:
-      "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and DLQ support.",
-    tags: ["Java", "Spring Boot", "Kafka", "Redis"],
-    link: siteConfig.socials.github,
-    features: [
-      "Idempotent API design",
-      "Distributed tracing with Zipkin",
-      "Auto-scaling on AWS ECS",
-      "99.99% uptime SLA",
-    ],
-  },
-  {
-    name: "React Design System",
-    description:
-      "A battle-tested component library used across 5 internal Wells Fargo apps — accessible, theme-able, and fully typed.",
-    tags: ["React", "TypeScript", "Storybook", "Vite"],
-    link: siteConfig.socials.github,
-    features: [
-      "WCAG 2.1 AA compliant",
-      "Dark & light themes",
-      "Comprehensive Storybook docs",
-      "Tree-shakeable exports",
-    ],
-  },
-];
+import { recentPosts, featuredProjects } from "@/lib/constants";
 
 export default function HomePage() {
   return (
@@ -386,10 +325,10 @@ export default function HomePage() {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1.5 mb-5">
                     {project.tags.map((tag) => (
-                      <span key={tag} className="tag">
+                      <Tag key={tag} className="px-3 py-1 text-[0.72rem] rounded-full">
                         <TechIcon tag={tag} />
                         {tag}
-                      </span>
+                      </Tag>
                     ))}
                   </div>
 
@@ -531,7 +470,7 @@ export default function HomePage() {
                 lineHeight: 1.1,
               }}
             >
-              Let's build{" "}
+              Let&apos;s build{" "}
               <span className="italic" style={{ color: "var(--accent)" }}>
                 something great
               </span>
@@ -541,7 +480,7 @@ export default function HomePage() {
               className="mt-4 text-base leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
             >
-              I'm open to consulting, technical writing collaborations, and
+              I&apos;m open to consulting, technical writing collaborations, and
               speaking engagements about full-stack engineering, system design,
               and developer tooling.
             </p>

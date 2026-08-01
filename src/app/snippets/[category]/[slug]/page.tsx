@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
 import { getContentBySlug } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import CodeBlock from "@/components/CodeBlock";
+import { Tag } from "@/components/Tag";
+import Image from "next/image";
 
 const components = {
   pre: (props: any) => {
@@ -13,9 +16,20 @@ const components = {
     const codeStr = codeNode?.props?.children || "";
     const className = codeNode?.props?.className || "";
     const lang = className.replace("language-", "") || "typescript";
-    
+
     return <CodeBlock code={codeStr.trim()} lang={lang} />;
   },
+  img: (props: any) => (
+    <Image
+      src={props.src}
+      alt={props.alt || ""}
+      width={0}
+      height={0}
+      sizes="100vw"
+      style={{ width: "100%", height: "auto" }}
+      className="rounded-lg border border-[var(--border)] my-6"
+    />
+  ),
 };
 export default async function SnippetDetailPage({
   params,
@@ -27,7 +41,7 @@ export default async function SnippetDetailPage({
 
   const post = getContentBySlug("snippets", slug);
   if (!post) return notFound();
-  
+
   // Optional: check if the tags actually match the category route
   if (!post.frontmatter.tags?.includes(category)) {
     return notFound();
@@ -49,7 +63,9 @@ export default async function SnippetDetailPage({
         <div>
           <div className="flex flex-wrap gap-2 mb-4">
             {post.frontmatter.tags?.map((tag: string) => (
-              <span key={tag} className="tag text-xs uppercase tracking-wider">{tag}</span>
+              <Tag key={tag} size="sm">
+                {tag}
+              </Tag>
             ))}
           </div>
           <h1
@@ -59,8 +75,11 @@ export default async function SnippetDetailPage({
             {post.frontmatter.title}
           </h1>
         </div>
-        
-        <div className="mt-4 prose prose-sm md:prose-base max-w-none" style={{ color: "var(--text-primary)" }}>
+
+        <div
+          className="mt-4 prose prose-sm md:prose-base max-w-none"
+          style={{ color: "var(--text-primary)" }}
+        >
           <MDXRemote source={post.content} components={components} />
         </div>
       </section>

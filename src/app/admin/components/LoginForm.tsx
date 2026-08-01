@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { FieldControl } from "@/components/FieldControl";
+import { Button } from "@/components/Button";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -36,39 +38,27 @@ export function LoginForm() {
           {error}
         </div>
       )}
-      <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="border p-2 rounded-md"
-          style={{ borderColor: "var(--border)", backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}
-        />
-      </div>
-      <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="border p-2 rounded-md"
-          style={{ borderColor: "var(--border)", backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}
-        />
-      </div>
-      <button
+      <FieldControl
+        label="Email"
+        type="email"
+        value={email}
+        onChange={setEmail}
+        required
+      />
+      <FieldControl
+        label="Password"
+        type="password"
+        value={password}
+        onChange={setPassword}
+        required
+      />
+      <Button
         type="submit"
         disabled={isLoading}
-        className="mt-2 px-6 py-2 rounded-md font-medium text-sm transition-colors disabled:opacity-50"
-        style={{
-          backgroundColor: "var(--accent)",
-          color: "var(--bg-primary)",
-        }}
+        className="mt-2"
       >
         {isLoading ? "Logging in..." : "Login"}
-      </button>
+      </Button>
     </form>
   );
 }

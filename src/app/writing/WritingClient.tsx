@@ -14,6 +14,9 @@ import {
 } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import PageHeader from "@/components/PageHeader";
+import { FieldControl } from "@/components/FieldControl";
+import { Button } from "@/components/Button";
+import { Tag } from "@/components/Tag";
 
 interface Post {
   slug: string;
@@ -27,9 +30,22 @@ interface Post {
 
 export default function WritingClient({ posts }: { posts: Post[] }) {
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   const featured = posts.find((p) => p.featured);
-  const rest = posts.filter((p) => p !== featured);
+  const rest = posts
+    .filter((p) => p !== featured)
+    .filter((p) => {
+      const q = searchQuery.toLowerCase();
+      const matchesQuery = p.title.toLowerCase().includes(q) ||
+                           p.excerpt.toLowerCase().includes(q) ||
+                           (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)));
+      const matchesTags = selectedTags.length === 0 || 
+                          (p.tags && selectedTags.some(t => p.tags.includes(t)));
+      return matchesQuery && matchesTags;
+    });
   const allTags = Array.from(new Set(posts.flatMap((p) => p.tags || [])));
 
   return (
@@ -63,82 +79,76 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
             href={`/writing/${featured.slug}`}
             className="block group border border-[var(--border)] bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors"
           >
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] min-h-[300px] overflow-hidden">
-            {/* Left side */}
-            <div className="p-8 md:p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r border-[var(--border)]">
-              <div className="mb-6">
-                {featured.tags && featured.tags.length > 0 && (
-                  <span
-                    className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border"
-                    style={{
-                      color: "var(--accent)",
-                      borderColor: "var(--accent)",
-                      backgroundColor: "transparent",
-                    }}
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] min-h-[300px] overflow-hidden">
+              {/* Left side */}
+              <div className="p-8 md:p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r border-[var(--border)]">
+                <div className="mb-6">
+                  {featured.tags && featured.tags.length > 0 && (
+                    <Tag
+                      size="sm"
+                      variant="outline"
+                      className="font-semibold tracking-wider !border-[var(--accent)] !text-[var(--accent)]"
+                    >
+                      {featured.tags[0].toUpperCase()}
+                    </Tag>
+                  )}
+                </div>
+
+                <h2
+                  className="font-display text-2xl md:text-3xl font-semibold leading-tight mb-4 transition-all duration-300 group-hover:text-[var(--accent)] underline decoration-transparent group-hover:decoration-[var(--accent)] underline-offset-4"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {featured.title}
+                </h2>
+
+                <p
+                  className="text-sm md:text-base leading-relaxed mb-10 line-clamp-2"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  {featured.excerpt}
+                </p>
+
+                <div
+                  className="flex items-center justify-between mt-auto text-xs md:text-sm font-mono"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="flex items-center gap-1.5">
+                      <LuCalendar size={14} /> {featured.date}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <LuClock size={14} /> {featured.readTime}
+                    </span>
+                  </div>
+                  <div
+                    className="flex items-center gap-1.5 font-sans font-medium transition-colors"
+                    style={{ color: "var(--accent)" }}
                   >
-                    {featured.tags[0].toUpperCase()}
-                  </span>
-                )}
+                    Read <LuArrowRight size={14} />
+                  </div>
+                </div>
               </div>
 
-              <h2
-                className="font-display text-2xl md:text-3xl font-semibold leading-tight mb-4 transition-all duration-300 group-hover:text-[var(--accent)] underline decoration-transparent group-hover:decoration-[var(--accent)] underline-offset-4"
-                style={{ color: "var(--text-primary)" }}
-              >
-                {featured.title}
-              </h2>
-
-              <p
-                className="text-sm md:text-base leading-relaxed mb-10 line-clamp-2"
-                style={{ color: "var(--text-secondary)" }}
-              >
-                {featured.excerpt}
-              </p>
-
-              <div
-                className="flex items-center justify-between mt-auto text-xs md:text-sm font-mono"
-                style={{ color: "var(--text-muted)" }}
-              >
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1.5">
-                    <LuCalendar size={14} /> {featured.date}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <LuClock size={14} /> {featured.readTime}
-                  </span>
-                </div>
-                <div
-                  className="flex items-center gap-1.5 font-sans font-medium transition-colors"
+              {/* Right side (Topics) */}
+              <div className="p-8 md:p-8 flex flex-col justify-center">
+                <p
+                  className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-5"
                   style={{ color: "var(--accent)" }}
                 >
-                  Read <LuArrowRight size={14} />
+                  TOPICS
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {(featured.tags || []).map((t) => (
+                    <Tag
+                      key={t}
+                      size="sm"
+                      variant="default"
+                      className="!bg-[var(--surface)]"
+                    >
+                      {t.toLowerCase().replace(/\s+/g, "-")}
+                    </Tag>
+                  ))}
                 </div>
-              </div>
-            </div>
-
-            {/* Right side (Topics) */}
-            <div className="p-8 md:p-8 flex flex-col justify-center">
-              <p
-                className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-5"
-                style={{ color: "var(--accent)" }}
-              >
-                TOPICS
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {(featured.tags || []).map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-1 text-[11px] font-mono rounded border"
-                    style={{
-                      color: "var(--text-secondary)",
-                      borderColor: "var(--border)",
-                      backgroundColor: "var(--surface)",
-                    }}
-                  >
-                    {t.toLowerCase().replace(/\s+/g, "-")}
-                  </span>
-                ))}
-              </div>
               </div>
             </div>
           </Link>
@@ -147,31 +157,25 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
 
       {/* ── LuSearch bar ──────────────────────────────── */}
       <div className="flex flex-col md:flex-row gap-3 mb-8">
-        <div
-          className="flex-1 flex items-center gap-3 rounded-xl border px-4 py-2.5"
-          style={{ background: "var(--surface)", borderColor: "var(--border)" }}
-        >
-          <LuSearch size={16} style={{ color: "var(--text-muted)" }} />
-          <input
+        <div className="flex-1">
+          <FieldControl
             type="text"
             placeholder="Search articles, tags, topics…"
-            className="flex-1 bg-transparent text-sm outline-none placeholder:opacity-50"
-            style={{ color: "var(--text-primary)" }}
+            value={searchQuery}
+            onChange={setSearchQuery}
+            leftIcon={<LuSearch size={16} />}
           />
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium h-full"
-            style={{
-              background: "var(--surface)",
-              borderColor: "var(--border)",
-              color: "var(--text-secondary)",
-            }}
+          <Button
+            variant={isFiltersOpen ? "primary" : "outline"}
+            className="h-full rounded-xl"
+            leftIcon={<LuFilter size={15} />}
+            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
           >
-            <LuFilter size={15} />
             Filters
-          </button>
+          </Button>
 
           <div
             className="flex items-center gap-1 p-1 rounded-xl border h-full"
@@ -180,46 +184,57 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
               borderColor: "var(--border)",
             }}
           >
-            <button
+            <Button
               onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded-lg transition-colors ${viewMode === "list" ? "bg-[var(--accent)] text-white" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}
+              variant={viewMode === "list" ? "primary" : "ghost"}
+              size="sm"
+              className="px-2 py-1.5"
               aria-label="LuList view"
             >
               <LuList size={16} />
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-lg transition-colors ${viewMode === "grid" ? "bg-[var(--accent)] text-white" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}
+              variant={viewMode === "grid" ? "primary" : "ghost"}
+              size="sm"
+              className="px-2 py-1.5"
               aria-label="Grid view"
             >
               <LuLayoutGrid size={16} />
-            </button>
+            </Button>
           </div>
         </div>
       </div>
 
       {/* ── Tag filters ─────────────────────────────── */}
-      <div className="flex flex-wrap gap-2 mb-10">
-        <button
-          className="tag"
-          style={{
-            background: "var(--accent)",
-            borderColor: "var(--accent)",
-            color: "#fff",
-          }}
-        >
-          All ({posts.length})
-        </button>
-        {allTags.map((tag) => (
-          <button
-            key={tag}
-            className="tag hover:opacity-80 transition-opacity cursor-pointer"
+      {isFiltersOpen && (
+        <div className="flex flex-wrap gap-2 mb-10">
+          <Tag
+            variant={selectedTags.length === 0 ? "accent" : "default"}
+            className="cursor-pointer px-3 py-1 text-[0.72rem] rounded-full select-none"
+            onClick={() => setSelectedTags([])}
           >
-            <TechIcon tag={tag} />
-            {tag}
-          </button>
-        ))}
-      </div>
+            All ({posts.length})
+          </Tag>
+          {allTags.map((tag) => (
+            <Tag
+              key={tag}
+              variant={selectedTags.includes(tag) ? "accent" : "default"}
+              className="hover:opacity-80 transition-opacity cursor-pointer px-3 py-1 text-[0.72rem] rounded-full select-none"
+              onClick={() => {
+                setSelectedTags((prev) =>
+                  prev.includes(tag)
+                    ? prev.filter((t) => t !== tag)
+                    : [...prev, tag]
+                );
+              }}
+            >
+              <TechIcon tag={tag} />
+              {tag}
+            </Tag>
+          ))}
+        </div>
+      )}
 
       <p
         className="text-sm font-mono mb-4"
@@ -231,7 +246,7 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
       {/* ── Article list/grid ────────────────────────────── */}
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)]">
-          {rest.map((post, i) => (
+          {rest.map((post) => (
             <Link
               key={post.slug}
               href={`/writing/${post.slug}`}
@@ -259,16 +274,13 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
                   {/* Primary Category Tag */}
                   <div className="mb-4">
                     {post.tags && post.tags.length > 0 && (
-                      <span
-                        className="inline-block px-2.5 py-1 text-[10px] font-mono font-semibold tracking-wider rounded border"
-                        style={{
-                          color: "var(--accent)",
-                          borderColor: "var(--accent)",
-                          backgroundColor: "transparent",
-                        }}
+                      <Tag
+                        size="sm"
+                        variant="outline"
+                        className="font-semibold tracking-wider !border-[var(--accent)] !text-[var(--accent)]"
                       >
                         {post.tags[0].toUpperCase()}
-                      </span>
+                      </Tag>
                     )}
                   </div>
 
@@ -304,29 +316,23 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
                   {/* Topics Pills */}
                   <div className="flex flex-wrap gap-2">
                     {(post.tags || []).slice(1, 4).map((t) => (
-                      <span
+                      <Tag
                         key={t}
-                        className="px-2 py-1 text-[11px] font-mono rounded border transition-colors group-hover:border-gray-400/30"
-                        style={{
-                          color: "var(--text-secondary)",
-                          borderColor: "var(--border)",
-                          backgroundColor: "transparent",
-                        }}
+                        size="sm"
+                        variant="outline"
+                        className="group-hover:border-gray-400/30"
                       >
                         {t.toLowerCase().replace(/\s+/g, "-")}
-                      </span>
+                      </Tag>
                     ))}
                     {(post.tags || []).length > 4 && (
-                      <span
-                        className="px-2 py-1 text-[11px] font-mono rounded border transition-colors group-hover:border-gray-400/30"
-                        style={{
-                          color: "var(--text-secondary)",
-                          borderColor: "var(--border)",
-                          backgroundColor: "transparent",
-                        }}
+                      <Tag
+                        size="sm"
+                        variant="outline"
+                        className="group-hover:border-gray-400/30"
                       >
                         +{post.tags.length - 4}
-                      </span>
+                      </Tag>
                     )}
                   </div>
                 </div>
@@ -339,7 +345,7 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
           className="flex flex-col rounded-xl border"
           style={{ background: "var(--surface)", borderColor: "var(--border)" }}
         >
-          {rest.map((post, i) => (
+          {rest.map((post) => (
             <Link
               key={post.slug}
               href={`/writing/${post.slug}`}

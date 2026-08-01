@@ -8,47 +8,7 @@ export const metadata: Metadata = {
   description: "Evergreen system design notes — from basics to advanced distributed systems concepts.",
 };
 
-const topics = [
-  {
-    slug:  "fundamentals",
-    label: "Fundamentals",
-    description: "CAP theorem, consistency models, latency numbers, and estimation skills that everything else builds on.",
-    notes: [
-      { slug: "cap-theorem",             title: "CAP Theorem",                     minutes: 6  },
-      { slug: "latency-numbers",         title: "Latency Numbers Every Dev Knows", minutes: 4  },
-      { slug: "back-of-envelope",        title: "Back-of-Envelope Estimation",     minutes: 8  },
-    ],
-  },
-  {
-    slug:  "caching",
-    label: "Caching & Load Distribution",
-    description: "Cache strategies, invalidation, consistent hashing, load balancing, and CDN architecture.",
-    notes: [
-      { slug: "caching-fundamentals",    title: "Caching Fundamentals",            minutes: 10 },
-      { slug: "consistent-hashing",      title: "Consistent Hashing",              minutes: 8  },
-      { slug: "cdn-architecture",        title: "CDN Architecture",                minutes: 7  },
-    ],
-  },
-  {
-    slug:  "databases",
-    label: "Databases",
-    description: "SQL vs NoSQL, indexing internals, sharding, replication, and choosing the right database.",
-    notes: [
-      { slug: "sql-vs-nosql",            title: "SQL vs NoSQL Trade-offs",         minutes: 9  },
-      { slug: "database-indexing",       title: "Database Indexing Deep Dive",     minutes: 12 },
-      { slug: "sharding-strategies",     title: "Sharding Strategies",             minutes: 8  },
-    ],
-  },
-  {
-    slug:  "messaging",
-    label: "Messaging & Event Streaming",
-    description: "Kafka, message queues, event sourcing, and the patterns that make async systems reliable.",
-    notes: [
-      { slug: "kafka-internals",         title: "Kafka Internals",                 minutes: 14 },
-      { slug: "message-queue-patterns",  title: "Message Queue Patterns",          minutes: 8  },
-    ],
-  },
-];
+import { noteTopics as topics } from "@/lib/constants";
 
 const allNotes = topics.flatMap((t) => t.notes);
 
