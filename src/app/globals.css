@@ -105,6 +105,12 @@
   --app-hover-translate-x: 4px;
   --app-hover-translate-y: 4px;
   --app-radius: 0.25rem;
+
+  --nav-indicator-height: 4px;
+  --nav-indicator-color: var(--accent);
+  --nav-indicator-radius: 0px;
+  --nav-indicator-bottom: 0px;
+  --nav-link-hover-bg: #ffe4e1;
 }
 
 .neo-dark {
@@ -129,6 +135,12 @@
   --app-hover-translate-x: 4px;
   --app-hover-translate-y: 4px;
   --app-radius: 0.25rem;
+
+  --nav-indicator-height: 4px;
+  --nav-indicator-color: var(--accent);
+  --nav-indicator-radius: 0px;
+  --nav-indicator-bottom: 0px;
+  --nav-link-hover-bg: rgba(0, 255, 204, 0.1);
 }
 
 /* ─── Base Styles ──────────────────────────────────────── */
@@ -491,4 +503,21 @@ code {
   --btn-shadow-hover: 0px 0px 0px 0px transparent;
   --btn-hover-x: 4px;
   --btn-hover-y: 4px;
+}
+
+/* ─── Navbar Base ──────────────────────────────────────── */
+.nav-indicator {
+  height: var(--nav-indicator-height, 2px);
+  border-radius: var(--nav-indicator-radius, 999px);
+  bottom: var(--nav-indicator-bottom, -4px);
+  background-color: var(--nav-indicator-color, var(--text-primary));
+}
+
+.nav-link {
+  transition: all 0.2s ease;
+  border-radius: var(--app-radius);
+}
+.nav-link:hover {
+  background-color: var(--nav-link-hover-bg, transparent);
+  color: var(--nav-link-hover-color, var(--text-primary)) !important;
 }

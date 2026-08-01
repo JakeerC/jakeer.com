@@ -130,7 +130,7 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "relative px-3 py-1.5 text-sm font-medium transition-all duration-200",
+                      "nav-link relative px-3 py-1.5 text-sm font-medium transition-all duration-200",
                       active
                         ? "font-medium active-nav-link"
                         : "opacity-60 hover:opacity-100",
@@ -145,12 +145,11 @@ export default function Navbar() {
 
             {/* Animated Floating Underline */}
             <li
-              className="absolute -bottom-1 h-[2px] rounded-full bg-current transition-all duration-300 ease-out pointer-events-none"
+              className="nav-indicator absolute bg-current transition-all duration-300 ease-out pointer-events-none"
               style={{
                 left: `${activeStyle.left}px`,
                 width: `${activeStyle.width}px`,
                 opacity: activeStyle.opacity,
-                color: "var(--text-primary)",
               }}
             />
           </ul>
@@ -239,7 +238,7 @@ export default function Navbar() {
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
                       className={cn(
-                        "relative block px-3 py-2 text-sm font-medium transition-all w-fit",
+                        "nav-link relative block px-3 py-2 text-sm font-medium transition-all w-fit",
                         active ? "font-medium" : "opacity-60",
                       )}
                       style={{ color: "var(--text-primary)" }}
