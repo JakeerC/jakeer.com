@@ -19,7 +19,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   children,
   ...props
 }, ref) => {
-  const baseClasses = "inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
+  const baseClasses = "btn inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
   
   const sizeClasses = {
     sm: "px-3 py-1.5 text-xs rounded",

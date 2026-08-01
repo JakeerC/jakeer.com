@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { LuMoon, LuSun, LuSearch, LuX, LuMenu } from "react-icons/lu";
+import { LuMoon, LuSun, LuSearch, LuX, LuMenu, LuPalette } from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import CommandPalette from "./CommandPalette";
@@ -76,7 +76,18 @@ export default function Navbar() {
     return () => document.removeEventListener("keydown", handleKeydown);
   }, [handleKeydown]);
 
-  const isDark = resolvedTheme === "dark";
+  const isNeo = resolvedTheme?.startsWith("neo-") || false;
+  const isDark = resolvedTheme?.endsWith("dark") || false;
+
+  const toggleDark = () => {
+    if (isNeo) setTheme(isDark ? "neo-light" : "neo-dark");
+    else setTheme(isDark ? "light" : "dark");
+  };
+
+  const toggleNeo = () => {
+    if (isNeo) setTheme(isDark ? "dark" : "light");
+    else setTheme(isDark ? "neo-dark" : "neo-light");
+  };
 
   return (
     <>
@@ -167,13 +178,27 @@ export default function Navbar() {
               </kbd>
             </Button>
 
+            {/* Theme Style toggle (Neo/Classic) */}
+            {mounted && (
+              <Button
+                id="neo-mode-toggle"
+                variant="ghost"
+                size="sm"
+                onClick={toggleNeo}
+                className="hidden md:flex p-2"
+                aria-label="Toggle neo style"
+              >
+                <LuPalette size={16} />
+              </Button>
+            )}
+
             {/* Dark mode toggle */}
             {mounted && (
               <Button
                 id="dark-mode-toggle"
                 variant="ghost"
                 size="sm"
-                onClick={() => setTheme(isDark ? "light" : "dark")}
+                onClick={toggleDark}
                 className="p-2"
                 aria-label="Toggle dark mode"
               >

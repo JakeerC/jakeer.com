@@ -58,6 +58,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="light"
           enableSystem
+          themes={['light', 'dark', 'neo-light', 'neo-dark', 'system']}
           disableTransitionOnChange={false}
         >
           <Navbar />

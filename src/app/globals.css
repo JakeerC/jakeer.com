@@ -54,6 +54,14 @@
   --border-strong:   var(--ring);
   --tag-bg:          var(--muted);
   --tag-border:      var(--border);
+
+  /* Layout & Interaction Variables */
+  --app-border-width: 1px;
+  --app-shadow-card: 0 1px 3px 0 rgba(26,39,68,0.08), 0 1px 2px -1px rgba(26,39,68,0.06);
+  --app-shadow-card-hover: 0 8px 24px -4px rgba(26,39,68,0.12), 0 2px 8px -2px rgba(26,39,68,0.06);
+  --app-hover-translate-x: 0px;
+  --app-hover-translate-y: -2px;
+  --app-radius: 1rem;
 }
 
 .dark {
@@ -71,6 +79,56 @@
   --border-strong:   rgba(255, 255, 255, 0.14);
   --tag-bg:          rgba(255, 255, 255, 0.06);
   --tag-border:      rgba(255, 255, 255, 0.12);
+
+  --app-shadow-card-hover: 0 8px 24px -4px rgba(0,0,0,0.4);
+}
+
+.neo-light {
+  --bg-primary:      #fff9f0;
+  --bg-secondary:    #ffd6a5;
+  --surface:         #ffffff;
+  --surface-raised:  #f0e6d2;
+  --text-primary:    #000000;
+  --text-secondary:  #222222;
+  --text-muted:      #444444;
+  --accent:          #ff0055;
+  --accent-hover:    #cc0044;
+  --accent-light:    #ffb3cc;
+  --border:          #000000;
+  --border-strong:   #ff0055; /* Bright pink border on hover */
+  --tag-bg:          #fff0f5;
+  --tag-border:      #ff0055;
+  
+  --app-border-width: 2px;
+  --app-shadow-card: 4px 4px 0px 0px #000000;
+  --app-shadow-card-hover: 0px 0px 0px 0px transparent;
+  --app-hover-translate-x: 4px;
+  --app-hover-translate-y: 4px;
+  --app-radius: 0.25rem;
+}
+
+.neo-dark {
+  --bg-primary:      #121212;
+  --bg-secondary:    #000000;
+  --surface:         #1c1c1c;
+  --surface-raised:  #333333;
+  --text-primary:    #ffffff;
+  --text-secondary:  #eeeeee;
+  --text-muted:      #bbbbbb;
+  --accent:          #00ffcc; /* Neon cyan */
+  --accent-hover:    #00ccaa;
+  --accent-light:    #007a77;
+  --border:          #ffffff;
+  --border-strong:   #00ffcc; /* Neon cyan border on hover */
+  --tag-bg:          #003322;
+  --tag-border:      #00ffcc;
+  
+  --app-border-width: 2px;
+  --app-shadow-card: 4px 4px 0px 0px #00ffcc; /* Saturated shadow */
+  --app-shadow-card-hover: 0px 0px 0px 0px transparent;
+  --app-hover-translate-x: 4px;
+  --app-hover-translate-y: 4px;
+  --app-radius: 0.25rem;
 }
 
 /* ─── Base Styles ──────────────────────────────────────── */
@@ -146,21 +204,19 @@ a:hover {
 /* ─── Card Base ────────────────────────────────────────── */
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
+  border: var(--app-border-width) solid var(--border);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-card);
   transition: all 0.2s ease;
 }
 .card:hover {
   border-color: var(--border-strong);
-  box-shadow: 0 8px 24px -4px rgba(26,39,68,0.12);
-  transform: translateY(-2px);
+  box-shadow: var(--app-shadow-card-hover);
+  transform: translate(var(--app-hover-translate-x), var(--app-hover-translate-y));
 }
 .card:hover h2,
 .card:hover h3 {
   color: var(--accent) !important;
-}
-.dark .card:hover {
-  box-shadow: 0 8px 24px -4px rgba(0,0,0,0.4);
 }
 
 /* ─── Section Label ────────────────────────────────────── */
@@ -416,4 +472,23 @@ code {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: var(--text-muted);
+}
+
+/* ─── Button Base ────────────────────────────────────────── */
+.btn {
+  border: var(--btn-border-width, 0px) solid var(--border-strong);
+  box-shadow: var(--btn-shadow, none);
+  transition: all 0.2s ease;
+}
+.btn:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-hover, none);
+  transform: translate(var(--btn-hover-x, 0px), var(--btn-hover-y, -1px));
+}
+
+.neo-light, .neo-dark {
+  --btn-border-width: 2px;
+  --btn-shadow: 4px 4px 0px 0px var(--accent); /* Saturated button shadows */
+  --btn-shadow-hover: 0px 0px 0px 0px transparent;
+  --btn-hover-x: 4px;
+  --btn-hover-y: 4px;
 }
