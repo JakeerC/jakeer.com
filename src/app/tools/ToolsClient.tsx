@@ -13,6 +13,8 @@ import {
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
+import { FieldControl } from "@/components/FieldControl";
+import { Tag } from "@/components/Tag";
 
 interface Tool {
   slug: string;
@@ -60,37 +62,24 @@ export default function ToolsClient({ tools }: { tools: Tool[] }) {
       <div className="divider mb-10" />
 
       {/* Search */}
-      <div
-        className="flex items-center gap-3 rounded-xl border px-4 py-2.5 mb-6"
-        style={{ background: "var(--surface)", borderColor: "var(--border)" }}
-      >
-        <LuSearch size={16} style={{ color: "var(--text-muted)" }} />
-        <input
+      <div className="mb-6">
+        <FieldControl
           type="text"
           placeholder="Search tools…"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 bg-transparent text-sm outline-none placeholder:opacity-50"
-          style={{ color: "var(--text-primary)" }}
+          onChange={setQuery}
+          leftIcon={<LuSearch size={16} />}
         />
       </div>
 
       {/* Category filters */}
       <div className="flex flex-wrap gap-2 mb-8">
         {categories.map((cat) => (
-          <button
+          <Tag
             key={cat}
             onClick={() => setCategory(cat)}
-            className="tag cursor-pointer transition-all hover:opacity-80"
-            style={
-              category === cat
-                ? {
-                    background: "var(--accent)",
-                    borderColor: "var(--accent)",
-                    color: "#fff",
-                  }
-                : {}
-            }
+            variant={category === cat ? "accent" : "default"}
+            className="cursor-pointer transition-all hover:opacity-80 px-3 py-1.5 text-[0.72rem] rounded-full"
           >
             <TechIcon tag={cat} />
             {cat} (
@@ -98,7 +87,7 @@ export default function ToolsClient({ tools }: { tools: Tool[] }) {
               ? tools.length
               : tools.filter((t) => t.category === cat).length}
             )
-          </button>
+          </Tag>
         ))}
       </div>
 
@@ -143,7 +132,7 @@ export default function ToolsClient({ tools }: { tools: Tool[] }) {
                   {tool.description}
                 </p>
               </div>
-              <span className="tag self-start">{tool.category}</span>
+              <Tag className="self-start px-3 py-1 text-[0.72rem] rounded-full">{tool.category}</Tag>
             </a>
           );
         })}

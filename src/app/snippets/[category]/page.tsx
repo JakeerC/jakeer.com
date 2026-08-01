@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LuArrowLeft } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
+import { Tag } from "@/components/Tag";
 
 import { getAllContent } from "@/lib/mdx";
 
@@ -81,7 +82,7 @@ export default async function SnippetCategoryPage({
               <div className="mt-auto">
                 <div className="flex flex-wrap gap-2 mb-6">
                   {item.tags?.map((tag: string) => (
-                    <span key={tag} className="tag text-[10px] uppercase tracking-wider">{tag}</span>
+                    <Tag key={tag} size="sm">{tag}</Tag>
                   ))}
                 </div>
                 

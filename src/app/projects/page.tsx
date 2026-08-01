@@ -1,6 +1,8 @@
 import { LuExternalLink } from "react-icons/lu";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
+import { Tag } from "@/components/Tag";
+import PageHeader from "@/components/PageHeader";
 
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
@@ -13,77 +15,7 @@ export const metadata: Metadata = {
   description: "A showcase of open-source and professional projects built by Jakeer Chilakala.",
 };
 
-const projects = [
-  {
-    name:        "Resilient Payment Processor",
-    description: "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and dead-letter queue support for financial-grade reliability.",
-    tags:        ["Java", "Spring Boot", "Kafka", "Redis", "PostgreSQL"],
-    github:      "#",
-    demo:        "",
-    status:      "Production",
-    features:    [
-      "Idempotent API design prevents double-charges",
-      "Distributed tracing with Zipkin + Sleuth",
-      "Auto-scaling on AWS ECS with CloudWatch",
-      "Circuit breaker via Resilience4j",
-      "99.99% uptime SLA maintained for 18 months",
-    ],
-  },
-  {
-    name:        "React Design System",
-    description: "A battle-tested component library used across 5 internal Wells Fargo applications — accessible, theme-able, and fully typed with comprehensive Storybook documentation.",
-    tags:        ["React", "TypeScript", "Storybook", "Vite", "CSS Modules"],
-    github:      "#",
-    demo:        "#",
-    status:      "Active",
-    features:    [
-      "WCAG 2.1 AA compliant out of the box",
-      "Dark & light themes via CSS custom properties",
-      "40+ components with prop-type documentation",
-      "100% TypeScript with generics support",
-      "Tree-shakeable exports for optimal bundle size",
-    ],
-  },
-  {
-    name:        "API Rate Limiter Middleware",
-    description: "Express.js middleware implementing token bucket and sliding window algorithms for precise API rate limiting with Redis-backed distributed counters.",
-    tags:        ["Node.js", "Redis", "TypeScript", "Express"],
-    github:      "#",
-    demo:        "",
-    status:      "Open Source",
-    features:    [
-      "Token bucket and sliding window algorithms",
-      "Redis-backed for distributed systems",
-      "Per-user and per-route granularity",
-      "Configurable response headers",
-      "Zero external dependencies beyond Redis client",
-    ],
-  },
-  {
-    name:        "DevDash — Developer Dashboard",
-    description: "A personal developer dashboard aggregating GitHub stats, Jira tickets, Confluence docs, and CI/CD pipeline status in a single unified interface.",
-    tags:        ["Next.js", "React", "TypeScript", "GitHub API"],
-    github:      "#",
-    demo:        "#",
-    status:      "Personal",
-    features:    [
-      "Real-time GitHub activity graph",
-      "Jira sprint board integration",
-      "CI/CD pipeline status at a glance",
-      "Customizable widget layout",
-      "Dark mode with CSS design tokens",
-    ],
-  },
-];
-
-import PageHeader from "@/components/PageHeader";
-
-const statusColors: Record<string, string> = {
-  Production:  "#22c55e",
-  Active:      "#3b82f6",
-  "Open Source": "var(--accent)",
-  Personal:    "#f59e0b",
-};
+import { projects, statusColors } from "@/lib/constants";
 
 export default function ProjectsPage() {
   return (
@@ -162,10 +94,10 @@ export default function ProjectsPage() {
               {/* Tags */}
               <div className="flex flex-wrap gap-1.5">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="tag">
+                  <Tag key={tag} className="px-3 py-1 text-[0.72rem] rounded-full">
                     <TechIcon tag={tag} />
                     {tag}
-                  </span>
+                  </Tag>
                 ))}
               </div>
 

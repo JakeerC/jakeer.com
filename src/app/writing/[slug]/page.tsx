@@ -1,53 +1,133 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LuArrowLeft, LuClock, LuCalendar } from "react-icons/lu";
 import Link from "next/link";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import CodeBlock from "@/components/CodeBlock";
+import Image from "next/image";
+import { Tag } from "@/components/Tag";
 
 import { notFound } from "next/navigation";
 import { getContentBySlug } from "@/lib/mdx";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const resolvedParams = await params;
   const post = getContentBySlug("writing", resolvedParams.slug);
   if (!post) return { title: "Not Found" };
-  return { title: post.frontmatter.title, description: post.frontmatter.description };
+  return {
+    title: post.frontmatter.title,
+    description: post.frontmatter.description,
+  };
 }
 
 const components = {
-  h2: (props: any) => <h2 style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: "1.5rem", fontWeight: 700, margin: "2.5rem 0 1rem", color: "var(--text-primary)" }} {...props} />,
-  h3: (props: any) => <h3 style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: "1.2rem", fontWeight: 600, margin: "2rem 0 0.75rem", color: "var(--text-primary)" }} {...props} />,
-  strong: (props: any) => <strong style={{ color: "var(--text-primary)", fontWeight: 600 }} {...props} />,
+  h2: (props: any) => (
+    <h2
+      style={{
+        fontFamily: "'Space Grotesk', system-ui, sans-serif",
+        fontSize: "1.5rem",
+        fontWeight: 700,
+        margin: "2.5rem 0 1rem",
+        color: "var(--text-primary)",
+      }}
+      {...props}
+    />
+  ),
+  h3: (props: any) => (
+    <h3
+      style={{
+        fontFamily: "'Space Grotesk', system-ui, sans-serif",
+        fontSize: "1.2rem",
+        fontWeight: 600,
+        margin: "2rem 0 0.75rem",
+        color: "var(--text-primary)",
+      }}
+      {...props}
+    />
+  ),
+  strong: (props: any) => (
+    <strong
+      style={{ color: "var(--text-primary)", fontWeight: 600 }}
+      {...props}
+    />
+  ),
   code: (props: any) => {
-    return <code style={{ background: "var(--tag-bg)", border: "1px solid var(--tag-border)", borderRadius: "4px", padding: "0.15em 0.4em", color: "var(--accent)", fontSize: "0.85em" }} {...props} />;
+    return (
+      <code
+        style={{
+          background: "var(--tag-bg)",
+          border: "1px solid var(--tag-border)",
+          borderRadius: "4px",
+          padding: "0.15em 0.4em",
+          color: "var(--accent)",
+          fontSize: "0.85em",
+        }}
+        {...props}
+      />
+    );
   },
-  li: (props: any) => <li style={{ margin: "0.4rem 0", color: "var(--text-secondary)" }} {...props} />,
-  ul: (props: any) => <ul style={{ paddingLeft: "1.25rem", margin: "1rem 0", listStyle: "disc" }} {...props} />,
-  p: (props: any) => <p style={{ margin: "1rem 0", color: "var(--text-secondary)" }} {...props} />,
+  li: (props: any) => (
+    <li
+      style={{ margin: "0.4rem 0", color: "var(--text-secondary)" }}
+      {...props}
+    />
+  ),
+  ul: (props: any) => (
+    <ul
+      style={{ paddingLeft: "1.25rem", margin: "1rem 0", listStyle: "disc" }}
+      {...props}
+    />
+  ),
+  p: (props: any) => (
+    <p
+      style={{ margin: "1rem 0", color: "var(--text-secondary)" }}
+      {...props}
+    />
+  ),
   pre: (props: any) => {
     const child = props.children;
     if (child && child.props) {
       const className = child.props.className || "";
       const langMatch = className.match(/language-(.*)/);
       const lang = langMatch ? langMatch[1] : "text";
-      
-      const codeString = typeof child.props.children === 'string' 
-        ? child.props.children 
-        : Array.isArray(child.props.children) 
-          ? child.props.children.join('') 
-          : child.props.children || "";
+
+      const codeString =
+        typeof child.props.children === "string"
+          ? child.props.children
+          : Array.isArray(child.props.children)
+            ? child.props.children.join("")
+            : child.props.children || "";
 
       return <CodeBlock code={String(codeString).trim()} lang={lang} />;
     }
     return <pre {...props} />;
-  }
+  },
+  img: (props: any) => (
+    <Image
+      src={props.src}
+      alt={props.alt || ""}
+      width={0}
+      height={0}
+      sizes="100vw"
+      style={{ width: "100%", height: "auto" }}
+      className="rounded-lg border border-[var(--border)] my-6"
+    />
+  ),
 };
 
-export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const resolvedParams = await params;
   const post = getContentBySlug("writing", resolvedParams.slug);
-  
+
   if (!post) {
     return notFound();
   }
@@ -69,17 +149,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-6">
         {tags.map((t: string) => (
-          <span key={t} className="tag">
+          <Tag key={t} className="px-3 py-1 text-[0.72rem] rounded-full">
             <TechIcon tag={t} />
             {t}
-          </span>
+          </Tag>
         ))}
       </div>
 
       {/* Title */}
       <h1
         className="font-display font-bold leading-tight mb-6"
-        style={{ fontSize: "clamp(2rem, 5vw, 3rem)", color: "var(--text-primary)" }}
+        style={{
+          fontSize: "clamp(2rem, 5vw, 3rem)",
+          color: "var(--text-primary)",
+        }}
       >
         {post.frontmatter.title}
       </h1>
