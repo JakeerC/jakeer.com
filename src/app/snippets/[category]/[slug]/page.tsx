@@ -42,8 +42,10 @@ export default async function SnippetDetailPage({
   const post = getContentBySlug("snippets", slug);
   if (!post) return notFound();
 
+  const tags = post.frontmatter.tags as string[] | undefined;
+  
   // Optional: check if the tags actually match the category route
-  if (!post.frontmatter.tags?.includes(category)) {
+  if (!tags?.includes(category)) {
     return notFound();
   }
 
@@ -62,7 +64,7 @@ export default async function SnippetDetailPage({
       <section className="flex flex-col gap-4">
         <div>
           <div className="flex flex-wrap gap-2 mb-4">
-            {post.frontmatter.tags?.map((tag: string) => (
+            {tags?.map((tag: string) => (
               <Tag key={tag} size="sm">
                 {tag}
               </Tag>
@@ -72,7 +74,7 @@ export default async function SnippetDetailPage({
             className="font-display text-3xl md:text-4xl font-bold mb-4"
             style={{ color: "var(--text-primary)" }}
           >
-            {post.frontmatter.title}
+            {post.frontmatter.title as string}
           </h1>
         </div>
 

@@ -15,7 +15,7 @@ import {
   ADMIN_LEVEL_OPTIONS as LEVEL_OPTIONS,
 } from "../../../lib/constants";
 
-export function AdminClient({ session: _session }: { session: any }) {
+export function AdminClient({ session: _session }: { session: unknown }) {
   const [category, setCategory] = useState<"writing" | "snippets" | "tools">(
     "writing",
   );
@@ -79,8 +79,8 @@ export function AdminClient({ session: _session }: { session: any }) {
       });
       setPrUrl(res.prUrl);
       alert("Pull Request created successfully!");
-    } catch (e: any) {
-      alert("Error creating PR: " + e.message);
+    } catch (e: unknown) {
+      alert("Error creating PR: " + (e as Error).message);
     } finally {
       setIsSubmitting(false);
     }

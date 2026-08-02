@@ -9,7 +9,7 @@ vi.mock('shiki', () => ({
 
 // Mock CodeBlockClient to just render its props so we can verify them
 vi.mock('../CodeBlockClient', () => ({
-  default: ({ code, lang, html }: any) => (
+  default: ({ code, lang, html }: { code: string; lang: string; html: string }) => (
     <div data-testid="code-block-client">
       <div data-testid="prop-code">{code}</div>
       <div data-testid="prop-lang">{lang}</div>

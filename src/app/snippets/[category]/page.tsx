@@ -13,14 +13,14 @@ export default async function SnippetCategoryPage({
   
   const allSnippets = getAllContent("snippets");
   const items = allSnippets
-    .filter(s => (s.frontmatter.tags || []).includes(resolvedParams.category))
+    .filter(s => ((s.frontmatter.tags as string[]) || []).includes(resolvedParams.category))
     .map(s => ({
-      title: s.frontmatter.title,
-      description: s.frontmatter.description,
+      title: s.frontmatter.title as string,
+      description: s.frontmatter.description as string,
       slug: s.slug,
-      tags: s.frontmatter.tags,
-      level: s.frontmatter.level,
-      date: s.frontmatter.date
+      tags: s.frontmatter.tags as string[],
+      level: s.frontmatter.level as string,
+      date: s.frontmatter.date as string
     }));
 
   const catLabel = resolvedParams.category.charAt(0).toUpperCase() + resolvedParams.category.slice(1);

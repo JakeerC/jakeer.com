@@ -67,7 +67,7 @@ export async function submitContentToGitHub({
   });
 
   // 3. Create blobs and tree
-  const tree: any[] = [];
+  const tree: Record<string, unknown>[] = [];
 
   // Add the markdown file
   let path = "";
