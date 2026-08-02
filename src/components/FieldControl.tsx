@@ -46,6 +46,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
   required,
   leftIcon,
 }) => {
+  const selectId = React.useId();
   const baseClasses = `border p-2 rounded-md w-full disabled:opacity-50 ${leftIcon ? "pl-10" : ""}`;
   const baseStyle = {
     borderColor: "var(--border)",
@@ -149,6 +150,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
         if (type === "tags") {
           return (
             <CreatableSelect
+              instanceId={selectId}
               isMulti={isMulti}
               options={options}
               value={currentSelected}
@@ -164,6 +166,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
 
         return (
           <Select
+            instanceId={selectId}
             isMulti={isMulti}
             options={options}
             value={currentSelected}
