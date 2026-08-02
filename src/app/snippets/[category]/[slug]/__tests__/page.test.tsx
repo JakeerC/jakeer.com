@@ -28,6 +28,26 @@ describe('SnippetDetailPage', () => {
     expect(element).toBeTruthy();
   });
 
+  it('SnippetDetailPage should render properly with missing tags', async () => {
+    vi.mocked(mdx.getContentBySlug).mockReturnValue({
+      slug: 'test-snippet-missing',
+      frontmatter: {
+        title: 'Test Snippet Missing',
+        description: 'Test Desc',
+        date: '2023-01-01',
+        level: 'INTERMEDIATE',
+        // tags missing
+      },
+      content: ''
+    });
+
+    try {
+      await SnippetDetailPage({ params: Promise.resolve({ slug: 'test-snippet-missing', category: 'react' }) });
+    } catch (e: any) {
+      expect(e.message).toContain('NEXT');
+    }
+  });
+
   it('SnippetDetailPage should return notFound if missing', async () => {
     vi.mocked(mdx.getContentBySlug).mockReturnValue(undefined);
     try {

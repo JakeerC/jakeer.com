@@ -31,6 +31,31 @@ describe('ArticlePage', () => {
     expect(meta).toEqual({ title: 'Not Found' });
   });
 
+  it('ArticlePage should render properly with default fallbacks', async () => {
+    vi.mocked(mdx.getContentBySlug).mockReturnValue({
+      slug: 'test-post-missing',
+      frontmatter: {
+        title: 'Test Post Missing',
+        description: 'Test Desc',
+        date: '2023-01-01',
+        // missing readTime and tags
+      },
+      content: ''
+    });
+
+    const element = await ArticlePage({ params: Promise.resolve({ slug: 'test-post-missing' }) });
+    expect(element).toBeTruthy();
+  });
+
+  it('ArticlePage should return notFound if missing', async () => {
+    vi.mocked(mdx.getContentBySlug).mockReturnValue(undefined);
+    try {
+      await ArticlePage({ params: Promise.resolve({ slug: 'missing' }) });
+    } catch (e: any) {
+      expect(e.message).toContain('NEXT');
+    }
+  });
+
   it('ArticlePage should render properly', async () => {
     vi.mocked(mdx.getContentBySlug).mockReturnValue({
       slug: 'test-post',

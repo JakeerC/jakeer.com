@@ -7,7 +7,7 @@ vi.mock('@/lib/mdx', () => ({
 }));
 
 describe('SnippetCategoryPage', () => {
-  it('should render proper snippets', async () => {
+  it('should render proper snippets and handle missing tags', async () => {
     vi.mocked(mdx.getAllContent).mockReturnValue([
       {
         slug: 'test-snippet',
@@ -17,6 +17,15 @@ describe('SnippetCategoryPage', () => {
           tags: ['react'],
           level: 'ADVANCED',
           date: '2023-01-01'
+        },
+        content: ''
+      },
+      {
+        slug: 'test-snippet-no-tags',
+        frontmatter: {
+          title: 'No Tags',
+          description: 'Desc',
+          // missing tags to hit || [] falsy branch
         },
         content: ''
       }

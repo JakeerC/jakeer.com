@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AdminClient } from '../AdminClient';
 import * as actions from '../../actions';
@@ -34,11 +34,12 @@ describe('AdminClient', () => {
 
     const submitButton = screen.getByRole('button', { name: /Publish to GitHub/i });
     
-    await act(async () => {
-      fireEvent.click(submitButton);
-    });
+    fireEvent.click(submitButton);
 
-    expect(alertMock).toHaveBeenCalledWith('Error creating PR: Test error');
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Error creating PR: Test error');
+    });
+    
     alertMock.mockRestore();
   });
 });

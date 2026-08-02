@@ -11,7 +11,7 @@ vi.mock('../WritingClient', () => ({
 }));
 
 describe('WritingPage', () => {
-  it('should render WritingClient with formatted posts', () => {
+  it('should render WritingClient with formatted posts and handle missing fields', () => {
     vi.mocked(mdx.getAllContent).mockReturnValue([
       {
         slug: 'post-1',
@@ -24,11 +24,18 @@ describe('WritingPage', () => {
           featured: true
         },
         content: ''
+      },
+      {
+        slug: 'post-2',
+        frontmatter: {
+          // missing all fields to hit falsy branches
+        },
+        content: ''
       }
     ]);
 
     const result = WritingPage() as any;
-    expect(result.props.posts).toHaveLength(1);
+    expect(result.props.posts).toHaveLength(2);
     expect(result.props.posts[0]).toEqual({
       slug: 'post-1',
       title: 'Post 1',
@@ -37,6 +44,16 @@ describe('WritingPage', () => {
       readTime: '5 min read',
       tags: ['react'],
       featured: true
+    });
+    
+    expect(result.props.posts[1]).toEqual({
+      slug: 'post-2',
+      title: '',
+      excerpt: '',
+      date: '',
+      readTime: '',
+      tags: [],
+      featured: false
     });
   });
 });
