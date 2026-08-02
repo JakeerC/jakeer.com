@@ -1,5 +1,5 @@
 {
-    "sonarCloudOrganization": "jakeerc",
-    "projectKey": "JakeerC_jakeer.com",
-    "region": "EU"
+  "sonarCloudOrganization": "jakeerc",
+  "projectKey": "jakeer.com",
+  "region": "EU"
 }
