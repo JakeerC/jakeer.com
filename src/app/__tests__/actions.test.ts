@@ -11,7 +11,8 @@ describe('actions', () => {
     vi.mocked(mdx.getAllContent).mockImplementation((type) => {
       if (type === 'writing') {
         return [
-          { slug: 'post-1', frontmatter: { title: 'Post 1', description: 'Desc 1' }, content: '' }
+          { slug: 'post-1', frontmatter: { title: 'Post 1', description: 'Desc 1' }, content: '' },
+          { slug: 'post-2', frontmatter: {}, content: '' }
         ];
       }
       if (type === 'snippets') {
@@ -32,8 +33,9 @@ describe('actions', () => {
     });
 
     const data = await getSearchData();
-    expect(data.posts).toHaveLength(1);
+    expect(data.posts).toHaveLength(2);
     expect(data.posts[0]).toEqual({ slug: 'post-1', title: 'Post 1', excerpt: 'Desc 1' });
+    expect(data.posts[1]).toEqual({ slug: 'post-2', title: '', excerpt: '' });
 
     expect(data.snippets).toHaveLength(3);
     expect(data.snippets[0]).toEqual({ slug: 'snippet-1', title: 'Snippet 1', description: 'Snippet Desc 1', category: 'react' });
