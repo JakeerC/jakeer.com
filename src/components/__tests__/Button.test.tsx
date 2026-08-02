@@ -9,7 +9,7 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
     // Default variant is 'primary'
-    expect(button).toHaveClass('bg-[var(--accent)]');
+    expect(button).toHaveClass('bg-[var(--btn-bg,var(--accent))]');
   });
 
   it('applies the provided variant class', () => {
