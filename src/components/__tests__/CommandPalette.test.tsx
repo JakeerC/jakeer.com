@@ -60,4 +60,72 @@ describe('CommandPalette', () => {
       await Promise.resolve(); // flush promises
     });
   });
+
+  it('triggers commands on selection', async () => {
+    const setOpen = vi.fn();
+    
+    // Mock clipboard and window.open
+    const originalClipboard = navigator.clipboard;
+    const originalOpen = window.open;
+    
+    const mockWriteText = vi.fn();
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: mockWriteText,
+      },
+    });
+    
+    const mockWindowOpen = vi.fn();
+    window.open = mockWindowOpen;
+
+    render(<CommandPalette open={true} setOpen={setOpen} />);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Test Post')).toBeInTheDocument();
+    });
+    
+    const clickOption = (text: string) => {
+      const el = screen.getByText(text);
+      el.click();
+    };
+
+    // Test writing
+    clickOption('Test Post');
+    expect(mockPush).toHaveBeenCalledWith('/writing/test-post');
+    expect(setOpen).toHaveBeenCalledWith(false);
+
+    // Test tools
+    clickOption('Test Tool');
+    expect(mockWindowOpen).toHaveBeenCalledWith('https://test.com', '_blank');
+
+    // Test snippets
+    clickOption('Test Snippet');
+    expect(mockPush).toHaveBeenCalledWith('/snippets/react');
+
+    // Test Actions
+    clickOption('Go to Home');
+    expect(mockPush).toHaveBeenCalledWith('/');
+    
+    clickOption('Go to Blogs');
+    expect(mockPush).toHaveBeenCalledWith('/writing');
+    
+    clickOption('Go to Snippets');
+    expect(mockPush).toHaveBeenCalledWith('/snippets');
+    
+    clickOption('Go to Tools');
+    expect(mockPush).toHaveBeenCalledWith('/tools');
+
+    clickOption('Switch to Dark Mode');
+    expect(mockSetTheme).toHaveBeenCalledWith('dark');
+    
+    clickOption('Copy Current URL');
+    expect(mockWriteText).toHaveBeenCalled();
+
+    clickOption('mcp');
+    // Just verifying it doesn't crash
+    
+    // Restore mocks
+    Object.assign(navigator, { clipboard: originalClipboard });
+    window.open = originalOpen;
+  });
 });

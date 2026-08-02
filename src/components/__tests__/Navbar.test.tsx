@@ -38,6 +38,19 @@ vi.mock('../CommandPalette', () => ({
   ),
 }));
 
+// Mock Supabase client
+vi.mock('@/lib/supabase/client', () => ({
+  createClient: vi.fn(() => ({
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      onAuthStateChange: vi.fn().mockReturnValue({
+        data: { subscription: { unsubscribe: vi.fn() } },
+      }),
+      signOut: vi.fn().mockResolvedValue({ error: null }),
+    },
+  })),
+}));
+
 describe('Navbar', () => {
   beforeEach(() => {
     vi.clearAllMocks();

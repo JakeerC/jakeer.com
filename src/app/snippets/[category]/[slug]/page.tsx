@@ -8,7 +8,7 @@ import CodeBlock from "@/components/CodeBlock";
 import { Tag } from "@/components/Tag";
 import Image from "next/image";
 
-const components = {
+export const components = {
   pre: (props: any) => {
     // If MDX parses a code block, it usually passes it as <pre><code className="language-xyz">...</code></pre>
     // We can just use our CodeBlock component.

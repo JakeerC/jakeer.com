@@ -3,113 +3,163 @@
 import { createClient } from "@/lib/supabase/server";
 import { Octokit } from "octokit";
 
-
-export async function submitContentToGitHub({
-  title,
-  slug,
-  category,
-  markdown,
-  images,
-  description,
-  tags,
-  readTime,
-  lang,
-  level,
-  toolCategory,
-  link
-}: {
-  title: string;
-  slug: string;
-  category: "writing" | "snippets" | "tools";
-  markdown: string;
-  images: { filename: string; base64Data: string }[];
-  description?: string;
+type DraftMetadata = {
   tags?: string;
   readTime?: string;
   lang?: string;
   level?: string;
   toolCategory?: string;
   link?: string;
+  images?: { filename: string; base64Data: string }[];
+};
+
+export async function getDrafts() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const { data, error } = await supabase
+    .from("content_drafts")
+    .select("id, title, description, category, pr_number, updated_at")
+    .order("updated_at", { ascending: false });
+
+  if (error) {
+    if (error.code === '42P01') {
+      console.warn("Table 'content_drafts' does not exist yet. Please run the SQL migration.");
+      return [];
+    }
+    console.error("Supabase error:", error);
+    throw error;
+  }
+  return data;
+}
+
+export async function getDraftById(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const { data, error } = await supabase
+    .from("content_drafts")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    if (error.code === '42P01') {
+      console.warn("Table 'content_drafts' does not exist yet. Please run the SQL migration.");
+      return null;
+    }
+    if (error.code === '22P02' || error.code === 'PGRST116') {
+      // 22P02: Invalid input syntax for type uuid (e.g., if ID was 'new' or mangled)
+      // PGRST116: JSON object requested, multiple (or no) rows returned
+      console.warn(`Draft not found or invalid ID: ${id}`);
+      return null;
+    }
+    console.error("Supabase error in getDraftById:", JSON.stringify(error, null, 2), error);
+    throw error;
+  }
+  return data;
+}
+
+export async function saveDraftAction(payload: {
+  id?: string;
+  title: string;
+  slug: string;
+  category: "writing" | "snippets" | "tools";
+  markdown: string;
+  description?: string;
+  metadata: DraftMetadata;
+  branchName?: string | null;
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error("You must be logged in to perform this action.");
-  }
+  if (!user) throw new Error("Unauthorized");
 
   const githubToken = process.env.GITHUB_TOKEN;
-  if (!githubToken) {
-    throw new Error("GITHUB_TOKEN is not set in environment variables. Please add it to your .env.local file.");
-  }
+  if (!githubToken) throw new Error("GITHUB_TOKEN missing in .env.local");
 
   const octokit = new Octokit({ auth: githubToken });
   const owner = "JakeerC";
   const repo = "jakeer.com";
 
-  // 1. Get default branch SHA
-  const { data: repoData } = await octokit.rest.repos.get({ owner, repo });
-  const defaultBranch = repoData.default_branch;
-  const { data: refData } = await octokit.rest.git.getRef({
-    owner,
-    repo,
-    ref: `heads/${defaultBranch}`,
-  });
-  const baseSha = refData.object.sha;
+  let branchName = payload.branchName;
+  let baseSha = "";
 
-  // 2. Create new branch
-  const branchName = `content/${category}-${slug}-${Date.now()}`;
-  await octokit.rest.git.createRef({
-    owner,
-    repo,
-    ref: `refs/heads/${branchName}`,
-    sha: baseSha,
-  });
+  // 1. Get branch info
+  if (!branchName) {
+    // Create new branch
+    const { data: repoData } = await octokit.rest.repos.get({ owner, repo });
+    const defaultBranch = repoData.default_branch;
+    const { data: refData } = await octokit.rest.git.getRef({
+      owner,
+      repo,
+      ref: `heads/${defaultBranch}`,
+    });
+    baseSha = refData.object.sha;
+    branchName = `content/${payload.category}-${payload.slug}-${Date.now()}`;
+    await octokit.rest.git.createRef({
+      owner,
+      repo,
+      ref: `refs/heads/${branchName}`,
+      sha: baseSha,
+    });
+  } else {
+    // Existing branch
+    const { data: refData } = await octokit.rest.git.getRef({
+      owner,
+      repo,
+      ref: `heads/${branchName}`,
+    });
+    baseSha = refData.object.sha;
+  }
 
-  // 3. Create blobs and tree
+  // 2. Build tree
   const tree: Record<string, unknown>[] = [];
-
-  // Add the markdown file
   let path = "";
   let frontmatter = "";
   
-  if (category === "writing") {
+  const m = payload.metadata;
+  if (payload.category === "writing") {
     frontmatter = `---
-title: "${title}"
+title: "${payload.title}"
 date: "${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}"
-readTime: "${readTime || "5 min read"}"
-tags: [${(tags || "").split(",").map(t => `"${t.trim()}"`).filter(t => t !== '""').join(", ")}]
-description: "${description || ""}"
+readTime: "${m.readTime || "5 min read"}"
+tags: [${(m.tags || "").split(",").map((t: string) => `"${t.trim()}"`).filter((t: string) => t !== '""').join(", ")}]
+description: "${payload.description || ""}"
 ---
 
 `;
-    path = `content/writing/${slug}.mdx`;
-  } else if (category === "snippets") {
+    path = `content/writing/${payload.slug}.mdx`;
+  } else if (payload.category === "snippets") {
     frontmatter = `---
-title: "${title}"
+title: "${payload.title}"
 date: "${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}"
-description: "${description || ""}"
-lang: "${lang || "typescript"}"
-level: "${level || "BEGINNER"}"
-tags: [${(tags || "").split(",").map(t => `"${t.trim()}"`).filter(t => t !== '""').join(", ")}]
+description: "${payload.description || ""}"
+lang: "${m.lang || "typescript"}"
+level: "${m.level || "BEGINNER"}"
+tags: [${(m.tags || "").split(",").map((t: string) => `"${t.trim()}"`).filter((t: string) => t !== '""').join(", ")}]
 ---
 
 `;
-    path = `content/snippets/${slug}.mdx`;
-  } else if (category === "tools") {
+    path = `content/snippets/${payload.slug}.mdx`;
+  } else if (payload.category === "tools") {
     frontmatter = `---
-name: "${title}"
-description: "${description || ""}"
-category: "${toolCategory || "Development"}"
-link: "${link || ""}"
+name: "${payload.title}"
+description: "${payload.description || ""}"
+category: "${m.toolCategory || "Development"}"
+link: "${m.link || ""}"
 icon: "LuCode"
 ---
 
 `;
-    path = `content/tools/${slug}.mdx`;
+    path = `content/tools/${payload.slug}.mdx`;
   }
   
-  const fullContent = frontmatter + markdown;
+  const fullContent = frontmatter + payload.markdown;
   tree.push({
     path,
     mode: "100644",
@@ -117,23 +167,25 @@ icon: "LuCode"
     content: fullContent,
   });
 
-  // Add images to tree
-  for (const img of images) {
-    const { data: blobData } = await octokit.rest.git.createBlob({
-      owner,
-      repo,
-      content: img.base64Data, // base64 string
-      encoding: "base64",
-    });
-    tree.push({
-      path: `public/assets/${img.filename}`,
-      mode: "100644",
-      type: "blob",
-      sha: blobData.sha,
-    });
+  // Images
+  if (m.images) {
+    for (const img of m.images) {
+      const { data: blobData } = await octokit.rest.git.createBlob({
+        owner,
+        repo,
+        content: img.base64Data,
+        encoding: "base64",
+      });
+      tree.push({
+        path: `public/assets/${img.filename}`,
+        mode: "100644",
+        type: "blob",
+        sha: blobData.sha,
+      });
+    }
   }
 
-  // 4. Create Tree
+  // 3. Create Tree & Commit
   const { data: treeData } = await octokit.rest.git.createTree({
     owner,
     repo,
@@ -141,32 +193,114 @@ icon: "LuCode"
     tree,
   });
 
-  // 5. Create Commit
   const { data: commitData } = await octokit.rest.git.createCommit({
     owner,
     repo,
-    message: `Add new ${category}: ${title}`,
+    message: `Save ${payload.category}: ${payload.title}`,
     tree: treeData.sha,
     parents: [baseSha],
   });
 
-  // 6. Update Ref
+  // 4. Update Ref
   await octokit.rest.git.updateRef({
     owner,
     repo,
     ref: `heads/${branchName}`,
     sha: commitData.sha,
+    force: true,
   });
 
-  // 7. Create Pull Request
+  // 5. Save to Supabase
+  const dbPayload = {
+    user_id: user.id,
+    category: payload.category,
+    title: payload.title,
+    slug: payload.slug,
+    description: payload.description,
+    markdown: payload.markdown,
+    metadata: payload.metadata,
+    branch_name: branchName,
+    updated_at: new Date().toISOString()
+  };
+
+  let savedId = payload.id;
+  if (payload.id) {
+    const { error } = await supabase
+      .from("content_drafts")
+      .update(dbPayload)
+      .eq("id", payload.id);
+    if (error) throw error;
+  } else {
+    const { data, error } = await supabase
+      .from("content_drafts")
+      .insert(dbPayload)
+      .select("id")
+      .single();
+    if (error) throw error;
+    savedId = data.id;
+  }
+
+  return { id: savedId, branchName };
+}
+
+export async function createPRForContent(id: string, branchName: string, title: string, category: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const githubToken = process.env.GITHUB_TOKEN;
+  if (!githubToken) throw new Error("GITHUB_TOKEN missing in .env.local");
+
+  const octokit = new Octokit({ auth: githubToken });
+  const owner = "JakeerC";
+  const repo = "jakeer.com";
+
+  const { data: repoData } = await octokit.rest.repos.get({ owner, repo });
+  
   const { data: prData } = await octokit.rest.pulls.create({
     owner,
     repo,
     title: `Add ${category}: ${title}`,
     head: branchName,
-    base: defaultBranch,
-    body: `This PR adds a new ${category} created from the admin panel.`,
+    base: repoData.default_branch,
+    body: `This PR was automatically created from the admin dashboard.`,
   });
 
-  return { prUrl: prData.html_url };
+  // Update Supabase
+  await supabase
+    .from("content_drafts")
+    .update({ pr_number: prData.number, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  return { prNumber: prData.number, prUrl: prData.html_url };
+}
+
+export async function mergePRAction(id: string, prNumber: number) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const githubToken = process.env.GITHUB_TOKEN;
+  if (!githubToken) throw new Error("GITHUB_TOKEN missing in .env.local");
+
+  const octokit = new Octokit({ auth: githubToken });
+  const owner = "JakeerC";
+  const repo = "jakeer.com";
+
+  await octokit.rest.pulls.merge({
+    owner,
+    repo,
+    pull_number: prNumber,
+    merge_method: "squash"
+  });
+
+  // Once merged, delete the draft
+  await supabase
+    .from("content_drafts")
+    .delete()
+    .eq("id", id);
+
+  return { success: true };
 }
