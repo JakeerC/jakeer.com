@@ -28,9 +28,9 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   const { resolvedTheme, setTheme } = useTheme();
   
   const [data, setData] = useState<{
-    posts: Record<string, unknown>[];
-    snippets: Record<string, unknown>[];
-    tools: Record<string, unknown>[];
+    posts: any[];
+    snippets: any[];
+    tools: any[];
   }>({ posts: [], snippets: [], tools: [] });
 
   useEffect(() => {

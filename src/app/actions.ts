@@ -9,12 +9,15 @@ export async function getSearchData() {
     excerpt: p.frontmatter.description || ""
   }));
 
-  const snippets = getAllContent("snippets").map(s => ({
-    slug: s.slug,
-    title: s.frontmatter.title || "",
-    description: s.frontmatter.description || "",
-    category: (s.frontmatter.tags && s.frontmatter.tags[0]) ? s.frontmatter.tags[0] : "general"
-  }));
+  const snippets = getAllContent("snippets").map(s => {
+    const tags = s.frontmatter.tags as string[] | undefined;
+    return {
+      slug: s.slug,
+      title: s.frontmatter.title as string || "",
+      description: s.frontmatter.description as string || "",
+      category: (tags && tags.length > 0) ? tags[0] : "general"
+    };
+  });
 
   const tools = getAllContent("tools").map(t => ({
     slug: t.slug,

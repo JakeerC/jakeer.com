@@ -20,8 +20,8 @@ export async function generateMetadata({
   const post = getContentBySlug("writing", resolvedParams.slug);
   if (!post) return { title: "Not Found" };
   return {
-    title: post.frontmatter.title,
-    description: post.frontmatter.description,
+    title: post.frontmatter.title as string,
+    description: post.frontmatter.description as string,
   };
 }
 
@@ -132,7 +132,7 @@ export default async function ArticlePage({
     return notFound();
   }
 
-  const tags = post.frontmatter.tags || [];
+  const tags = (post.frontmatter.tags as string[]) || [];
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
@@ -164,7 +164,7 @@ export default async function ArticlePage({
           color: "var(--text-primary)",
         }}
       >
-        {post.frontmatter.title}
+        {post.frontmatter.title as string}
       </h1>
 
       {/* Meta */}
@@ -174,12 +174,12 @@ export default async function ArticlePage({
       >
         <span className="flex items-center gap-1.5">
           <LuCalendar size={13} />
-          {post.frontmatter.date}
+          {post.frontmatter.date as string}
         </span>
         <span>·</span>
         <span className="flex items-center gap-1.5">
           <LuClock size={13} />
-          {post.frontmatter.readTime || "5 min read"}
+          {(post.frontmatter.readTime as string) || "5 min read"}
         </span>
       </div>
 
