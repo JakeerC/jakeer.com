@@ -1,11 +1,21 @@
 import { describe, it, expect, vi } from 'vitest';
-import { submitContentToGitHub } from '../actions';
+import { saveDraftAction, createPRForContent } from '../actions';
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn().mockResolvedValue({
     auth: {
       getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'test-user' } } })
-    }
+    },
+    from: vi.fn().mockReturnValue({
+      insert: vi.fn().mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          single: vi.fn().mockResolvedValue({ data: { id: 'test-id' } })
+        })
+      }),
+      update: vi.fn().mockReturnValue({
+        eq: vi.fn().mockResolvedValue({})
+      })
+    })
   })
 }));
 
@@ -14,7 +24,7 @@ const mockCreateBlob = vi.fn().mockResolvedValue({ data: { sha: 'blob-sha' } });
 const mockCreateTree = vi.fn().mockResolvedValue({ data: { sha: 'tree-sha' } });
 const mockCreateCommit = vi.fn().mockResolvedValue({ data: { sha: 'commit-sha' } });
 const mockUpdateRef = vi.fn();
-const mockCreatePull = vi.fn().mockResolvedValue({ data: { html_url: 'https://github.com/pr/1' } });
+const mockCreatePull = vi.fn().mockResolvedValue({ data: { html_url: 'https://github.com/pr/1', number: 1 } });
 
 vi.mock('octokit', () => {
   return {
@@ -40,17 +50,17 @@ vi.mock('octokit', () => {
 });
 
 describe('admin actions', () => {
-  it('submitContentToGitHub should create a PR for a writing post', async () => {
+  it('saveDraftAction should push to github and save to supabase', async () => {
     process.env.GITHUB_TOKEN = 'test-token';
-    const result = await submitContentToGitHub({
+    const result = await saveDraftAction({
       title: 'Test Post',
       slug: 'test-post',
       category: 'writing',
       markdown: 'Some content',
-      images: []
+      metadata: {}
     });
 
-    expect(result.prUrl).toBe('https://github.com/pr/1');
+    expect(result.branchName).toMatch(/content\/writing-test-post-/);
     expect(mockCreateTree).toHaveBeenCalledWith(expect.objectContaining({
       tree: expect.arrayContaining([
         expect.objectContaining({
@@ -61,53 +71,12 @@ describe('admin actions', () => {
     }));
   });
 
-  it('submitContentToGitHub should create a PR for a snippet with images', async () => {
+  it('createPRForContent should create a PR', async () => {
     process.env.GITHUB_TOKEN = 'test-token';
-    const result = await submitContentToGitHub({
-      title: 'Test Snippet',
-      slug: 'test-snippet',
-      category: 'snippets',
-      markdown: 'Some content',
-      images: [{ filename: 'test.png', base64Data: 'base64data' }]
-    });
+    const result = await createPRForContent('test-id', 'test-branch', 'Test Post', 'writing');
 
     expect(result.prUrl).toBe('https://github.com/pr/1');
-    expect(mockCreateTree).toHaveBeenCalledWith(expect.objectContaining({
-      tree: expect.arrayContaining([
-        expect.objectContaining({
-          path: 'content/snippets/test-snippet.mdx',
-          type: 'blob'
-        }),
-        expect.objectContaining({
-          path: 'public/assets/test.png',
-          type: 'blob'
-        })
-      ])
-    }));
-    expect(mockCreateBlob).toHaveBeenCalledWith(expect.objectContaining({
-      content: 'base64data',
-      encoding: 'base64'
-    }));
-  });
-
-  it('submitContentToGitHub should create a PR for a tool', async () => {
-    process.env.GITHUB_TOKEN = 'test-token';
-    const result = await submitContentToGitHub({
-      title: 'Test Tool',
-      slug: 'test-tool',
-      category: 'tools',
-      markdown: 'Some content',
-      images: []
-    });
-
-    expect(result.prUrl).toBe('https://github.com/pr/1');
-    expect(mockCreateTree).toHaveBeenCalledWith(expect.objectContaining({
-      tree: expect.arrayContaining([
-        expect.objectContaining({
-          path: 'content/tools/test-tool.mdx',
-          type: 'blob'
-        })
-      ])
-    }));
+    expect(result.prNumber).toBe(1);
+    expect(mockCreatePull).toHaveBeenCalled();
   });
 });

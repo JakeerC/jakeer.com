@@ -4,7 +4,16 @@ import { AdminClient } from '../AdminClient';
 import * as actions from '../../actions';
 
 vi.mock('../../actions', () => ({
-  submitContentToGitHub: vi.fn(),
+  saveDraftAction: vi.fn(),
+  createPRForContent: vi.fn(),
+  mergePRAction: vi.fn(),
+}));
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    refresh: vi.fn(),
+  })
 }));
 
 // Mock dynamic import for Editor
@@ -17,11 +26,11 @@ vi.mock('next/dynamic', () => ({
 }));
 
 describe('AdminClient', () => {
-  it('renders and handles submission error', async () => {
+  it('renders and handles save error', async () => {
     const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
-    vi.mocked(actions.submitContentToGitHub).mockRejectedValue(new Error('Test error'));
+    vi.mocked(actions.saveDraftAction).mockRejectedValue(new Error('Test error'));
 
-    render(<AdminClient session={{}} />);
+    render(<AdminClient initialData={null} />);
 
     const titleInput = screen.getByPlaceholderText('E.g. My New Post');
     fireEvent.change(titleInput, { target: { value: 'Test Title' } });
@@ -32,12 +41,12 @@ describe('AdminClient', () => {
     const editor = screen.getByTestId('mock-editor');
     fireEvent.change(editor, { target: { value: 'test markdown content' } });
 
-    const submitButton = screen.getByRole('button', { name: /Publish to GitHub/i });
+    const saveButton = screen.getByRole('button', { name: /Save/i });
     
-    fireEvent.click(submitButton);
+    fireEvent.click(saveButton);
 
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalledWith('Error creating PR: Test error');
+      expect(alertMock).toHaveBeenCalledWith('Error saving: Test error');
     });
     
     alertMock.mockRestore();

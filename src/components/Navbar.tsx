@@ -1,17 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { LuMoon, LuSun, LuSearch, LuX, LuMenu, LuPalette } from "react-icons/lu";
+import { LuMoon, LuSun, LuSearch, LuX, LuMenu, LuPalette, LuLogOut } from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 import CommandPalette from "./CommandPalette";
 import { Button } from "./Button";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -23,6 +25,19 @@ export default function Navbar() {
     opacity: 0,
   });
   const navRef = useRef<HTMLUListElement>(null);
+  
+  const [session, setSession] = useState<unknown>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -89,6 +104,21 @@ export default function Navbar() {
     else setTheme(isDark ? "neo-dark" : "neo-light");
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+  };
+
+  const isAdminRoute = pathname.startsWith("/admin");
+  const showAdminNav = isAdminRoute && session;
+
+  const adminNav = [
+    { label: "Admin Dashboard", href: "/admin" },
+    { label: "New", href: "/admin/new" },
+  ];
+
+  const currentNav = showAdminNav ? adminNav : siteConfig.nav;
+
   return (
     <>
       {/* ── Main Nav ─────────────────────────────────────── */}
@@ -121,10 +151,10 @@ export default function Navbar() {
             ref={navRef}
             className="hidden md:flex items-center gap-2 relative"
           >
-            {siteConfig.nav.map((item) => {
+            {currentNav.map((item) => {
               const active =
                 pathname === item.href ||
-                (item.href !== "/" && pathname.startsWith(item.href));
+                (item.href !== "/" && item.href !== "/admin" && pathname.startsWith(item.href));
               return (
                 <li key={item.href}>
                   <Link
@@ -142,6 +172,18 @@ export default function Navbar() {
                 </li>
               );
             })}
+
+            {showAdminNav && (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="px-3 py-1.5 text-sm font-medium transition-all duration-200 opacity-60 hover:opacity-100 text-red-500 hover:text-red-600 flex items-center gap-1"
+                >
+                  <LuLogOut size={14} />
+                  Logout
+                </button>
+              </li>
+            )}
 
             {/* Animated Floating Underline */}
             <li
@@ -228,10 +270,10 @@ export default function Navbar() {
             }}
           >
             <ul className="flex flex-col px-6 py-3 gap-1">
-              {siteConfig.nav.map((item) => {
+              {currentNav.map((item) => {
                 const active =
                   pathname === item.href ||
-                  (item.href !== "/" && pathname.startsWith(item.href));
+                  (item.href !== "/" && item.href !== "/admin" && pathname.startsWith(item.href));
                 return (
                   <li key={item.href}>
                     <Link
@@ -251,6 +293,21 @@ export default function Navbar() {
                   </li>
                 );
               })}
+              
+              {showAdminNav && (
+                <li>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMenuOpen(false);
+                    }}
+                    className="relative flex items-center gap-2 px-3 py-2 text-sm font-medium transition-all w-fit opacity-60 text-red-500"
+                  >
+                    <LuLogOut size={16} />
+                    Logout
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         )}
