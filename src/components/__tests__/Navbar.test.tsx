@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Navbar from '../Navbar';
@@ -33,7 +33,7 @@ vi.mock('next-themes', () => ({
 
 // Mock CommandPalette so we don't need to render the whole dialog
 vi.mock('../CommandPalette', () => ({
-  default: ({ open, setOpen }: any) => (
+  default: ({ open }: { open: boolean; setOpen: (open: boolean) => void }) => (
     open ? <div data-testid="command-palette">Mock Command Palette</div> : null
   ),
 }));
