@@ -110,7 +110,7 @@ export default function Navbar() {
   };
 
   const isAdminRoute = pathname.startsWith("/admin");
-  const showAdminNav = isAdminRoute && session;
+  const showAdminNav = isAdminRoute && !!session;
 
   const adminNav = [
     { label: "Admin Dashboard", href: "/admin" },
