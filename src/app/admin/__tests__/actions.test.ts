@@ -242,5 +242,23 @@ describe("admin actions", () => {
     expect(assets[0].name).toBe("test.png");
     expect(assets[0].url).toBe("https://url.com/test.png");
   });
+
+  it("getAssetsAction should handle missing updated_at and sort correctly", async () => {
+    mockList.mockResolvedValueOnce({ 
+      data: [
+        { id: "1", name: "first.png", updated_at: null },
+        { id: "2", name: "second.png", updated_at: "2023-01-01" }
+      ], 
+      error: null 
+    });
+    mockGetPublicUrl.mockReturnValue({ data: { publicUrl: "https://url.com/mock.png" } });
+
+    const assets = await getAssetsAction();
+    
+    expect(assets).toHaveLength(2);
+    // "second.png" should come first because it has a valid date, whereas "first.png" defaults to epoch 0
+    expect(assets[0].name).toBe("second.png");
+    expect(assets[1].name).toBe("first.png");
+  });
 });
 
