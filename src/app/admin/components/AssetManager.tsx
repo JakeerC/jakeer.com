@@ -5,7 +5,7 @@ import { AssetUploader } from "./AssetUploader";
 import { AssetList } from "./AssetList";
 import { Button } from "../../../components/Button";
 
-export function AssetManager({ onSelect }: { onSelect?: (url: string) => void }) {
+export function AssetManager({ onSelect }: Readonly<{ onSelect?: (url: string) => void }>) {
   const [activeTab, setActiveTab] = useState<"upload" | "browse">("browse");
 
   return (

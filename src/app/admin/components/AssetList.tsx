@@ -12,7 +12,7 @@ type Asset = {
   url: string;
 };
 
-export function AssetList({ onSelect }: { onSelect?: (url: string) => void }) {
+export function AssetList({ onSelect }: Readonly<{ onSelect?: (url: string) => void }>) {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [filteredAssets, setFilteredAssets] = useState<Asset[]>([]);
   const [search, setSearch] = useState("");
@@ -78,35 +78,43 @@ export function AssetList({ onSelect }: { onSelect?: (url: string) => void }) {
       )}
 
       <div className="flex-1 overflow-y-auto min-h-[300px] border rounded p-4 bg-[var(--bg-primary)] border-[var(--border)]">
-        {isLoading ? (
-          <div className="text-center text-sm py-10" style={{ color: "var(--text-secondary)" }}>
-            Loading assets...
-          </div>
-        ) : filteredAssets.length === 0 ? (
-          <div className="text-center text-sm py-10" style={{ color: "var(--text-secondary)" }}>
-            No assets found.
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {filteredAssets.map(asset => (
-              <div key={asset.id} className="border rounded overflow-hidden flex flex-col hover:border-[var(--accent)] transition-colors group relative bg-[var(--bg-secondary)] border-[var(--border)]">
-                <div className="h-24 w-full flex items-center justify-center overflow-hidden bg-black/5 relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={asset.url} alt={asset.name} className="object-cover w-full h-full" loading="lazy" />
-                  
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                    <Button size="sm" onClick={() => handleCopy(asset.url)}>
-                      {onSelect ? "Select" : "Copy MD"}
-                    </Button>
+        {(() => {
+          if (isLoading) {
+            return (
+              <div className="text-center text-sm py-10" style={{ color: "var(--text-secondary)" }}>
+                Loading assets...
+              </div>
+            );
+          }
+          if (filteredAssets.length === 0) {
+            return (
+              <div className="text-center text-sm py-10" style={{ color: "var(--text-secondary)" }}>
+                No assets found.
+              </div>
+            );
+          }
+          return (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {filteredAssets.map(asset => (
+                <div key={asset.id} className="border rounded overflow-hidden flex flex-col hover:border-[var(--accent)] transition-colors group relative bg-[var(--bg-secondary)] border-[var(--border)]">
+                  <div className="h-24 w-full flex items-center justify-center overflow-hidden bg-black/5 relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset.url} alt={asset.name} className="object-cover w-full h-full" loading="lazy" />
+                    
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                      <Button size="sm" onClick={() => handleCopy(asset.url)}>
+                        {onSelect ? "Select" : "Copy MD"}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="p-2 text-xs truncate text-center" title={asset.name} style={{ color: "var(--text-primary)" }}>
+                    {asset.name}
                   </div>
                 </div>
-                <div className="p-2 text-xs truncate text-center" title={asset.name} style={{ color: "var(--text-primary)" }}>
-                  {asset.name}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

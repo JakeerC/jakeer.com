@@ -243,7 +243,7 @@ export function AdminClient({ initialData }: { initialData?: any }) {
           <div className="w-[500px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
             <div className="flex justify-between items-center mb-6 shrink-0">
               <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>Asset Manager</h2>
-              <button onClick={() => setIsAssetDrawerOpen(false)} className="text-xl font-bold p-2 hover:bg-black/5 rounded text-[var(--text-primary)]">&times;</button>
+              <button type="button" onClick={() => setIsAssetDrawerOpen(false)} className="text-xl font-bold p-2 hover:bg-black/5 rounded text-[var(--text-primary)]">&times;</button>
             </div>
             <div className="flex-1 overflow-hidden">
               <AssetManager onSelect={(url) => {

@@ -5,7 +5,7 @@ import { uploadAssetAction, checkAssetExistsAction } from "../actions";
 import { FieldControl } from "../../../components/FieldControl";
 import { Button } from "../../../components/Button";
 
-export function AssetUploader({ onUploadComplete }: { onUploadComplete?: (url: string) => void }) {
+export function AssetUploader({ onUploadComplete }: Readonly<{ onUploadComplete?: (url: string) => void }>) {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -21,8 +21,8 @@ export function AssetUploader({ onUploadComplete }: { onUploadComplete?: (url: s
       .toLowerCase()
       .trim()
       .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/\-\-+/g, '-');
+      .replace(/[^\w-]+/g, '')
+      .replace(/--+/g, '-');
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +56,7 @@ export function AssetUploader({ onUploadComplete }: { onUploadComplete?: (url: s
   };
 
   const formatFileName = (name: string, originalFile: File) => {
-    const extMatch = name.match(/\.[0-9a-z]+$/i);
+    const extMatch = /\.[0-9a-z]+$/i.exec(name);
     const originalExt = originalFile.name.substring(originalFile.name.lastIndexOf('.'));
     
     let nameWithoutExt = name;
