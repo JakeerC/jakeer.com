@@ -304,3 +304,91 @@ export async function mergePRAction(id: string, prNumber: number) {
 
   return { success: true };
 }
+
+export async function checkAssetExistsAction(fileName: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+  
+  const { data, error } = await supabase.storage.from("assets").list("", {
+    search: fileName
+  });
+  if (error) {
+    if (error.message.includes("does not exist") || error.name === "BucketNotFound") {
+      return false; // Bucket might not exist, but let's assume it doesn't exist
+    }
+    throw error;
+  }
+  
+  return data.some(file => file.name === fileName);
+}
+
+export async function uploadAssetAction(formData: FormData) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  const file = formData.get("file") as File;
+  const fileName = formData.get("fileName") as string;
+  const overwrite = formData.get("overwrite") === "true";
+
+  if (!file || !fileName) {
+    throw new Error("File and fileName are required");
+  }
+  
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("File size exceeds 5MB limit.");
+  }
+
+  const { data, error } = await supabase.storage.from("assets").upload(fileName, file, {
+    upsert: overwrite
+  });
+
+  if (error) {
+    throw error;
+  }
+  
+  const { data: publicUrlData } = supabase.storage.from("assets").getPublicUrl(fileName);
+  return { success: true, url: publicUrlData.publicUrl, path: data.path };
+}
+
+export async function getAssetsAction() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  const { data, error } = await supabase.storage.from("assets").list();
+  
+  if (error) {
+    if (error.message.includes("does not exist") || error.name === "BucketNotFound") {
+      return []; // Return empty if bucket not found yet
+    }
+    throw error;
+  }
+
+  // We only want files, not empty folders (sometimes represented as empty objects)
+  const files = data.filter(item => item.id != null);
+  
+  // Get public URLs for each file
+  const filesWithUrls = files.map(file => {
+    const { data: publicUrlData } = supabase.storage.from("assets").getPublicUrl(file.name);
+    return {
+      name: file.name,
+      id: file.id,
+      updated_at: file.updated_at,
+      created_at: file.created_at,
+      metadata: file.metadata,
+      url: publicUrlData.publicUrl
+    };
+  });
+
+  // Sort by latest updated
+  filesWithUrls.sort((a, b) => {
+    const timeA = new Date(a.updated_at || 0).getTime();
+    const timeB = new Date(b.updated_at || 0).getTime();
+    return timeB - timeA;
+  });
+
+  return filesWithUrls;
+}
+

@@ -6,6 +6,7 @@ import { saveDraftAction, createPRForContent, mergePRAction } from "../actions";
 import { FieldControl } from "../../../components/FieldControl";
 import { Button } from "../../../components/Button";
 import { useRouter } from "next/navigation";
+import { AssetManager } from "./AssetManager";
 
 const Editor = dynamic(() => import("./EditorWrapper"), { ssr: false });
 
@@ -48,6 +49,7 @@ export function AdminClient({ initialData }: { initialData?: any }) {
   const [isCreatingPR, setIsCreatingPR] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isFullWidth, setIsFullWidth] = useState(false);
+  const [isAssetDrawerOpen, setIsAssetDrawerOpen] = useState(false);
 
   const handleImageUpload = async (image: File) => {
     return new Promise<string>((resolve, reject) => {
@@ -200,7 +202,12 @@ export function AdminClient({ initialData }: { initialData?: any }) {
         </div>
 
         <div className="flex flex-col space-y-2">
-          <label className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Content (Markdown)</label>
+          <div className="flex justify-between items-center">
+            <label className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Content (Markdown)</label>
+            <Button size="sm" variant="outline" onClick={() => setIsAssetDrawerOpen(true)}>
+              Upload Asset
+            </Button>
+          </div>
           <Editor markdown={markdown} onChange={setMarkdown} imageUploadHandler={handleImageUpload} />
         </div>
 
@@ -230,6 +237,23 @@ export function AdminClient({ initialData }: { initialData?: any }) {
           </Button>
         </div>
       </div>
+
+      {isAssetDrawerOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity">
+          <div className="w-[500px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
+            <div className="flex justify-between items-center mb-6 shrink-0">
+              <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>Asset Manager</h2>
+              <button type="button" onClick={() => setIsAssetDrawerOpen(false)} className="text-xl font-bold p-2 hover:bg-black/5 rounded text-[var(--text-primary)]">&times;</button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <AssetManager onSelect={(url) => {
+                navigator.clipboard.writeText(`![Image](${url})`);
+                alert("Image URL copied to clipboard! You can paste it in the editor.");
+              }} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

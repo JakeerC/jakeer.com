@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 // Imports are at the bottom
 
-const { mockSelect, mockOrder, mockSingle, mockEq, mockDelete, mockUpdate } =
+const { mockSelect, mockOrder, mockSingle, mockEq, mockDelete, mockUpdate, mockUpload, mockList, mockGetPublicUrl } =
   vi.hoisted(() => ({
     mockSelect: vi.fn(),
     mockOrder: vi.fn(),
@@ -9,6 +9,9 @@ const { mockSelect, mockOrder, mockSingle, mockEq, mockDelete, mockUpdate } =
     mockEq: vi.fn(),
     mockDelete: vi.fn(),
     mockUpdate: vi.fn(),
+    mockUpload: vi.fn(),
+    mockList: vi.fn(),
+    mockGetPublicUrl: vi.fn(),
   }));
 
 vi.mock("@/lib/supabase/server", () => ({
@@ -28,6 +31,13 @@ vi.mock("@/lib/supabase/server", () => ({
       select: mockSelect,
       delete: mockDelete,
     }),
+    storage: {
+      from: vi.fn().mockReturnValue({
+        upload: mockUpload,
+        list: mockList,
+        getPublicUrl: mockGetPublicUrl,
+      })
+    }
   }),
 }));
 
@@ -77,6 +87,9 @@ import {
   saveDraftAction,
   createPRForContent,
   mergePRAction,
+  checkAssetExistsAction,
+  uploadAssetAction,
+  getAssetsAction,
 } from "../actions";
 
 describe("admin actions", () => {
@@ -184,4 +197,68 @@ describe("admin actions", () => {
     expect(mockEq).toHaveBeenCalledWith("id", "1");
     expect(result.success).toBe(true);
   });
+
+  it("checkAssetExistsAction should return true if asset exists", async () => {
+    mockList.mockResolvedValueOnce({ data: [{ name: "test.png" }], error: null });
+    const exists = await checkAssetExistsAction("test.png");
+    expect(mockList).toHaveBeenCalledWith("", { search: "test.png" });
+    expect(exists).toBe(true);
+  });
+
+  it("checkAssetExistsAction should return false if asset does not exist", async () => {
+    mockList.mockResolvedValueOnce({ data: [], error: null });
+    const exists = await checkAssetExistsAction("test.png");
+    expect(exists).toBe(false);
+  });
+
+  it("uploadAssetAction should upload file and return public URL", async () => {
+    const file = new File(["dummy content"], "test.png", { type: "image/png" });
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("fileName", "test.png");
+    formData.append("overwrite", "false");
+
+    mockUpload.mockResolvedValueOnce({ data: { path: "test.png" }, error: null });
+    mockGetPublicUrl.mockReturnValueOnce({ data: { publicUrl: "https://url.com/test.png" } });
+
+    const result = await uploadAssetAction(formData);
+    
+    expect(mockUpload).toHaveBeenCalledWith("test.png", file, { upsert: false });
+    expect(result.success).toBe(true);
+    expect(result.url).toBe("https://url.com/test.png");
+  });
+
+  it("getAssetsAction should return list of assets", async () => {
+    mockList.mockResolvedValueOnce({ 
+      data: [{ id: "1", name: "test.png", updated_at: "2023-01-01" }], 
+      error: null 
+    });
+    mockGetPublicUrl.mockReturnValueOnce({ data: { publicUrl: "https://url.com/test.png" } });
+
+    const assets = await getAssetsAction();
+    
+    expect(mockList).toHaveBeenCalled();
+    expect(assets).toHaveLength(1);
+    expect(assets[0].name).toBe("test.png");
+    expect(assets[0].url).toBe("https://url.com/test.png");
+  });
+
+  it("getAssetsAction should handle missing updated_at and sort correctly", async () => {
+    mockList.mockResolvedValueOnce({ 
+      data: [
+        { id: "1", name: "first.png", updated_at: null },
+        { id: "2", name: "second.png", updated_at: "2023-01-01" }
+      ], 
+      error: null 
+    });
+    mockGetPublicUrl.mockReturnValue({ data: { publicUrl: "https://url.com/mock.png" } });
+
+    const assets = await getAssetsAction();
+    
+    expect(assets).toHaveLength(2);
+    // "second.png" should come first because it has a valid date, whereas "first.png" defaults to epoch 0
+    expect(assets[0].name).toBe("second.png");
+    expect(assets[1].name).toBe("first.png");
+  });
 });
+
