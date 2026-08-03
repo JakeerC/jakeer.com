@@ -38,9 +38,14 @@ export default async function AdminDashboardPage() {
         <h1 className="font-display font-bold leading-tight" style={{ fontSize: "clamp(2rem, 5vw, 3rem)", color: "var(--text-primary)" }}>
           Dashboard
         </h1>
-        <Link href="/admin/new">
-          <Button>New Post</Button>
-        </Link>
+        <div className="flex gap-4">
+          <Link href="/admin/assets">
+            <Button variant="outline">Assets</Button>
+          </Link>
+          <Link href="/admin/new">
+            <Button>New Post</Button>
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-4">
