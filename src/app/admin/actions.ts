@@ -383,7 +383,11 @@ export async function getAssetsAction() {
   });
 
   // Sort by latest updated
-  filesWithUrls.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+  filesWithUrls.sort((a, b) => {
+    const timeA = new Date(a.updated_at || 0).getTime();
+    const timeB = new Date(b.updated_at || 0).getTime();
+    return timeB - timeA;
+  });
 
   return filesWithUrls;
 }

@@ -7,8 +7,8 @@ import { Button } from "../../../components/Button";
 
 type Asset = {
   name: string;
-  id: string;
-  updated_at: string;
+  id: string | null;
+  updated_at: string | null;
   url: string;
 };
 
