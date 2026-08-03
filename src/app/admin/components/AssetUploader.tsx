@@ -139,8 +139,9 @@ export function AssetUploader({ onUploadComplete }: { onUploadComplete?: (url: s
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: "var(--text-primary)" }}>Select File (JPG, PNG, SVG)</label>
+          <label htmlFor="file-upload" className="block text-sm font-medium mb-1" style={{ color: "var(--text-primary)" }}>Select File (JPG, PNG, SVG)</label>
           <input 
+            id="file-upload"
             type="file" 
             ref={fileInputRef}
             accept=".jpg,.jpeg,.png,.svg,image/jpeg,image/png,image/svg+xml"
