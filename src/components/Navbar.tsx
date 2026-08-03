@@ -115,6 +115,7 @@ export default function Navbar() {
   const adminNav = [
     { label: "Admin Dashboard", href: "/admin" },
     { label: "New", href: "/admin/new" },
+    { label: "Assets", href: "/admin/assets" },
   ];
 
   const currentNav = showAdminNav ? adminNav : siteConfig.nav;
@@ -173,17 +174,6 @@ export default function Navbar() {
               );
             })}
 
-            {showAdminNav && (
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="px-3 py-1.5 text-sm font-medium transition-all duration-200 opacity-60 hover:opacity-100 text-red-500 hover:text-red-600 flex items-center gap-1"
-                >
-                  <LuLogOut size={14} />
-                  Logout
-                </button>
-              </li>
-            )}
 
             {/* Animated Floating Underline */}
             <li
@@ -247,6 +237,19 @@ export default function Navbar() {
               </Button>
             )}
 
+            {/* Logout button (Admin) */}
+            {showAdminNav && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                aria-label="Logout"
+              >
+                <LuLogOut size={16} />
+              </Button>
+            )}
+
             {/* Mobile menu button */}
             <Button
               variant="ghost"
@@ -294,20 +297,6 @@ export default function Navbar() {
                 );
               })}
               
-              {showAdminNav && (
-                <li>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setMenuOpen(false);
-                    }}
-                    className="relative flex items-center gap-2 px-3 py-2 text-sm font-medium transition-all w-fit opacity-60 text-red-500"
-                  >
-                    <LuLogOut size={16} />
-                    Logout
-                  </button>
-                </li>
-              )}
             </ul>
           </div>
         )}
