@@ -66,9 +66,10 @@ export default function SnippetsPage() {
             </Link>
           );
         })}
-        {/* Fill the remaining grid slots with empty background in large screens (since we have 6 categories, 4 cols means 2 empty slots) */}
-        <div className="hidden lg:block bg-[var(--surface-raised)]" />
-        <div className="hidden lg:block bg-[var(--surface-raised)]" />
+        {/* Fill the remaining grid slots */}
+        <div className={`hidden ${categories.length % 2 === 1 ? 'sm:block' : 'sm:hidden'} ${categories.length % 4 !== 0 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
+        <div className={`hidden sm:hidden ${[1, 2].includes(categories.length % 4) ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
+        <div className={`hidden sm:hidden ${categories.length % 4 === 1 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
       </div>
     </div>
   );

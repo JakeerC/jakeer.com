@@ -27,7 +27,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(({
 
   const variantClasses = {
     default: "bg-[var(--tag-bg)] border border-[var(--tag-border)] text-[var(--text-secondary)]",
-    accent: "bg-[var(--accent)] border-[var(--accent)] text-[#fff]",
+    accent: "bg-[var(--accent)] border-[var(--accent)] text-black",
     outline: "bg-transparent border border-[var(--border)] text-[var(--text-secondary)]",
     ghost: "bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
   };
