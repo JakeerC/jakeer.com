@@ -101,9 +101,18 @@ describe('Navbar', () => {
     // Click a link to close
     const mobileLink = screen.getAllByText('About').pop();
     fireEvent.click(mobileLink!);
+  });
+
+  it('handles keyboard shortcuts for search and escape', () => {
+    render(<Navbar />);
     
-    // Toggle should be closed, but Next.js router might not fully rerender the DOM immediately in tests.
-    // Testing the click happened without error.
+    // cmd+k
+    fireEvent.keyDown(document, { key: 'k', metaKey: true });
+    expect(screen.getByTestId('command-palette')).toBeInTheDocument();
+    
+    // escape
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByTestId('command-palette')).not.toBeInTheDocument();
   });
 
   it('highlights active link', () => {
