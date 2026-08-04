@@ -135,4 +135,30 @@ describe('AdminClient', () => {
     fireEvent.click(fullWidthBtn);
     expect(screen.getByRole('button', { name: /Collapse Width/i })).toBeInTheDocument();
   });
+
+  it('renders snippet and tool category specific fields', () => {
+    render(<AdminClient initialData={{ category: 'snippets' }} />);
+    // Snippets should have Language and Level
+    expect(screen.getByText('Language')).toBeInTheDocument();
+    expect(screen.getByText('Level')).toBeInTheDocument();
+
+    // Rerender with tools
+    render(<AdminClient initialData={{ category: 'tools' }} />);
+    // Tools should have Tool Category and External Link
+    expect(screen.getByText('Tool Category')).toBeInTheDocument();
+    expect(screen.getByText('External Link')).toBeInTheDocument();
+  });
+
+  it('can open and close asset drawer', () => {
+    render(<AdminClient initialData={null} />);
+    
+    // Open drawer
+    const openAssetBtns = screen.getAllByRole('button', { name: /Upload Asset/i });
+    fireEvent.click(openAssetBtns[openAssetBtns.length - 1]);
+    expect(screen.getByText('×')).toBeInTheDocument();
+    
+    // Close drawer
+    fireEvent.click(screen.getByText('×'));
+    expect(screen.queryByText('×')).not.toBeInTheDocument();
+  });
 });
