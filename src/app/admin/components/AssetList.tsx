@@ -14,33 +14,27 @@ type Asset = {
 
 export function AssetList({ onSelect }: Readonly<{ onSelect?: (url: string) => void }>) {
   const [assets, setAssets] = useState<Asset[]>([]);
-  const [filteredAssets, setFilteredAssets] = useState<Asset[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const filteredAssets = search.trim() === "" 
+    ? assets 
+    : assets.filter(a => a.name.toLowerCase().includes(search.toLowerCase()));
 
   useEffect(() => {
     loadAssets();
   }, []);
 
-  useEffect(() => {
-    if (search.trim() === "") {
-      setFilteredAssets(assets);
-    } else {
-      const lower = search.toLowerCase();
-      setFilteredAssets(assets.filter(a => a.name.toLowerCase().includes(lower)));
-    }
-  }, [search, assets]);
-
-  const loadAssets = async () => {
+  async function loadAssets() {
     setIsLoading(true);
     setError(null);
     try {
       const data = await getAssetsAction();
       setAssets(data);
-      setFilteredAssets(data);
-    } catch (e: any) {
-      setError(e.message || "Failed to load assets.");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Failed to load assets.";
+      setError(msg);
     } finally {
       setIsLoading(false);
     }

@@ -83,7 +83,6 @@ vi.mock("octokit", () => {
 
 import {
   getDrafts,
-  getDraftById,
   saveDraftAction,
   createPRForContent,
   mergePRAction,
