@@ -4,7 +4,15 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { LuMoon, LuSun, LuSearch, LuX, LuMenu, LuPalette, LuLogOut } from "react-icons/lu";
+import {
+  LuMoon,
+  LuSun,
+  LuSearch,
+  LuX,
+  LuMenu,
+  LuPalette,
+  LuLogOut,
+} from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -25,7 +33,7 @@ export default function Navbar() {
     opacity: 0,
   });
   const navRef = useRef<HTMLUListElement>(null);
-  
+
   const [session, setSession] = useState<unknown>(null);
   const supabase = createClient();
 
@@ -155,7 +163,9 @@ export default function Navbar() {
             {currentNav.map((item) => {
               const active =
                 pathname === item.href ||
-                (item.href !== "/" && item.href !== "/admin" && pathname.startsWith(item.href));
+                (item.href !== "/" &&
+                  item.href !== "/admin" &&
+                  pathname.startsWith(item.href));
               return (
                 <li key={item.href}>
                   <Link
@@ -174,7 +184,6 @@ export default function Navbar() {
               );
             })}
 
-
             {/* Animated Floating Underline */}
             <li
               className="nav-indicator absolute bg-current transition-all duration-300 ease-out pointer-events-none"
@@ -189,25 +198,27 @@ export default function Navbar() {
           {/* Right actions */}
           <div className="flex items-center gap-2">
             {/* Search button */}
-            <Button
-              id="search-button"
-              variant="outline"
-              size="sm"
-              onClick={() => setSearchOpen(true)}
-              className="hidden md:flex"
-              leftIcon={<LuSearch size={14} />}
-            >
-              <span>Search</span>
-              <kbd
-                className="text-xs px-1 py-0.5 rounded border ml-1 opacity-60"
-                style={{
-                  borderColor: "var(--border)",
-                  background: "var(--surface)",
-                }}
+            {!showAdminNav && (
+              <Button
+                id="search-button"
+                variant="outline"
+                size="sm"
+                onClick={() => setSearchOpen(true)}
+                className="hidden md:flex"
+                leftIcon={<LuSearch size={14} />}
               >
-                ⌘K
-              </kbd>
-            </Button>
+                <span>Search</span>
+                <kbd
+                  className="text-xs px-1 py-0.5 rounded border ml-1 opacity-60"
+                  style={{
+                    borderColor: "var(--border)",
+                    background: "var(--surface)",
+                  }}
+                >
+                  ⌘K
+                </kbd>
+              </Button>
+            )}
 
             {/* Theme Style toggle (Neo/Classic) */}
             {mounted && (
@@ -276,7 +287,9 @@ export default function Navbar() {
               {currentNav.map((item) => {
                 const active =
                   pathname === item.href ||
-                  (item.href !== "/" && item.href !== "/admin" && pathname.startsWith(item.href));
+                  (item.href !== "/" &&
+                    item.href !== "/admin" &&
+                    pathname.startsWith(item.href));
                 return (
                   <li key={item.href}>
                     <Link
@@ -296,7 +309,6 @@ export default function Navbar() {
                   </li>
                 );
               })}
-              
             </ul>
           </div>
         )}

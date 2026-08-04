@@ -102,9 +102,8 @@ export default async function SnippetCategoryPage({
             </Link>
           ))}
           {/* Fill the remaining grid slots */}
-          {Array.from({ length: (3 - (items.length % 3)) % 3 }).map((_, i) => (
-            <div key={`empty-${i}`} className="hidden lg:block bg-[var(--surface-raised)]" />
-          ))}
+          <div className={`hidden ${items.length % 2 === 1 ? 'md:block' : 'md:hidden'} ${items.length % 3 !== 0 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
+          <div className={`hidden md:hidden ${items.length % 3 === 1 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
         </div>
       ) : (
         <p style={{ color: "var(--text-muted)" }}>No snippets yet — coming soon.</p>

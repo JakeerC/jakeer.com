@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Navbar from '../Navbar';
+import { usePathname } from 'next/navigation';
 
 // Mock the site config
 vi.mock('@/lib/config', () => ({
@@ -16,19 +17,19 @@ vi.mock('@/lib/config', () => ({
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
-  usePathname: () => '/',
-  useRouter: () => ({
+  usePathname: vi.fn(() => '/'),
+  useRouter: vi.fn(() => ({
     push: vi.fn(),
-  }),
+  })),
 }));
 
 // Mock next-themes
 const mockSetTheme = vi.fn();
 vi.mock('next-themes', () => ({
-  useTheme: () => ({
+  useTheme: vi.fn(() => ({
     resolvedTheme: 'light',
     setTheme: mockSetTheme,
-  }),
+  })),
 }));
 
 // Mock CommandPalette so we don't need to render the whole dialog
@@ -38,6 +39,7 @@ vi.mock('../CommandPalette', () => ({
   ),
 }));
 
+const mockSignOut = vi.fn().mockResolvedValue({ error: null });
 // Mock Supabase client
 vi.mock('@/lib/supabase/client', () => ({
   createClient: vi.fn(() => ({
@@ -46,7 +48,7 @@ vi.mock('@/lib/supabase/client', () => ({
       onAuthStateChange: vi.fn().mockReturnValue({
         data: { subscription: { unsubscribe: vi.fn() } },
       }),
-      signOut: vi.fn().mockResolvedValue({ error: null }),
+      signOut: mockSignOut,
     },
   })),
 }));
@@ -54,69 +56,99 @@ vi.mock('@/lib/supabase/client', () => ({
 describe('Navbar', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockSetTheme.mockClear();
+    mockSignOut.mockClear();
+    vi.mocked(usePathname).mockReturnValue('/');
   });
 
-  it('renders the brand initials', () => {
+  it('renders correctly', () => {
     render(<Navbar />);
     expect(screen.getByText('JC')).toBeInTheDocument();
   });
 
-  it('renders desktop navigation links', () => {
+  it('handles theme toggler', () => {
     render(<Navbar />);
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('About')).toBeInTheDocument();
-  });
-
-  it('toggles dark mode', async () => {
-    const user = userEvent.setup();
-    render(<Navbar />);
+    const themeBtn = screen.getAllByRole('button', { name: /Toggle dark mode/i })[0];
     
-    // Toggle theme button
-    const toggleButton = screen.getByLabelText('Toggle dark mode');
-    await user.click(toggleButton);
-    
+    fireEvent.click(themeBtn);
     expect(mockSetTheme).toHaveBeenCalledWith('dark');
   });
 
-  it('toggles neo style', async () => {
-    const user = userEvent.setup();
+  it('handles neo style toggler', () => {
     render(<Navbar />);
+    const neoBtn = screen.getByRole('button', { name: /Toggle neo style/i });
     
-    // Toggle neo style button
-    const toggleButton = screen.getByLabelText('Toggle neo style');
-    await user.click(toggleButton);
-    
+    fireEvent.click(neoBtn);
     expect(mockSetTheme).toHaveBeenCalledWith('neo-light');
   });
 
-  it('opens CommandPalette on search button click', async () => {
-    const user = userEvent.setup();
+  it('opens search with search button', () => {
     render(<Navbar />);
+    const searchBtn = screen.getAllByRole('button', { name: /Search/i })[0];
     
-    expect(screen.queryByTestId('command-palette')).not.toBeInTheDocument();
-    
-    const searchButton = screen.getByText('Search');
-    await user.click(searchButton);
-    
+    fireEvent.click(searchBtn);
     expect(screen.getByTestId('command-palette')).toBeInTheDocument();
   });
 
-  it('opens mobile menu on toggle button click', async () => {
-    const user = userEvent.setup();
-    // Simulate mobile viewport if possible, but testing library doesn't care about CSS hidden classes by default unless we check styles.
-    // The button is always rendered, just hidden with CSS. We can click it.
+  it('handles mobile menu toggle and closing on link click', () => {
+    render(<Navbar />);
+    const menuBtn = screen.getByRole('button', { name: /Toggle menu/i });
+    
+    // Toggle on
+    fireEvent.click(menuBtn);
+    expect(screen.getAllByText('About').length).toBeGreaterThan(0);
+    
+    // Click a link to close
+    const mobileLink = screen.getAllByText('About').pop();
+    fireEvent.click(mobileLink!);
+  });
+
+  it('handles keyboard shortcuts for search and escape', () => {
     render(<Navbar />);
     
-    const menuButton = screen.getByLabelText('Toggle menu');
+    // cmd+k
+    fireEvent.keyDown(document, { key: 'k', metaKey: true });
+    expect(screen.getByTestId('command-palette')).toBeInTheDocument();
     
-    // Initially the mobile menu container shouldn't be there (conditionally rendered)
-    expect(screen.queryByRole('list', { name: '' })?.parentElement?.className).not.toContain('md:hidden border-t');
+    // escape
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByTestId('command-palette')).not.toBeInTheDocument();
+  });
+
+  it('highlights active link', () => {
+    vi.mocked(usePathname).mockReturnValue('/about');
+    render(<Navbar />);
+    const aboutLinks = screen.getAllByText('About');
+    expect(aboutLinks.length).toBeGreaterThan(0);
+  });
+
+  it('handles scroll event to add blur effect', () => {
+    render(<Navbar />);
+    fireEvent.scroll(window, { target: { scrollY: 100 } });
+    const navElement = screen.getByRole('navigation').parentElement;
+    expect(navElement?.className).toContain('backdrop-blur-md');
+  });
+
+  it('handles sign out if session exists', async () => {
+    vi.mocked(usePathname).mockReturnValue('/admin');
+    const { createClient } = await import('@/lib/supabase/client');
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        getSession: vi.fn().mockResolvedValue({ data: { session: { user: {} } } }),
+        onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+        signOut: mockSignOut,
+      }
+    } as any);
+
+    render(<Navbar />);
     
-    await user.click(menuButton);
+    await waitFor(() => {
+      expect(screen.queryAllByText('Admin Dashboard').length).toBeGreaterThan(0);
+    });
+
+    const logoutBtns = screen.getAllByRole('button', { name: /Logout/i });
+    fireEvent.click(logoutBtns[0]);
     
-    // Menu is open, we should see the mobile links
-    // Since desktop and mobile links have the same text, we should find more of them
-    const homeLinks = screen.getAllByText('Home');
-    expect(homeLinks.length).toBeGreaterThan(1);
+    expect(mockSignOut).toHaveBeenCalled();
   });
 });

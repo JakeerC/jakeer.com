@@ -107,7 +107,6 @@
   --btn-bg: var(--accent-light); /* Lighter background for buttons */
   --btn-text: #000000;
 
-
   --app-border-width: 2px;
   --app-shadow-card: 4px 4px 0px 0px #000000;
   --app-shadow-card-hover: 0px 0px 0px 0px transparent;
@@ -141,7 +140,6 @@
   --btn-bg: #ccfffc; /* Lighter background for buttons */
   --btn-text: #000000;
   --selection-text: #000000;
-
 
   --app-border-width: 2px;
   --app-shadow-card: 4px 4px 0px 0px #00ffcc; /* Saturated shadow */

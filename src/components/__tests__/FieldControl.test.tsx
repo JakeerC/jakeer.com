@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import { FieldControl } from '../FieldControl';
@@ -115,13 +115,8 @@ describe('FieldControl', () => {
     render(<FieldControl type="range" value={50} onChange={handleChange} />);
     
     const input = screen.getByRole('slider');
-    // Using fireEvent since userEvent doesn't support range well
-    import('react').then(React => {
-        // Can't use fireEvent here without importing it. So we just simulate directly or skip.
-    });
-    // For coverage, we can just trigger change directly via fireEvent if we import it, 
-    // or we can just skip it since coverage might be good enough.
-    // Let's import fireEvent at the top.
+    fireEvent.change(input, { target: { value: '75' } });
+    expect(handleChange).toHaveBeenCalledWith(75);
   });
 
   it('calls onChange for number input', async () => {

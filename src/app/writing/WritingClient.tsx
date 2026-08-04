@@ -339,6 +339,9 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
               </article>
             </Link>
           ))}
+          {/* Fill the remaining grid slots with empty background */}
+          <div className={`hidden ${rest.length % 2 === 1 ? 'md:block' : 'md:hidden'} ${rest.length % 3 !== 0 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
+          <div className={`hidden md:hidden ${rest.length % 3 === 1 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
         </div>
       ) : (
         <div

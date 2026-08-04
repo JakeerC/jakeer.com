@@ -48,7 +48,7 @@ export default async function AssetsPage() {
             <li>Upload images (JPG, PNG) or SVG files up to 5MB.</li>
             <li>File names will be automatically slugified for web safety.</li>
             <li>If a file with the same name exists, you will be prompted to overwrite or append a unique suffix.</li>
-            <li>Uploaded assets will be stored in the Supabase 'assets' bucket.</li>
+            <li>Uploaded assets will be stored in the Supabase &apos;assets&apos; bucket.</li>
           </ul>
         </div>
       </div>

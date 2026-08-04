@@ -96,6 +96,7 @@ export function AssetUploader({ onUploadComplete }: Readonly<{ onUploadComplete?
           // Append timestamp suffix
           const ext = finalName.substring(finalName.lastIndexOf('.'));
           const nameWithoutExt = finalName.substring(0, finalName.lastIndexOf('.'));
+          // eslint-disable-next-line react-hooks/purity
           const newName = `${nameWithoutExt}-${Date.now()}${ext}`;
           setFileName(newName);
           // Now proceed with newName, which should be unique
