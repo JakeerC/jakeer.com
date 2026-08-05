@@ -1,10 +1,14 @@
 name: Build
+
 on:
   push:
     branches:
-      - master
+      - main # Updated from master
   pull_request:
+    branches:
+      - main # Ensures PR target is main
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
@@ -12,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones disabled for accurate blame/history
           
       - name: Setup Node.js
         uses: actions/setup-node@v4
