@@ -121,40 +121,6 @@
   --nav-link-hover-bg: #ffe4e1;
 }
 
-.neo-dark {
-  --bg-primary: #121212;
-  --bg-secondary: #000000;
-  --surface: #1c1c1c;
-  --surface-raised: #333333;
-  --text-primary: #ffffff;
-  --text-secondary: #eeeeee;
-  --text-muted: #bbbbbb;
-  --accent: #00ffcc; /* Neon cyan */
-  --accent-hover: #00ccaa;
-  --accent-light: #007a77;
-  --border: #ffffff;
-  --border-strong: #00ffcc; /* Neon cyan border on hover */
-  --tag-bg: #000000;
-  --tag-border: #00ffcc;
-
-  --btn-bg: #ccfffc; /* Lighter background for buttons */
-  --btn-text: #000000;
-  --selection-text: #000000;
-
-  --app-border-width: 2px;
-  --app-shadow-card: 4px 4px 0px 0px #00ffcc; /* Saturated shadow */
-  --app-shadow-card-hover: 0px 0px 0px 0px transparent;
-  --app-hover-translate-x: 4px;
-  --app-hover-translate-y: 4px;
-  --app-radius: 0.25rem;
-
-  --nav-indicator-height: 4px;
-  --nav-indicator-color: var(--accent);
-  --nav-indicator-radius: 0px;
-  --nav-indicator-bottom: 0px;
-  --nav-link-hover-bg: rgba(0, 255, 204, 0.1);
-}
-
 /* ─── Base Styles ──────────────────────────────────────── */
 *,
 *::before,
@@ -255,6 +221,7 @@ a:hover {
 }
 .card:hover {
   border-color: var(--border-strong);
+
   box-shadow: var(--app-shadow-card-hover);
   transform: translate(
     var(--app-hover-translate-x),
