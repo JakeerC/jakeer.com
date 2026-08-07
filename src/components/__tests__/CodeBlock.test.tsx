@@ -34,4 +34,20 @@ describe('CodeBlock', () => {
     expect(screen.getByTestId('prop-lang')).toHaveTextContent(lang);
     expect(screen.getByTestId('prop-html')).toHaveTextContent(`<pre><code>${code}</code></pre>`);
   });
+
+  it('falls back to text language if shiki throws', async () => {
+    const { codeToHtml } = await import('shiki');
+    vi.mocked(codeToHtml).mockRejectedValueOnce(new Error('Unknown language'));
+    
+    const code = 'FOO=bar';
+    const lang = 'env';
+    
+    const element = await CodeBlock({ code, lang });
+    render(element as React.ReactElement);
+    
+    expect(screen.getByTestId('prop-code')).toHaveTextContent(code);
+    expect(screen.getByTestId('prop-lang')).toHaveTextContent(lang);
+    // It should have called codeToHtml again with 'text'
+    expect(codeToHtml).toHaveBeenCalledWith(code, { lang: 'text', theme: 'github-dark' });
+  });
 });

@@ -23,7 +23,7 @@ export default async function EditDraftPage({
   try {
     initialData = await getDraftById(id);
   } catch (e) {
-    // eslint-disable-next-line no-console
+     
     console.error("Failed to fetch draft:", e);
     redirect("/admin");
   }

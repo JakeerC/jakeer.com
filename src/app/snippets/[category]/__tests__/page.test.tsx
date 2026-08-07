@@ -31,7 +31,21 @@ describe('SnippetCategoryPage', () => {
       }
     ]);
 
-    const result = await SnippetCategoryPage({ params: Promise.resolve({ category: 'react' }) }) as any;
-    expect(result).toBeTruthy();
+    const result = await SnippetCategoryPage({ params: Promise.resolve({ category: 'react' }) });
+    const { render, screen } = await import('@testing-library/react');
+    render(result as React.ReactElement);
+    
+    // Check that it renders snippets
+    expect(screen.getByText('Test Snippet')).toBeInTheDocument();
+  });
+
+  it('renders empty state when no snippets', async () => {
+    vi.mocked(mdx.getAllContent).mockReturnValue([]);
+    
+    const result = await SnippetCategoryPage({ params: Promise.resolve({ category: 'react' }) });
+    const { render, screen } = await import('@testing-library/react');
+    render(result as React.ReactElement);
+    
+    expect(screen.getByText('No snippets yet — coming soon.')).toBeInTheDocument();
   });
 });

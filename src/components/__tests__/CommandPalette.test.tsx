@@ -13,10 +13,10 @@ vi.mock('next/navigation', () => ({
 // Mock next-themes
 const mockSetTheme = vi.fn();
 vi.mock('next-themes', () => ({
-  useTheme: () => ({
+  useTheme: vi.fn(() => ({
     resolvedTheme: 'light',
     setTheme: mockSetTheme,
-  }),
+  })),
 }));
 
 // Mock the action
@@ -127,5 +127,23 @@ describe('CommandPalette', () => {
     // Restore mocks
     Object.assign(navigator, { clipboard: originalClipboard });
     window.open = originalOpen;
+  });
+
+  it('handles switch to light mode when theme is dark', async () => {
+    // Override the mock for this specific test
+    const { useTheme } = await import('next-themes');
+    vi.mocked(useTheme).mockReturnValue({
+      resolvedTheme: 'dark',
+      setTheme: mockSetTheme,
+    } as any);
+
+    const setOpen = vi.fn();
+    render(<CommandPalette open={true} setOpen={setOpen} />);
+    
+    const el = screen.getByText('Switch to Light Mode');
+    el.click();
+    
+    expect(mockSetTheme).toHaveBeenCalledWith('light');
+    expect(setOpen).toHaveBeenCalledWith(false);
   });
 });

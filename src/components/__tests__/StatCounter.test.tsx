@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import StatCounter from '../StatCounter';
 
@@ -30,5 +30,41 @@ describe('StatCounter', () => {
     
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper.style.transition).toContain('200ms');
+  });
+
+  it('becomes visible when intersecting', () => {
+    let intersectionCallback: IntersectionObserverCallback | null = null;
+    const mockDisconnect = vi.fn();
+    const mockObserve = vi.fn();
+
+    const originalIntersectionObserver = global.IntersectionObserver;
+
+    class MockIntersectionObserver {
+      constructor(cb: IntersectionObserverCallback) {
+        intersectionCallback = cb;
+      }
+      observe = mockObserve;
+      disconnect = mockDisconnect;
+      unobserve = vi.fn();
+    }
+
+    global.IntersectionObserver = MockIntersectionObserver as any;
+
+    const { container } = render(<StatCounter value="100+" label="Projects" />);
+    
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveStyle({ opacity: '0' });
+
+    // Trigger intersection
+    if (intersectionCallback) {
+      act(() => {
+        intersectionCallback!([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver);
+      });
+    }
+
+    expect(wrapper).toHaveStyle({ opacity: '1' });
+    expect(mockDisconnect).toHaveBeenCalled();
+
+    global.IntersectionObserver = originalIntersectionObserver;
   });
 });
