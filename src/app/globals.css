@@ -104,10 +104,8 @@
   --tag-bg: #fff0f5;
   --tag-border: #ff0055;
 
-  --btn-bg: var(--accent);
+  --btn-bg: var(--accent-light); /* Lighter background for buttons */
   --btn-text: #000000;
-  --btn-border-color: #000000;
-  --btn-shadow-color: #000000;
 
   --app-border-width: 2px;
   --app-shadow-card: 4px 4px 0px 0px #000000;
@@ -526,7 +524,7 @@ code {
 
 /* ─── Button Base ────────────────────────────────────────── */
 .btn {
-  border: var(--btn-border-width, 0px) solid var(--btn-border-color, var(--border-strong));
+  border: var(--btn-border-width, 0px) solid var(--border-strong);
   box-shadow: var(--btn-shadow, none);
   transition: all 0.2s ease;
 }
@@ -538,7 +536,7 @@ code {
 .neo-light,
 .neo-dark {
   --btn-border-width: 2px;
-  --btn-shadow: 4px 4px 0px 0px var(--btn-shadow-color, var(--accent)); /* Saturated button shadows */
+  --btn-shadow: 4px 4px 0px 0px var(--accent); /* Saturated button shadows */
   --btn-shadow-hover: 0px 0px 0px 0px transparent;
   --btn-hover-x: 4px;
   --btn-hover-y: 4px;
