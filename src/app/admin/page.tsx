@@ -3,7 +3,7 @@ import { getDrafts } from "./actions";
 import Link from "next/link";
 import { LoginForm } from "./components/LoginForm";
 import { Button } from "@/components/Button";
-import { LuPen, LuPlus } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 
 import { DashboardListClient } from "./components/DashboardListClient";
 
@@ -56,7 +56,7 @@ export default async function AdminDashboardPage() {
   try {
     drafts = await getDrafts();
   } catch (e) {
-    // eslint-disable-next-line no-console
+     
     console.error("Failed to load drafts:", e);
   }
 

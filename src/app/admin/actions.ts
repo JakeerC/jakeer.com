@@ -34,11 +34,11 @@ export async function getDrafts(archived: boolean = false) {
 
   if (error) {
     if (error.code === '42P01') {
-      // eslint-disable-next-line no-console
+       
       console.warn("Table 'content_drafts' does not exist yet. Please run the SQL migration.");
       return [];
     }
-    // eslint-disable-next-line no-console
+     
     console.error("Supabase error:", error);
     throw error;
   }
@@ -59,18 +59,18 @@ export async function getDraftById(id: string) {
 
   if (error) {
     if (error.code === '42P01') {
-      // eslint-disable-next-line no-console
+       
       console.warn("Table 'content_drafts' does not exist yet. Please run the SQL migration.");
       return null;
     }
     if (error.code === '22P02' || error.code === 'PGRST116') {
       // 22P02: Invalid input syntax for type uuid (e.g., if ID was 'new' or mangled)
       // PGRST116: JSON object requested, multiple (or no) rows returned
-      // eslint-disable-next-line no-console
+       
       console.warn(`Draft not found or invalid ID: ${id}`);
       return null;
     }
-    // eslint-disable-next-line no-console
+     
     console.error("Supabase error in getDraftById:", JSON.stringify(error, null, 2), error);
     throw error;
   }

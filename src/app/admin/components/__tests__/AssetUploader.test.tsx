@@ -46,6 +46,34 @@ describe('AssetUploader', () => {
     expect(screen.getByText('File exceeds 5MB size limit.')).toBeInTheDocument();
   });
 
+  it('revokes previous object url on new file selection', async () => {
+    render(<AssetUploader />);
+    
+    const file1 = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const file2 = new File(['world'], 'world.png', { type: 'image/png' });
+    const input = screen.getByLabelText(/Select File/i);
+    
+    await userEvent.upload(input, file1);
+    expect(global.URL.createObjectURL).toHaveBeenCalledTimes(1);
+    
+    await userEvent.upload(input, file2);
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledTimes(1);
+    expect(global.URL.createObjectURL).toHaveBeenCalledTimes(2);
+  });
+
+  it('allows manually changing the file name', async () => {
+    render(<AssetUploader />);
+    
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const input = screen.getByLabelText(/Select File/i);
+    await userEvent.upload(input, file);
+    
+    const nameInput = screen.getByDisplayValue('hello.png');
+    fireEvent.change(nameInput, { target: { value: 'custom-name.png' } });
+    
+    expect(screen.getByDisplayValue('custom-name.png')).toBeInTheDocument();
+  });
+
   it('handles successful upload', async () => {
     const onUploadComplete = vi.fn();
     vi.mocked(checkAssetExistsAction).mockResolvedValue(false);

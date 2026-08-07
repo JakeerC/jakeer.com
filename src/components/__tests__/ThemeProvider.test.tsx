@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ThemeProvider } from '../ThemeProvider';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
 vi.mock('next-themes', () => ({
   ThemeProvider: vi.fn(({ children }) => <div data-testid="next-themes-provider">{children}</div>),
@@ -37,7 +36,7 @@ describe('ThemeProvider', () => {
     console.error = mockConsoleError;
     
     // We need to isolate modules to re-evaluate the module level script that overrides console.error
-    const { ThemeProvider: DynamicThemeProvider } = await import('../ThemeProvider');
+    await import('../ThemeProvider');
 
     // Trigger the silenced error
     console.error('Warning: Encountered a script tag while rendering React component');

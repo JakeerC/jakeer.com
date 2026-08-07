@@ -7,6 +7,13 @@ vi.mock('../../actions', () => ({
   saveDraftAction: vi.fn(),
   createPRForContent: vi.fn(),
   mergePRAction: vi.fn(),
+  archiveDraftAction: vi.fn(),
+  unarchiveDraftAction: vi.fn(),
+  deleteDraftAction: vi.fn(),
+}));
+
+vi.mock('../AssetManager', () => ({
+  AssetManager: vi.fn(),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -26,6 +33,42 @@ vi.mock('next/dynamic', () => ({
 }));
 
 describe('AdminClient', () => {
+  it('handles archive, unarchive, and delete actions', async () => {
+    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const confirmMock = vi.spyOn(window, 'confirm').mockImplementation(() => true);
+    
+    vi.mocked(actions.archiveDraftAction).mockResolvedValue(true as any);
+    vi.mocked(actions.unarchiveDraftAction).mockResolvedValue(true as any);
+    vi.mocked(actions.deleteDraftAction).mockResolvedValue(true as any);
+
+    // Fresh render - archived
+    const { unmount } = render(<AdminClient initialData={{ id: '123' }} />);
+    const archiveBtn = screen.getByRole('button', { name: /Archive/i });
+    fireEvent.click(archiveBtn);
+    expect(confirmMock).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Archived successfully!');
+    });
+    
+    unmount();
+    
+    render(<AdminClient initialData={{ id: '123', is_archived: true }} />);
+    
+    const unarchiveBtn = screen.getByRole('button', { name: /Unarchive/i });
+    fireEvent.click(unarchiveBtn);
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Unarchived successfully!');
+    });
+
+    const deleteBtn = screen.getByRole('button', { name: /Delete/i });
+    fireEvent.click(deleteBtn);
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Deleted successfully!');
+    });
+
+    alertMock.mockRestore();
+    confirmMock.mockRestore();
+  });
   it('renders and handles save error', async () => {
     const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
     vi.mocked(actions.saveDraftAction).mockRejectedValue(new Error('Test error'));
@@ -134,6 +177,13 @@ describe('AdminClient', () => {
     const fullWidthBtn = screen.getByRole('button', { name: /Full Width/i });
     fireEvent.click(fullWidthBtn);
     expect(screen.getByRole('button', { name: /Collapse Width/i })).toBeInTheDocument();
+    
+    // Change category (it's the first select)
+    const selects = screen.getAllByRole('combobox');
+    fireEvent.change(selects[0], { target: { value: 'snippets' } });
+    
+    // Should now show snippets fields
+    expect(screen.getByText('Language')).toBeInTheDocument();
   });
 
   it('renders snippet and tool category specific fields', () => {
@@ -149,16 +199,40 @@ describe('AdminClient', () => {
     expect(screen.getByText('External Link')).toBeInTheDocument();
   });
 
-  it('can open and close asset drawer', () => {
+  it('can open and close asset drawer and select an asset', async () => {
+    // Mock navigator.clipboard
+    const originalClipboard = navigator.clipboard;
+    const mockWriteText = vi.fn();
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: mockWriteText,
+      },
+    });
+    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    // Mock AssetManager to fire onSelect
+    const { AssetManager } = await import('../AssetManager');
+    vi.mocked(AssetManager).mockImplementation(({ onSelect }: any) => (
+      <button onClick={() => onSelect('/test.jpg')}>Mock Asset Select</button>
+    ));
+
     render(<AdminClient initialData={null} />);
     
     // Open drawer
     const openAssetBtns = screen.getAllByRole('button', { name: /Upload Asset/i });
     fireEvent.click(openAssetBtns[openAssetBtns.length - 1]);
-    expect(screen.getByText('×')).toBeInTheDocument();
+    
+    // Click our mock
+    fireEvent.click(screen.getByText('Mock Asset Select'));
+    
+    expect(mockWriteText).toHaveBeenCalledWith('![Image](/test.jpg)');
+    expect(alertMock).toHaveBeenCalled();
     
     // Close drawer
     fireEvent.click(screen.getByText('×'));
     expect(screen.queryByText('×')).not.toBeInTheDocument();
+    
+    alertMock.mockRestore();
+    Object.assign(navigator, { clipboard: originalClipboard });
   });
 });
