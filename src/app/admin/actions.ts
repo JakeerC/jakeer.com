@@ -13,16 +13,24 @@ type DraftMetadata = {
   images?: { filename: string; base64Data: string }[];
 };
 
-export async function getDrafts() {
+export async function getDrafts(archived: boolean = false) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) throw new Error("Unauthorized");
 
-  const { data, error } = await supabase
+  const query = supabase
     .from("content_drafts")
-    .select("id, title, description, category, pr_number, updated_at")
+    .select("id, title, description, category, pr_number, updated_at, is_archived")
     .order("updated_at", { ascending: false });
+
+  if (archived) {
+    query.eq("is_archived", true);
+  } else {
+    query.or("is_archived.is.null,is_archived.eq.false");
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     if (error.code === '42P01') {
@@ -301,12 +309,137 @@ export async function mergePRAction(id: string, prNumber: number) {
     merge_method: "squash"
   });
 
-  // Once merged, delete the draft
+  // Once merged, archive the draft
   await supabase
+    .from("content_drafts")
+    .update({ is_archived: true, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  return { success: true };
+}
+
+export async function archiveDraftAction(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+  
+  const { data: draft } = await supabase
+    .from("content_drafts")
+    .select("pr_number")
+    .eq("id", id)
+    .single();
+
+  if (draft?.pr_number) {
+    const githubToken = process.env.GITHUB_TOKEN;
+    if (githubToken) {
+      try {
+        const octokit = new Octokit({ auth: githubToken });
+        await octokit.rest.pulls.update({
+          owner: "JakeerC",
+          repo: "jakeer.com",
+          pull_number: draft.pr_number,
+          state: "closed"
+        });
+      } catch (e) {
+        console.error(`Failed to close PR ${draft.pr_number} on GitHub`, e);
+      }
+    }
+  }
+  
+  const { error } = await supabase
+    .from("content_drafts")
+    .update({ is_archived: true, updated_at: new Date().toISOString() })
+    .eq("id", id);
+  if (error) throw error;
+  return { success: true };
+}
+
+export async function unarchiveDraftAction(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+  
+  const { error } = await supabase
+    .from("content_drafts")
+    .update({ is_archived: false, updated_at: new Date().toISOString() })
+    .eq("id", id);
+  if (error) throw error;
+  return { success: true };
+}
+
+export async function deleteDraftAction(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+  
+  const { data: draft } = await supabase
+    .from("content_drafts")
+    .select("branch_name")
+    .eq("id", id)
+    .single();
+
+  if (draft?.branch_name) {
+    const githubToken = process.env.GITHUB_TOKEN;
+    if (githubToken) {
+      try {
+        const octokit = new Octokit({ auth: githubToken });
+        await octokit.rest.git.deleteRef({
+          owner: "JakeerC",
+          repo: "jakeer.com",
+          ref: `heads/${draft.branch_name}`
+        });
+      } catch (e) {
+        console.error(`Failed to delete branch ${draft.branch_name} on GitHub`, e);
+      }
+    }
+  }
+  
+  const { error } = await supabase
     .from("content_drafts")
     .delete()
     .eq("id", id);
+  if (error) throw error;
+  return { success: true };
+}
 
+export async function syncDraftsAction() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  const githubToken = process.env.GITHUB_TOKEN;
+  if (!githubToken) throw new Error("GITHUB_TOKEN missing");
+  const octokit = new Octokit({ auth: githubToken });
+  const owner = "JakeerC";
+  const repo = "jakeer.com";
+
+  const { data, error } = await supabase
+    .from("content_drafts")
+    .select("id, pr_number")
+    .or("is_archived.is.null,is_archived.eq.false")
+    .not("pr_number", "is", null);
+    
+  if (error) throw error;
+
+  for (const draft of data) {
+    if (!draft.pr_number) continue;
+    try {
+      const { data: prData } = await octokit.rest.pulls.get({
+        owner,
+        repo,
+        pull_number: draft.pr_number
+      });
+      
+      if (prData.state === "closed" || prData.merged) {
+        await supabase
+          .from("content_drafts")
+          .update({ is_archived: true, updated_at: new Date().toISOString() })
+          .eq("id", draft.id);
+      }
+    } catch (e) {
+      console.error(`Failed to sync PR ${draft.pr_number}`, e);
+    }
+  }
   return { success: true };
 }
 

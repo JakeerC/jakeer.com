@@ -1,4 +1,26 @@
+import { IconType } from "react-icons";
 import { siteConfig } from "./config";
+import {
+  SiReact,
+  SiSpringboot,
+  SiApachekafka,
+  SiRedis,
+  SiPostgresql,
+  SiTypescript,
+  SiStorybook,
+  SiVite,
+  SiCss,
+  SiNodedotjs,
+  SiExpress,
+  SiNextdotjs,
+  SiGithub,
+  SiGit,
+  SiGnubash,
+  SiAuth0,
+  SiJavascript,
+} from "react-icons/si";
+import { FaJava, FaAws } from "react-icons/fa";
+import { LuCode, LuTrendingUp } from "react-icons/lu";
 
 export const recentPosts = [
   {
@@ -295,3 +317,33 @@ export const ADMIN_LEVEL_OPTIONS = [
   { label: "Intermediate", value: "INTERMEDIATE" },
   { label: "Advanced", value: "ADVANCED" },
 ];
+
+export const iconMap: Record<string, IconType> = {
+  React: SiReact,
+  JavaScript: SiJavascript,
+  Performance: LuTrendingUp,
+  Java: FaJava,
+  "Spring Boot": SiSpringboot,
+  Kafka: SiApachekafka,
+  Redis: SiRedis,
+  PostgreSQL: SiPostgresql,
+  TypeScript: SiTypescript,
+  Storybook: SiStorybook,
+  Vite: SiVite,
+  "CSS Modules": SiCss,
+  "Node.js": SiNodedotjs,
+  Express: SiExpress,
+  "Next.js": SiNextdotjs,
+  "GitHub API": SiGithub,
+  "System Design": FaAws,
+  Architecture: FaAws,
+  Git: SiGit,
+  "AWS CLI": FaAws,
+  "Shell / Bash": SiGnubash,
+  Development: LuCode,
+  Security: SiAuth0,
+  Fundamentals: SiJavascript,
+  "Caching & Load Distribution": SiRedis,
+  Databases: SiPostgresql,
+  "Messaging & Event Streaming": SiApachekafka,
+};

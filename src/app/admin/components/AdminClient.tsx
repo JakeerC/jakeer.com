@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { saveDraftAction, createPRForContent, mergePRAction } from "../actions";
+import { saveDraftAction, createPRForContent, mergePRAction, archiveDraftAction, unarchiveDraftAction, deleteDraftAction } from "../actions";
 import { FieldControl } from "../../../components/FieldControl";
 import { Button } from "../../../components/Button";
 import { useRouter } from "next/navigation";
@@ -48,6 +48,9 @@ export function AdminClient({ initialData }: { initialData?: any }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isCreatingPR, setIsCreatingPR] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isArchiving, setIsArchiving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isArchived, setIsArchived] = useState(initialData?.is_archived || false);
   const [isFullWidth, setIsFullWidth] = useState(false);
   const [isAssetDrawerOpen, setIsAssetDrawerOpen] = useState(false);
 
@@ -133,6 +136,51 @@ export function AdminClient({ initialData }: { initialData?: any }) {
     }
   };
 
+  const handleArchive = async () => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to archive this draft?")) return;
+    setIsArchiving(true);
+    try {
+      await archiveDraftAction(id);
+      alert("Archived successfully!");
+      router.push("/admin");
+      router.refresh();
+    } catch (e: any) {
+      alert("Error archiving: " + e.message);
+      setIsArchiving(false);
+    }
+  };
+
+  const handleUnarchive = async () => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to unarchive this draft?")) return;
+    setIsArchiving(true);
+    try {
+      await unarchiveDraftAction(id);
+      alert("Unarchived successfully!");
+      setIsArchived(false);
+    } catch (e: any) {
+      alert("Error unarchiving: " + e.message);
+    } finally {
+      setIsArchiving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to permanently delete this draft?")) return;
+    setIsDeleting(true);
+    try {
+      await deleteDraftAction(id);
+      alert("Deleted successfully!");
+      router.push("/admin");
+      router.refresh();
+    } catch (e: any) {
+      alert("Error deleting: " + e.message);
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className={`mx-auto px-6 py-16 transition-all duration-300 ${isFullWidth ? "max-w-full" : "max-w-4xl"}`}>
       <div className="flex items-center justify-between mb-8">
@@ -212,29 +260,49 @@ export function AdminClient({ initialData }: { initialData?: any }) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-4 border-t mt-8" style={{ borderColor: "var(--border)" }}>
-          <Button
-            onClick={handleSave}
-            disabled={isSaving || isPublishing || !!prNumber}
-            variant="outline"
-          >
-            {isSaving ? "Saving..." : "Save"}
-          </Button>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t mt-8" style={{ borderColor: "var(--border)" }}>
+          <div className="flex gap-2">
+            {id && (
+              <>
+                {isArchived ? (
+                  <Button onClick={handleUnarchive} disabled={isArchiving || isDeleting || isSaving} variant="outline">
+                    {isArchiving ? "Unarchiving..." : "Unarchive"}
+                  </Button>
+                ) : (
+                  <Button onClick={handleArchive} disabled={isArchiving || isDeleting || isSaving} variant="outline">
+                    {isArchiving ? "Archiving..." : "Archive"}
+                  </Button>
+                )}
+                <Button onClick={handleDelete} disabled={isArchiving || isDeleting || isSaving} variant="outline" className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </Button>
+              </>
+            )}
+          </div>
+          <div className="flex gap-3">
+            <Button
+              onClick={handleSave}
+              disabled={isSaving || isPublishing || isArchiving || isDeleting}
+              variant="outline"
+            >
+              {isSaving ? "Saving..." : "Save"}
+            </Button>
 
-          <Button
-            onClick={handleCreatePR}
-            disabled={!branchName || !!prNumber || isCreatingPR || isPublishing || isSaving}
-            variant="outline"
-          >
-            {isCreatingPR ? "Creating PR..." : "Create PR"}
-          </Button>
+            <Button
+              onClick={handleCreatePR}
+              disabled={!branchName || !!prNumber || isCreatingPR || isPublishing || isSaving || isArchiving || isDeleting}
+              variant="outline"
+            >
+              {isCreatingPR ? "Creating PR..." : "Create PR"}
+            </Button>
 
-          <Button
-            onClick={handlePublish}
-            disabled={!prNumber || isPublishing || isSaving}
-          >
-            {isPublishing ? "Publishing..." : "Publish"}
-          </Button>
+            <Button
+              onClick={handlePublish}
+              disabled={!prNumber || isPublishing || isSaving || isArchiving || isDeleting}
+            >
+              {isPublishing ? "Publishing..." : "Publish"}
+            </Button>
+          </div>
         </div>
       </div>
 

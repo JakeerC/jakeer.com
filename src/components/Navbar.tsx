@@ -103,13 +103,13 @@ export default function Navbar() {
   const isDark = resolvedTheme?.endsWith("dark") || false;
 
   const toggleDark = () => {
-    if (isNeo) setTheme(isDark ? "neo-light" : "neo-dark");
-    else setTheme(isDark ? "light" : "dark");
+    if (isNeo) return;
+    setTheme(isDark ? "light" : "dark");
   };
 
   const toggleNeo = () => {
     if (isNeo) setTheme(isDark ? "dark" : "light");
-    else setTheme(isDark ? "neo-dark" : "neo-light");
+    else setTheme("neo-light");
   };
 
   const handleLogout = async () => {
@@ -235,7 +235,7 @@ export default function Navbar() {
             )}
 
             {/* Dark mode toggle */}
-            {mounted && (
+            {mounted && !isNeo && (
               <Button
                 id="dark-mode-toggle"
                 variant="ghost"

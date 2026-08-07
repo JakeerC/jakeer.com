@@ -1,12 +1,14 @@
 import { describe, it, expect, vi } from "vitest";
 // Imports are at the bottom
 
-const { mockSelect, mockOrder, mockSingle, mockEq, mockDelete, mockUpdate, mockUpload, mockList, mockGetPublicUrl } =
+const { mockSelect, mockOrder, mockSingle, mockEq, mockOr, mockNot, mockDelete, mockUpdate, mockUpload, mockList, mockGetPublicUrl } =
   vi.hoisted(() => ({
     mockSelect: vi.fn(),
     mockOrder: vi.fn(),
     mockSingle: vi.fn(),
     mockEq: vi.fn(),
+    mockOr: vi.fn(),
+    mockNot: vi.fn(),
     mockDelete: vi.fn(),
     mockUpdate: vi.fn(),
     mockUpload: vi.fn(),
@@ -54,6 +56,9 @@ const mockCreatePull = vi
     data: { html_url: "https://github.com/pr/1", number: 1 },
   });
 const mockMergePull = vi.fn().mockResolvedValue({ data: { merged: true } });
+const mockUpdatePull = vi.fn().mockResolvedValue({ data: { state: "closed" } });
+const mockDeleteRef = vi.fn().mockResolvedValue({ data: {} });
+const mockGetPull = vi.fn().mockResolvedValue({ data: { state: "closed", merged: false } });
 
 vi.mock("octokit", () => {
   return {
@@ -71,10 +76,13 @@ vi.mock("octokit", () => {
           createTree: mockCreateTree,
           createCommit: mockCreateCommit,
           updateRef: mockUpdateRef,
+          deleteRef: mockDeleteRef,
         },
         pulls: {
+          get: mockGetPull,
           create: mockCreatePull,
           merge: mockMergePull,
+          update: mockUpdatePull,
         },
       };
     },
@@ -86,6 +94,10 @@ import {
   saveDraftAction,
   createPRForContent,
   mergePRAction,
+  archiveDraftAction,
+  unarchiveDraftAction,
+  deleteDraftAction,
+  syncDraftsAction,
   checkAssetExistsAction,
   uploadAssetAction,
   getAssetsAction,
@@ -94,15 +106,24 @@ import {
 describe("admin actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    const chainableQuery: any = {
+      order: mockOrder,
+      eq: mockEq,
+      or: mockOr,
+      not: mockNot,
+      single: mockSingle,
+    };
+    chainableQuery.then = (resolve: any) => resolve({ data: [] });
+    
+    mockSelect.mockReturnValue(chainableQuery);
+    mockOrder.mockReturnValue(chainableQuery);
+    mockEq.mockReturnValue(chainableQuery);
+    mockOr.mockReturnValue(chainableQuery);
+    mockNot.mockReturnValue(chainableQuery);
+    
     mockSingle.mockResolvedValue({ data: { id: "test-id" } });
-    mockUpdate.mockReturnValue({ eq: mockEq.mockResolvedValue({}) });
-    mockSelect.mockReturnValue({
-      order: mockOrder.mockResolvedValue({ data: [] }),
-      eq: mockEq.mockReturnValue({
-        single: mockSingle.mockResolvedValue({ data: {} }),
-      }),
-    });
-    mockDelete.mockReturnValue({ eq: mockEq.mockResolvedValue({}) });
+    mockUpdate.mockReturnValue({ eq: mockEq });
+    mockDelete.mockReturnValue({ eq: mockEq });
   });
 
   it("saveDraftAction should push to github and save to supabase", async () => {
@@ -182,13 +203,16 @@ describe("admin actions", () => {
   });
 
   it("getDrafts should return drafts", async () => {
-    mockOrder.mockResolvedValueOnce({ data: [{ id: "1" }] });
+    const chainableQuery = mockSelect();
+    chainableQuery.then = (res: any) => res({ data: [{ id: "1" }], error: null });
+    
     const data = await getDrafts();
     expect(data).toHaveLength(1);
   });
 
   it("mergePRAction should merge and delete draft", async () => {
     process.env.GITHUB_TOKEN = "test-token";
+    
     const result = await mergePRAction("1", 42);
     expect(mockMergePull).toHaveBeenCalledWith(
       expect.objectContaining({ pull_number: 42 }),
@@ -258,6 +282,67 @@ describe("admin actions", () => {
     // "second.png" should come first because it has a valid date, whereas "first.png" defaults to epoch 0
     expect(assets[0].name).toBe("second.png");
     expect(assets[1].name).toBe("first.png");
+  });
+
+  it("archiveDraftAction should archive and close PR if exists", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSingle.mockResolvedValueOnce({ data: { pr_number: 42 }, error: null });
+    
+    const result = await archiveDraftAction("test-id");
+    
+    expect(mockUpdatePull).toHaveBeenCalledWith(
+      expect.objectContaining({ pull_number: 42, state: "closed" })
+    );
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({ is_archived: true })
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it("unarchiveDraftAction should set is_archived to false", async () => {
+    
+    const result = await unarchiveDraftAction("test-id");
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({ is_archived: false })
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it("deleteDraftAction should delete branch and draft", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSingle.mockResolvedValueOnce({ data: { branch_name: "test-branch" }, error: null });
+    
+    const result = await deleteDraftAction("test-id");
+    
+    expect(mockDeleteRef).toHaveBeenCalledWith(
+      expect.objectContaining({ ref: "heads/test-branch" })
+    );
+    expect(mockDelete).toHaveBeenCalled();
+    expect(result.success).toBe(true);
+  });
+
+  it("syncDraftsAction should update is_archived for closed PRs", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    
+    // Mock getDrafts to return a draft with a PR number
+    mockSelect.mockReturnValueOnce({
+      or: vi.fn().mockReturnValue({
+        not: vi.fn().mockResolvedValue({
+          data: [{ id: "test-id", pr_number: 42 }],
+          error: null
+        })
+      })
+    });
+
+    const result = await syncDraftsAction();
+    
+    expect(mockGetPull).toHaveBeenCalledWith(
+      expect.objectContaining({ pull_number: 42 })
+    );
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({ is_archived: true })
+    );
+    expect(result.success).toBe(true);
   });
 });
 

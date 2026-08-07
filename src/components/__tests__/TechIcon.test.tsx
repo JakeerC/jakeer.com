@@ -9,23 +9,16 @@ describe('TechIcon', () => {
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
 
-  it('renders fallback icon for unknown tag', () => {
+  it('renders nothing for unknown tag', () => {
     const { container } = render(<TechIcon tag="Unknown Tech" />);
-    expect(container.querySelector('svg')).toBeInTheDocument();
+    expect(container.querySelector('svg')).not.toBeInTheDocument();
   });
 
-  it('applies custom size', () => {
+  it('applies custom size and margin-right class', () => {
     const { container } = render(<TechIcon tag="React" size={24} />);
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('height', '24');
     expect(svg).toHaveAttribute('width', '24');
-  });
-
-  it('applies smaller size for fallback icon', () => {
-    const { container } = render(<TechIcon tag="Unknown Tech" size={24} />);
-    const svg = container.querySelector('svg');
-    // Fallback logic uses size - 2
-    expect(svg).toHaveAttribute('height', '22');
-    expect(svg).toHaveAttribute('width', '22');
+    expect(svg).toHaveClass('mr-2');
   });
 });
