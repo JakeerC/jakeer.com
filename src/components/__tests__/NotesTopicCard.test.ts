@@ -5,7 +5,7 @@ import { NotesTopicCard } from '../NotesTopicCard';
 
 // Mock TechIcon since we just want to test the wrapper
 vi.mock('../TechIcon', () => ({
-  default: ({ name }: { name: string }) => React.createElement('div', { 'data-testid': 'tech-icon' }, name)
+  default: ({ tag }: { tag: string }) => React.createElement('div', { 'data-testid': 'tech-icon' }, tag)
 }));
 
 describe('NotesTopicCard', () => {
@@ -36,7 +36,7 @@ describe('NotesTopicCard', () => {
     expect(linkElement).toHaveAttribute('href', '/notes/system-design');
   });
 
-  it('renders the TechIcon with the correct name', () => {
+  it('renders the TechIcon with the correct tag', () => {
     render(React.createElement(NotesTopicCard, defaultProps));
     expect(screen.getByTestId('tech-icon')).toHaveTextContent('LuNetwork');
   });
