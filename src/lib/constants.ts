@@ -20,7 +20,15 @@ import {
   SiJavascript,
 } from "react-icons/si";
 import { FaJava, FaAws, FaDocker } from "react-icons/fa";
-import { LuCode, LuTrendingUp, LuBrain, LuNetwork, LuWorkflow } from "react-icons/lu";
+import { MdArchitecture } from "react-icons/md";
+import {
+  LuCode,
+  LuTrendingUp,
+  LuBrain,
+  LuNetwork,
+  LuWorkflow,
+  LuDatabase,
+} from "react-icons/lu";
 
 export const recentPosts = [
   {
@@ -164,19 +172,33 @@ export const knowledgeBases = [
   {
     slug: "java",
     label: "Java",
-    description: "JVM internals, Spring Boot, design patterns, and concurrency.",
+    description:
+      "JVM internals, Spring Boot, design patterns, and concurrency.",
     icon: "Java",
     color: "#f89820",
     principles: [
-      { label: "CORE CONCEPTS", text: "Deep dive into JVM internals and memory management." },
-      { label: "SPRING BOOT", text: "Production-ready patterns and best practices." },
-      { label: "PERFORMANCE", text: "Concurrency, threading, and optimization." },
+      {
+        label: "CORE CONCEPTS",
+        text: "Deep dive into JVM internals and memory management.",
+      },
+      {
+        label: "SPRING BOOT",
+        text: "Production-ready patterns and best practices.",
+      },
+      {
+        label: "PERFORMANCE",
+        text: "Concurrency, threading, and optimization.",
+      },
     ],
     topics: [
       {
         label: "JVM Internals",
         notes: [
-          { slug: "garbage-collection", title: "Garbage Collection Algorithms", minutes: 8 },
+          {
+            slug: "garbage-collection",
+            title: "Garbage Collection Algorithms",
+            minutes: 8,
+          },
           { slug: "memory-model", title: "Java Memory Model", minutes: 6 },
         ],
       },
@@ -189,9 +211,18 @@ export const knowledgeBases = [
     icon: "JavaScript",
     color: "#f7df1e",
     principles: [
-      { label: "THE EVENT LOOP", text: "Understanding the call stack and task queues." },
-      { label: "ASYNC PATTERNS", text: "Promises, async/await, and error handling." },
-      { label: "UNDER THE HOOD", text: "Execution context, closures, and prototypes." },
+      {
+        label: "THE EVENT LOOP",
+        text: "Understanding the call stack and task queues.",
+      },
+      {
+        label: "ASYNC PATTERNS",
+        text: "Promises, async/await, and error handling.",
+      },
+      {
+        label: "UNDER THE HOOD",
+        text: "Execution context, closures, and prototypes.",
+      },
     ],
     topics: [
       {
@@ -212,14 +243,25 @@ export const knowledgeBases = [
     principles: [
       { label: "TYPE SAFETY", text: "Catching errors at compile time." },
       { label: "GENERICS", text: "Writing reusable, type-safe components." },
-      { label: "ADVANCED TYPES", text: "Mapped types, conditional types, and more." },
+      {
+        label: "ADVANCED TYPES",
+        text: "Mapped types, conditional types, and more.",
+      },
     ],
     topics: [
       {
         label: "Advanced Types",
         notes: [
-          { slug: "generics-deep-dive", title: "Generics Deep Dive", minutes: 7 },
-          { slug: "utility-types", title: "Essential Utility Types", minutes: 5 },
+          {
+            slug: "generics-deep-dive",
+            title: "Generics Deep Dive",
+            minutes: 7,
+          },
+          {
+            slug: "utility-types",
+            title: "Essential Utility Types",
+            minutes: 5,
+          },
         ],
       },
     ],
@@ -227,20 +269,38 @@ export const knowledgeBases = [
   {
     slug: "react",
     label: "React",
-    description: "Hooks, render optimization, state management, and server components.",
+    description:
+      "Hooks, render optimization, state management, and server components.",
     icon: "React",
     color: "#61dafb",
     principles: [
-      { label: "COMPONENT LIFECYCLE", text: "Understanding mounts, updates, and unmounts." },
-      { label: "PERFORMANCE", text: "Memoization, lazy loading, and rendering." },
-      { label: "STATE MANAGEMENT", text: "Context, reducers, and global state." },
+      {
+        label: "COMPONENT LIFECYCLE",
+        text: "Understanding mounts, updates, and unmounts.",
+      },
+      {
+        label: "PERFORMANCE",
+        text: "Memoization, lazy loading, and rendering.",
+      },
+      {
+        label: "STATE MANAGEMENT",
+        text: "Context, reducers, and global state.",
+      },
     ],
     topics: [
       {
         label: "Optimization",
         notes: [
-          { slug: "render-optimization", title: "Render Optimization", minutes: 8 },
-          { slug: "hooks-best-practices", title: "Hooks Best Practices", minutes: 6 },
+          {
+            slug: "render-optimization",
+            title: "Render Optimization",
+            minutes: 8,
+          },
+          {
+            slug: "hooks-best-practices",
+            title: "Hooks Best Practices",
+            minutes: 6,
+          },
         ],
       },
     ],
@@ -252,16 +312,30 @@ export const knowledgeBases = [
     icon: "AI/ML",
     color: "#10a37f",
     principles: [
-      { label: "LARGE LANGUAGE MODELS", text: "Architecture, tokens, and context windows." },
-      { label: "PROMPT ENGINEERING", text: "Techniques for better model outputs." },
+      {
+        label: "LARGE LANGUAGE MODELS",
+        text: "Architecture, tokens, and context windows.",
+      },
+      {
+        label: "PROMPT ENGINEERING",
+        text: "Techniques for better model outputs.",
+      },
       { label: "APPLIED AI", text: "RAG, embeddings, and vector databases." },
     ],
     topics: [
       {
         label: "LLM Fundamentals",
         notes: [
-          { slug: "prompt-engineering", title: "Prompt Engineering Techniques", minutes: 5 },
-          { slug: "rag-architecture", title: "RAG Architecture Overview", minutes: 7 },
+          {
+            slug: "prompt-engineering",
+            title: "Prompt Engineering Techniques",
+            minutes: 5,
+          },
+          {
+            slug: "rag-architecture",
+            title: "RAG Architecture Overview",
+            minutes: 7,
+          },
         ],
       },
     ],
@@ -273,7 +347,10 @@ export const knowledgeBases = [
     icon: "MCP",
     color: "#8b5cf6",
     principles: [
-      { label: "PROTOCOL BASICS", text: "Understanding the Model Context Protocol." },
+      {
+        label: "PROTOCOL BASICS",
+        text: "Understanding the Model Context Protocol.",
+      },
       { label: "TOOL USE", text: "Exposing functions and APIs to models." },
       { label: "SERVER ARCHITECTURE", text: "Building robust MCP servers." },
     ],
@@ -281,8 +358,16 @@ export const knowledgeBases = [
       {
         label: "Getting Started",
         notes: [
-          { slug: "mcp-introduction", title: "Introduction to MCP", minutes: 4 },
-          { slug: "building-mcp-server", title: "Building an MCP Server", minutes: 8 },
+          {
+            slug: "mcp-introduction",
+            title: "Introduction to MCP",
+            minutes: 4,
+          },
+          {
+            slug: "building-mcp-server",
+            title: "Building an MCP Server",
+            minutes: 8,
+          },
         ],
       },
     ],
@@ -290,11 +375,15 @@ export const knowledgeBases = [
   {
     slug: "ci-cd",
     label: "CI/CD",
-    description: "GitHub Actions, Jenkins, Docker builds, and deployment strategies.",
+    description:
+      "GitHub Actions, Jenkins, Docker builds, and deployment strategies.",
     icon: "CI/CD",
     color: "#2088ff",
     principles: [
-      { label: "AUTOMATION", text: "Automating builds, tests, and deployments." },
+      {
+        label: "AUTOMATION",
+        text: "Automating builds, tests, and deployments.",
+      },
       { label: "PIPELINES", text: "Designing efficient CI/CD pipelines." },
       { label: "DEPLOYMENT", text: "Blue/green, canary, and rolling updates." },
     ],
@@ -302,8 +391,16 @@ export const knowledgeBases = [
       {
         label: "Pipelines",
         notes: [
-          { slug: "github-actions-guide", title: "GitHub Actions Guide", minutes: 6 },
-          { slug: "deployment-strategies", title: "Deployment Strategies", minutes: 5 },
+          {
+            slug: "github-actions-guide",
+            title: "GitHub Actions Guide",
+            minutes: 6,
+          },
+          {
+            slug: "deployment-strategies",
+            title: "Deployment Strategies",
+            minutes: 5,
+          },
         ],
       },
     ],
@@ -315,23 +412,44 @@ export const knowledgeBases = [
     icon: "System Design",
     color: "#ec4899",
     principles: [
-      { label: "DEFINITION FIRST", text: "The first sentence answers 'what is it'." },
-      { label: "TRADE-OFFS WITH REAL NUMBERS", text: "Every note has a trade-off table." },
-      { label: "REVIEWED, NOT ABANDONED", text: "Every claim is checked against primary sources." },
+      {
+        label: "DEFINITION FIRST",
+        text: "The first sentence answers 'what is it'.",
+      },
+      {
+        label: "TRADE-OFFS WITH REAL NUMBERS",
+        text: "Every note has a trade-off table.",
+      },
+      {
+        label: "REVIEWED, NOT ABANDONED",
+        text: "Every claim is checked against primary sources.",
+      },
     ],
     topics: [
       {
         label: "Fundamentals",
         notes: [
           { slug: "cap-theorem", title: "CAP Theorem", minutes: 6 },
-          { slug: "latency-numbers", title: "Latency Numbers Every Dev Knows", minutes: 4 },
+          {
+            slug: "latency-numbers",
+            title: "Latency Numbers Every Dev Knows",
+            minutes: 4,
+          },
         ],
       },
       {
         label: "Caching & Load Distribution",
         notes: [
-          { slug: "caching-fundamentals", title: "Caching Fundamentals", minutes: 10 },
-          { slug: "consistent-hashing", title: "Consistent Hashing", minutes: 8 },
+          {
+            slug: "caching-fundamentals",
+            title: "Caching Fundamentals",
+            minutes: 10,
+          },
+          {
+            slug: "consistent-hashing",
+            title: "Consistent Hashing",
+            minutes: 8,
+          },
         ],
       },
     ],
@@ -339,20 +457,35 @@ export const knowledgeBases = [
   {
     slug: "docker-k8s",
     label: "Docker/K8s",
-    description: "Containerization, orchestration, Helm charts, and networking.",
+    description:
+      "Containerization, orchestration, Helm charts, and networking.",
     icon: "Docker/K8s",
     color: "#2496ed",
     principles: [
-      { label: "CONTAINERIZATION", text: "Building and optimizing Docker images." },
-      { label: "ORCHESTRATION", text: "Kubernetes architecture and resources." },
+      {
+        label: "CONTAINERIZATION",
+        text: "Building and optimizing Docker images.",
+      },
+      {
+        label: "ORCHESTRATION",
+        text: "Kubernetes architecture and resources.",
+      },
       { label: "OPERATIONS", text: "Networking, storage, and Helm charts." },
     ],
     topics: [
       {
         label: "Containers",
         notes: [
-          { slug: "docker-best-practices", title: "Docker Best Practices", minutes: 5 },
-          { slug: "k8s-architecture", title: "Kubernetes Architecture", minutes: 8 },
+          {
+            slug: "docker-best-practices",
+            title: "Docker Best Practices",
+            minutes: 5,
+          },
+          {
+            slug: "k8s-architecture",
+            title: "Kubernetes Architecture",
+            minutes: 8,
+          },
         ],
       },
     ],
@@ -461,24 +594,27 @@ export const ADMIN_TOPIC_OPTIONS = [
   { label: "AWS", value: "aws" },
 ];
 
-export const ADMIN_SUBTOPIC_MAP: Record<string, { label: string; value: string }[]> = {
-  "java": [
+export const ADMIN_SUBTOPIC_MAP: Record<
+  string,
+  { label: string; value: string }[]
+> = {
+  java: [
     { label: "JVM Internals", value: "JVM Internals" },
     { label: "Spring Boot", value: "Spring Boot" },
     { label: "Concurrency", value: "Concurrency" },
     { label: "Design Patterns", value: "Design Patterns" },
   ],
-  "javascript": [
+  javascript: [
     { label: "Core Concepts", value: "Core Concepts" },
     { label: "Event Loop", value: "Event Loop" },
     { label: "Async Programming", value: "Async Programming" },
   ],
-  "typescript": [
+  typescript: [
     { label: "Advanced Types", value: "Advanced Types" },
     { label: "Generics", value: "Generics" },
     { label: "Configuration", value: "Configuration" },
   ],
-  "react": [
+  react: [
     { label: "Hooks", value: "Hooks" },
     { label: "Optimization", value: "Optimization" },
     { label: "Server Components", value: "Server Components" },
@@ -488,7 +624,7 @@ export const ADMIN_SUBTOPIC_MAP: Record<string, { label: string; value: string }
     { label: "Prompt Engineering", value: "Prompt Engineering" },
     { label: "RAG & Embeddings", value: "RAG & Embeddings" },
   ],
-  "mcp": [
+  mcp: [
     { label: "Getting Started", value: "Getting Started" },
     { label: "Tool Use", value: "Tool Use" },
     { label: "Server Architecture", value: "Server Architecture" },
@@ -500,16 +636,22 @@ export const ADMIN_SUBTOPIC_MAP: Record<string, { label: string; value: string }
   ],
   "system-design": [
     { label: "Fundamentals", value: "Fundamentals" },
-    { label: "Caching & Load Distribution", value: "Caching & Load Distribution" },
+    {
+      label: "Caching & Load Distribution",
+      value: "Caching & Load Distribution",
+    },
     { label: "Databases", value: "Databases" },
-    { label: "Messaging & Event Streaming", value: "Messaging & Event Streaming" },
+    {
+      label: "Messaging & Event Streaming",
+      value: "Messaging & Event Streaming",
+    },
   ],
   "docker-k8s": [
     { label: "Containers", value: "Containers" },
     { label: "Kubernetes", value: "Kubernetes" },
     { label: "Helm", value: "Helm" },
   ],
-  "aws": [
+  aws: [
     { label: "Compute", value: "Compute" },
     { label: "Storage", value: "Storage" },
     { label: "Networking", value: "Networking" },
@@ -559,7 +701,7 @@ export const iconMap: Record<string, IconType> = {
   "Next.js": SiNextdotjs,
   "GitHub API": SiGithub,
   "System Design": FaAws,
-  Architecture: FaAws,
+  Architecture: MdArchitecture,
   Git: SiGit,
   "AWS CLI": FaAws,
   AWS: FaAws,
@@ -574,4 +716,5 @@ export const iconMap: Record<string, IconType> = {
   MCP: LuNetwork,
   "CI/CD": LuWorkflow,
   "Docker/K8s": FaDocker,
+  Database: LuDatabase,
 };

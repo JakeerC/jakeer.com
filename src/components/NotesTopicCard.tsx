@@ -51,7 +51,7 @@ export function NotesTopicCard({
             className="w-10 h-10 rounded-full flex items-center justify-center text-white"
             style={{ backgroundColor: color }}
           >
-            <TechIcon name={icon} size={20} />
+            <TechIcon tag={icon} size={20} />
           </div>
           <h3
             className="text-lg font-bold leading-snug group-hover:underline underline-offset-4"

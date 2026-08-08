@@ -48,7 +48,7 @@ export default async function TopicOverviewPage({
             className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg"
             style={{ backgroundColor: knowledgeBase.color }}
           >
-            <TechIcon name={knowledgeBase.icon} size={32} />
+            <TechIcon tag={knowledgeBase.icon} size={32} />
           </div>
           <div>
             <span
