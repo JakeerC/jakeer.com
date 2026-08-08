@@ -7,9 +7,21 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import CodeBlock from "@/components/CodeBlock";
 import Image from "next/image";
 import { Tag } from "@/components/Tag";
+import TableOfContents from "@/components/TableOfContents";
 
 import { notFound } from "next/navigation";
 import { getContentBySlug } from "@/lib/mdx";
+import { slugify } from "@/lib/slugify";
+
+// Helper to extract plain text from MDX children
+const getText = (children: any): string => {
+  if (typeof children === "string") return children;
+  if (Array.isArray(children)) return children.map(getText).join("");
+  if (typeof children === "object" && children !== null && children.props?.children) {
+    return getText(children.props.children);
+  }
+  return "";
+};
 
 export async function generateMetadata({
   params,
@@ -26,30 +38,40 @@ export async function generateMetadata({
 }
 
 export const components = {
-  h2: (props: any) => (
-    <h2
-      style={{
-        fontFamily: "'Space Grotesk', system-ui, sans-serif",
-        fontSize: "1.5rem",
-        fontWeight: 700,
-        margin: "2.5rem 0 1rem",
-        color: "var(--text-primary)",
-      }}
-      {...props}
-    />
-  ),
-  h3: (props: any) => (
-    <h3
-      style={{
-        fontFamily: "'Space Grotesk', system-ui, sans-serif",
-        fontSize: "1.2rem",
-        fontWeight: 600,
-        margin: "2rem 0 0.75rem",
-        color: "var(--text-primary)",
-      }}
-      {...props}
-    />
-  ),
+  h2: (props: any) => {
+    const text = getText(props.children);
+    const id = props.id || slugify(text);
+    return (
+      <h2
+        id={id}
+        style={{
+          fontFamily: "'Space Grotesk', system-ui, sans-serif",
+          fontSize: "1.5rem",
+          fontWeight: 700,
+          margin: "2.5rem 0 1rem",
+          color: "var(--text-primary)",
+        }}
+        {...props}
+      />
+    );
+  },
+  h3: (props: any) => {
+    const text = getText(props.children);
+    const id = props.id || slugify(text);
+    return (
+      <h3
+        id={id}
+        style={{
+          fontFamily: "'Space Grotesk', system-ui, sans-serif",
+          fontSize: "1.2rem",
+          fontWeight: 600,
+          margin: "2rem 0 0.75rem",
+          color: "var(--text-primary)",
+        }}
+        {...props}
+      />
+    );
+  },
   strong: (props: any) => (
     <strong
       style={{ color: "var(--text-primary)", fontWeight: 600 }}
@@ -135,7 +157,7 @@ export default async function ArticlePage({
   const tags = (post.frontmatter.tags as string[]) || [];
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Back */}
       <Link
         href="/writing"
@@ -183,13 +205,15 @@ export default async function ArticlePage({
         </span>
       </div>
 
-      {/* Content */}
-      <div
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-12 items-start">
+        <div className="min-w-0">
+          {/* Content */}
+      <article
         className="prose prose-sm md:prose-base"
         style={{ color: "var(--text-primary)" }}
       >
         <MDXRemote source={post.content} components={components} />
-      </div>
+      </article>
 
       {/* Footer nav */}
       <div
@@ -204,6 +228,10 @@ export default async function ArticlePage({
           <LuArrowLeft size={14} />
           Back to Writing
         </Link>
+      </div>
+      </div>
+      
+      <TableOfContents />
       </div>
     </div>
   );
