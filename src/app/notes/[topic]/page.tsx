@@ -110,8 +110,7 @@ export default async function TopicOverviewPage({
         {knowledgeBase.principles.map((principle) => (
           <div
             key={principle.label}
-            className="p-6 rounded-xl border bg-[var(--bg-secondary)]"
-            style={{ borderColor: "var(--border)" }}
+            className="card p-6 flex flex-col"
           >
             <h4
               className="text-xs font-bold tracking-widest uppercase mb-3"
@@ -144,8 +143,7 @@ export default async function TopicOverviewPage({
                 <Link
                   key={note.slug}
                   href={`/notes/${knowledgeBase.slug}/${note.slug}`}
-                  className="p-5 rounded-lg border bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-all group block"
-                  style={{ borderColor: "var(--border)" }}
+                  className="card p-5 group flex flex-col"
                 >
                   <h3
                     className="font-semibold mb-2 group-hover:underline underline-offset-4"

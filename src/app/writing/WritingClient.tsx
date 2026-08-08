@@ -39,11 +39,13 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
     .filter((p) => p !== featured)
     .filter((p) => {
       const q = searchQuery.toLowerCase();
-      const matchesQuery = p.title.toLowerCase().includes(q) ||
-                           p.excerpt.toLowerCase().includes(q) ||
-                           (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)));
-      const matchesTags = selectedTags.length === 0 || 
-                          (p.tags && selectedTags.some(t => p.tags.includes(t)));
+      const matchesQuery =
+        p.title.toLowerCase().includes(q) ||
+        p.excerpt.toLowerCase().includes(q) ||
+        (p.tags && p.tags.some((t) => t.toLowerCase().includes(q)));
+      const matchesTags =
+        selectedTags.length === 0 ||
+        (p.tags && selectedTags.some((t) => p.tags.includes(t)));
       return matchesQuery && matchesTags;
     });
   const allTags = Array.from(new Set(posts.flatMap((p) => p.tags || [])));
@@ -225,7 +227,7 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
                 setSelectedTags((prev) =>
                   prev.includes(tag)
                     ? prev.filter((t) => t !== tag)
-                    : [...prev, tag]
+                    : [...prev, tag],
                 );
               }}
             >
@@ -245,12 +247,12 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
 
       {/* ── Article list/grid ────────────────────────────── */}
       {viewMode === "grid" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {rest.map((post) => (
             <Link
               key={post.slug}
               href={`/writing/${post.slug}`}
-              className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors block group h-full"
+              className="card group flex flex-col transition-all h-full"
             >
               <article className="h-full flex flex-col p-6">
                 {/* Hero Image Inset */}
@@ -265,10 +267,9 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
                     src="/placeholder-hero.jpg"
                     alt={post.title}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-
                 {/* Content */}
                 <div className="flex flex-col flex-1">
                   {/* Primary Category Tag */}
@@ -339,9 +340,6 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
               </article>
             </Link>
           ))}
-          {/* Fill the remaining grid slots with empty background */}
-          <div className={`hidden ${rest.length % 2 === 1 ? 'md:block' : 'md:hidden'} ${rest.length % 3 !== 0 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
-          <div className={`hidden md:hidden ${rest.length % 3 === 1 ? 'lg:block' : 'lg:hidden'} bg-[var(--surface-raised)]`} />
         </div>
       ) : (
         <div
@@ -367,7 +365,7 @@ export default function WritingClient({ posts }: { posts: Post[] }) {
                     src="/placeholder-hero.jpg"
                     alt={post.title}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
 

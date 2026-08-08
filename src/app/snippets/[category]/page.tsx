@@ -61,12 +61,12 @@ export default async function SnippetCategoryPage({
 
       {/* Snippets */}
       {items.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-[var(--border)] gap-[1px] border border-[var(--border)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
             <Link
               href={`/snippets/${resolvedParams.category}/${item.slug}`}
               key={item.title}
-              className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] p-6 group flex flex-col transition-colors min-h-[220px]"
+              className="card p-6 group flex flex-col transition-all min-h-[220px]"
             >
               <h2
                 className="font-bold mb-2 text-lg"

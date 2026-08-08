@@ -4,16 +4,15 @@ import { knowledgeBases } from "@/lib/constants";
 
 export const metadata = {
   title: "Notes - Knowledge Base | Jakeer Chilakala",
-  description: "My personal knowledge base and notes on various software engineering topics.",
+  description:
+    "My personal knowledge base and notes on various software engineering topics.",
 };
 
 export default function NotesIndexPage() {
   const totalTopics = knowledgeBases.length;
   const totalNotes = knowledgeBases.reduce(
-    (acc, kb) =>
-      acc +
-      kb.topics.reduce((tAcc, t) => tAcc + t.notes.length, 0),
-    0
+    (acc, kb) => acc + kb.topics.reduce((tAcc, t) => tAcc + t.notes.length, 0),
+    0,
   );
 
   return (
@@ -58,13 +57,16 @@ export default function NotesIndexPage() {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
           {knowledgeBases.map((kb) => {
-            const noteCount = kb.topics.reduce((acc, t) => acc + t.notes.length, 0);
+            const noteCount = kb.topics.reduce(
+              (acc, t) => acc + t.notes.length,
+              0,
+            );
             const readingTime = kb.topics.reduce(
               (acc, t) =>
                 acc + t.notes.reduce((nAcc, n) => nAcc + (n.minutes || 0), 0),
-              0
+              0,
             );
 
             return (
