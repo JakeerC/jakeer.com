@@ -10,6 +10,9 @@ type DraftMetadata = {
   level?: string;
   toolCategory?: string;
   link?: string;
+  noteTopic?: string;
+  noteSubtopic?: string;
+  noteOrder?: number;
   images?: { filename: string; base64Data: string }[];
 };
 
@@ -81,7 +84,7 @@ export async function saveDraftAction(payload: {
   id?: string;
   title: string;
   slug: string;
-  category: "writing" | "snippets" | "tools";
+  category: "writing" | "snippets" | "tools" | "notes";
   markdown: string;
   description?: string;
   metadata: DraftMetadata;
@@ -170,6 +173,20 @@ icon: "LuCode"
 
 `;
     path = `content/tools/${payload.slug}.mdx`;
+  } else if (payload.category === "notes") {
+    const topic = m.noteTopic || "uncategorized";
+    frontmatter = `---
+title: "${payload.title}"
+description: "${payload.description || ""}"
+readTime: "${m.readTime || "5 min read"}"
+topic: "${topic}"
+subtopic: "${m.noteSubtopic || ""}"
+order: ${m.noteOrder || 1}
+tags: [${(m.tags || "").split(",").map((t: string) => `"${t.trim()}"`).filter((t: string) => t !== '""').join(", ")}]
+---
+
+`;
+    path = `content/notes/${topic}/${payload.slug}.mdx`;
   }
   
   const fullContent = frontmatter + payload.markdown;

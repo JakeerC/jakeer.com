@@ -1,10 +1,11 @@
 "use client";
 
 import { iconMap } from "@/lib/constants";
+import { LuCode } from "react-icons/lu";
 
 export default function TechIcon({
   tag,
-  size = 12,
+  size = 16,
 }: {
   tag: string;
   size?: number;
@@ -12,8 +13,8 @@ export default function TechIcon({
   const IconComponent = iconMap[tag];
 
   if (IconComponent) {
-    return <IconComponent size={size} className="mr-2" />;
+    return <IconComponent size={size} className="mx-2" />;
   }
 
-  return null;
+  return <LuCode size={size} className="mx-2" />;
 }

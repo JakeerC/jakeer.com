@@ -15,6 +15,8 @@ import {
   ADMIN_CATEGORY_OPTIONS as CATEGORY_OPTIONS,
   ADMIN_LANG_OPTIONS as LANG_OPTIONS,
   ADMIN_LEVEL_OPTIONS as LEVEL_OPTIONS,
+  ADMIN_TOPIC_OPTIONS as TOPIC_OPTIONS,
+  ADMIN_SUBTOPIC_MAP as SUBTOPIC_MAP,
 } from "../../../lib/constants";
 
 export function AdminClient({ initialData }: { initialData?: any }) {
@@ -25,7 +27,7 @@ export function AdminClient({ initialData }: { initialData?: any }) {
   const [prNumber, setPrNumber] = useState<number | null>(initialData?.pr_number || null);
   const [prUrl, setPrUrl] = useState("");
 
-  const [category, setCategory] = useState<"writing" | "snippets" | "tools">(
+  const [category, setCategory] = useState<"writing" | "snippets" | "tools" | "notes">(
     initialData?.category || "writing",
   );
   const [title, setTitle] = useState(initialData?.title || "");
@@ -37,11 +39,14 @@ export function AdminClient({ initialData }: { initialData?: any }) {
   const [selectedTags, setSelectedTags] = useState<string[]>(
     m.tags ? m.tags.split(",").map((t: string) => t.trim()) : []
   );
-  const [readTime, setReadTime] = useState(m.readTime ? parseInt(m.readTime) : 5);
+  const [readTime, setReadTime] = useState(m.readTime ? Number.parseInt(m.readTime) : 5);
   const [lang, setLang] = useState(m.lang || "");
   const [level, setLevel] = useState(m.level || "BEGINNER");
   const [toolCategory, setToolCategory] = useState(m.toolCategory || "Development");
   const [link, setLink] = useState(m.link || "");
+  const [noteTopic, setNoteTopic] = useState(m.noteTopic || "");
+  const [noteSubtopic, setNoteSubtopic] = useState(m.noteSubtopic || "");
+  const [noteOrder, setNoteOrder] = useState(m.noteOrder ? Number.parseInt(m.noteOrder) : 1);
   const [markdown, setMarkdown] = useState(initialData?.markdown || "");
   const [images, setImages] = useState<{ filename: string; base64Data: string }[]>(m.images || []);
 
@@ -84,6 +89,9 @@ export function AdminClient({ initialData }: { initialData?: any }) {
       level,
       toolCategory,
       link,
+      noteTopic,
+      noteSubtopic,
+      noteOrder,
       images
     }
   });
@@ -218,19 +226,19 @@ export function AdminClient({ initialData }: { initialData?: any }) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {(category === "writing" || category === "snippets" || category === "tools") && (
+          {(category === "writing" || category === "snippets" || category === "tools" || category === "notes") && (
             <div className="col-span-2">
               <FieldControl label="Description" type="text" value={description} placeholder="Short excerpt or description" onChange={setDescription} />
             </div>
           )}
 
-          {(category === "writing" || category === "snippets") && (
+          {(category === "writing" || category === "snippets" || category === "notes") && (
             <div className="col-span-2">
               <FieldControl label="Tags" type="tags" value={selectedTags} onChange={setSelectedTags} options={TAG_OPTIONS} placeholder="Select or create tags..." />
             </div>
           )}
 
-          {category === "writing" && (
+          {(category === "writing" || category === "notes") && (
             <FieldControl label="Read Time" type="range" value={readTime} onChange={setReadTime} min={0} max={30} description="min read" />
           )}
 
@@ -245,6 +253,17 @@ export function AdminClient({ initialData }: { initialData?: any }) {
             <>
               <FieldControl label="Tool Category" type="text" value={toolCategory} onChange={setToolCategory} placeholder="Development, Security, etc." />
               <FieldControl label="External Link" type="url" value={link} onChange={setLink} placeholder="https://..." />
+            </>
+          )}
+
+          {category === "notes" && (
+            <>
+              <FieldControl label="Topic" type="select" value={noteTopic} onChange={(val) => {
+                setNoteTopic(val);
+                setNoteSubtopic("");
+              }} options={[{ label: "Select Topic", value: "" }, ...TOPIC_OPTIONS]} />
+              <FieldControl label="Subtopic" type="select" value={noteSubtopic} onChange={setNoteSubtopic} options={[{ label: "Select Subtopic", value: "" }, ...(SUBTOPIC_MAP[noteTopic] || [])]} />
+              <FieldControl label="Order" type="number" value={noteOrder} onChange={setNoteOrder} min={1} />
             </>
           )}
         </div>

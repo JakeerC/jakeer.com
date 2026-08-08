@@ -9,16 +9,16 @@ describe('TechIcon', () => {
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
 
-  it('renders nothing for unknown tag', () => {
+  it('renders default icon for unknown tag', () => {
     const { container } = render(<TechIcon tag="Unknown Tech" />);
-    expect(container.querySelector('svg')).not.toBeInTheDocument();
+    expect(container.querySelector('svg')).toBeInTheDocument();
   });
 
-  it('applies custom size and margin-right class', () => {
+  it('applies custom size and margin-x class', () => {
     const { container } = render(<TechIcon tag="React" size={24} />);
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('height', '24');
     expect(svg).toHaveAttribute('width', '24');
-    expect(svg).toHaveClass('mr-2');
+    expect(svg).toHaveClass('mx-2');
   });
 });

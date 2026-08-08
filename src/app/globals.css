@@ -584,3 +584,38 @@ code {
 h2[id], h3[id] {
   scroll-margin-top: 6rem;
 }
+
+/* ─── Notes Feature ────────────────────────────────────── */
+.notes-sidebar {
+  position: sticky;
+  top: 6rem;
+  height: calc(100vh - 8rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.notes-sidebar-link--active {
+  color: var(--text-primary) !important;
+  border-left-color: var(--accent) !important;
+  font-weight: 500;
+}
+
+.three-panel-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .three-panel-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .three-panel-layout {
+    grid-template-columns: 220px minmax(0, 1fr) 220px;
+    gap: 4rem;
+  }
+}

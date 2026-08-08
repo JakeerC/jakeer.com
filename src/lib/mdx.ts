@@ -10,7 +10,7 @@ export interface MdxContent {
   content: string;
 }
 
-export function getAllContent(category: "writing" | "snippets" | "tools"): MdxContent[] {
+export function getAllContent(category: string): MdxContent[] {
   const categoryDir = path.join(contentDirectory, category);
   
   if (!fs.existsSync(categoryDir)) {
@@ -45,7 +45,7 @@ export function getAllContent(category: "writing" | "snippets" | "tools"): MdxCo
   return allContent;
 }
 
-export function getContentBySlug(category: "writing" | "snippets" | "tools", slug: string): MdxContent | null {
+export function getContentBySlug(category: string, slug: string): MdxContent | null {
   const categoryDir = path.join(contentDirectory, category);
   const fullPathMdx = path.join(categoryDir, `${slug}.mdx`);
   const fullPathMd = path.join(categoryDir, `${slug}.md`);
@@ -66,4 +66,24 @@ export function getContentBySlug(category: "writing" | "snippets" | "tools", slu
     frontmatter: data,
     content
   };
+}
+
+export function getAllNotes(): MdxContent[] {
+  const notesDir = path.join(contentDirectory, "notes");
+  if (!fs.existsSync(notesDir)) return [];
+  
+  const topics = fs.readdirSync(notesDir).filter(f => fs.statSync(path.join(notesDir, f)).isDirectory());
+  const allNotes: MdxContent[] = [];
+  
+  for (const topic of topics) {
+    const topicNotes = getAllContent(`notes/${topic}`);
+    allNotes.push(...topicNotes);
+  }
+  
+  return allNotes.sort((a, b) => {
+    const orderA = (a.frontmatter.order as number) || 999;
+    const orderB = (b.frontmatter.order as number) || 999;
+    if (orderA !== orderB) return orderA - orderB;
+    return ((a.frontmatter.title as string) || "").localeCompare((b.frontmatter.title as string) || "");
+  });
 }
