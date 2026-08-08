@@ -69,7 +69,7 @@ export default function TableOfContents({
 
   const displayIndex = Math.max(1, activeH2Index);
 
-  const TocContent = () => (
+  const tocContent = (
     <div className="flex flex-col h-full">
       <p className="section-label mb-4" style={{ color: "var(--accent)" }}>ON THIS PAGE</p>
       
@@ -117,7 +117,7 @@ export default function TableOfContents({
     <>
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block w-[220px] sticky top-24 self-start">
-        <TocContent />
+        {tocContent}
       </aside>
 
       {/* Mobile Floating Button */}
@@ -145,7 +145,7 @@ export default function TableOfContents({
               <LuX size={20} />
             </button>
             <div className="mt-8">
-              <TocContent />
+              {tocContent}
             </div>
           </div>
         </div>
