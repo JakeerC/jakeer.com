@@ -43,3 +43,10 @@ next-env.d.ts
 
 #sonar
 **sonar-issues**
+
+#Playwright
+**playwright-report**
+**test-results**
+**playwright-mcp**
+**playwright-traces**
+**trace**

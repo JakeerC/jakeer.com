@@ -11,8 +11,10 @@ type Heading = {
 
 export default function TableOfContents({
   contentSelector = "article",
+  breakpoint = "lg",
 }: {
   readonly contentSelector?: string;
+  readonly breakpoint?: "lg" | "xl";
 }) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>("");
@@ -113,10 +115,13 @@ export default function TableOfContents({
     </div>
   );
 
+  const desktopClass = breakpoint === "xl" ? "hidden xl:block" : "hidden lg:block";
+  const mobileClass = breakpoint === "xl" ? "xl:hidden" : "lg:hidden";
+
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-[220px] sticky top-24 self-start">
+      <aside className={`${desktopClass} w-[220px] sticky top-24 self-start`}>
         {tocContent}
       </aside>
 
@@ -124,7 +129,7 @@ export default function TableOfContents({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="toc-fab lg:hidden fixed bottom-6 right-6 p-3 rounded-full bg-[var(--surface)] border border-[var(--border)] shadow-lg text-[var(--text-primary)] z-40 hover:bg-[var(--surface-raised)] transition-colors"
+        className={`toc-fab ${mobileClass} fixed bottom-6 right-6 p-3 rounded-full bg-[var(--surface)] border border-[var(--border)] shadow-lg text-[var(--text-primary)] z-40 hover:bg-[var(--surface-raised)] transition-colors`}
         aria-label="Table of Contents"
       >
         <LuList size={20} />
@@ -132,7 +137,7 @@ export default function TableOfContents({
 
       {/* Mobile Slide-out Panel */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 flex justify-end">
+        <div className={`${mobileClass} fixed inset-0 z-50 flex justify-end`}>
           <button
             type="button"
             className="fixed inset-0 w-full h-full bg-black/40 backdrop-blur-sm animate-fade-in cursor-default"
