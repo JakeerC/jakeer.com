@@ -236,6 +236,83 @@ export const ADMIN_CATEGORY_OPTIONS = [
   { label: "Note", value: "notes" },
 ];
 
+export const ADMIN_TOPIC_OPTIONS = [
+  { label: "Java", value: "java" },
+  { label: "JavaScript", value: "javascript" },
+  { label: "TypeScript", value: "typescript" },
+  { label: "React", value: "react" },
+  { label: "AI/ML", value: "ai-ml" },
+  { label: "MCP", value: "mcp" },
+  { label: "CI/CD", value: "ci-cd" },
+  { label: "System Design", value: "system-design" },
+  { label: "Docker/K8s", value: "docker-k8s" },
+  { label: "AWS", value: "aws" },
+];
+
+export const ADMIN_SUBTOPIC_MAP: Record<
+  string,
+  { label: string; value: string }[]
+> = {
+  java: [
+    { label: "JVM Internals", value: "JVM Internals" },
+    { label: "Spring Boot", value: "Spring Boot" },
+    { label: "Concurrency", value: "Concurrency" },
+    { label: "Design Patterns", value: "Design Patterns" },
+  ],
+  javascript: [
+    { label: "Core Concepts", value: "Core Concepts" },
+    { label: "Event Loop", value: "Event Loop" },
+    { label: "Async Programming", value: "Async Programming" },
+  ],
+  typescript: [
+    { label: "Advanced Types", value: "Advanced Types" },
+    { label: "Generics", value: "Generics" },
+    { label: "Configuration", value: "Configuration" },
+  ],
+  react: [
+    { label: "Hooks", value: "Hooks" },
+    { label: "Optimization", value: "Optimization" },
+    { label: "Server Components", value: "Server Components" },
+  ],
+  "ai-ml": [
+    { label: "LLM Fundamentals", value: "LLM Fundamentals" },
+    { label: "Prompt Engineering", value: "Prompt Engineering" },
+    { label: "RAG & Embeddings", value: "RAG & Embeddings" },
+  ],
+  mcp: [
+    { label: "Getting Started", value: "Getting Started" },
+    { label: "Tool Use", value: "Tool Use" },
+    { label: "Server Architecture", value: "Server Architecture" },
+  ],
+  "ci-cd": [
+    { label: "Pipelines", value: "Pipelines" },
+    { label: "GitHub Actions", value: "GitHub Actions" },
+    { label: "Deployment Strategies", value: "Deployment Strategies" },
+  ],
+  "system-design": [
+    { label: "Fundamentals", value: "Fundamentals" },
+    {
+      label: "Caching & Load Distribution",
+      value: "Caching & Load Distribution",
+    },
+    { label: "Databases", value: "Databases" },
+    {
+      label: "Messaging & Event Streaming",
+      value: "Messaging & Event Streaming",
+    },
+  ],
+  "docker-k8s": [
+    { label: "Containers", value: "Containers" },
+    { label: "Kubernetes", value: "Kubernetes" },
+    { label: "Helm", value: "Helm" },
+  ],
+  aws: [
+    { label: "Compute", value: "Compute" },
+    { label: "Storage", value: "Storage" },
+    { label: "Networking", value: "Networking" },
+  ],
+};
+
 export const ADMIN_LANG_OPTIONS = [
   { label: "Select Language", value: "" },
   { label: "TypeScript", value: "typescript" },
