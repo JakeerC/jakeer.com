@@ -84,18 +84,14 @@ describe('TableOfContents Component', () => {
     expect(screen.queryByLabelText('Close Table of Contents')).toBeNull();
 
     // Click fab to open
-    act(() => {
-      fireEvent.click(fabButton);
-    });
+    fireEvent.click(fabButton);
 
     // Mobile panel should be visible now
     const closeBtn = screen.getByLabelText('Close Table of Contents');
     expect(closeBtn).toBeDefined();
 
     // Click to close
-    act(() => {
-      fireEvent.click(closeBtn);
-    });
+    fireEvent.click(closeBtn);
 
     expect(screen.queryByLabelText('Close Table of Contents')).toBeNull();
   });
@@ -112,18 +108,14 @@ describe('TableOfContents Component', () => {
     
     // Open panel
     const fabButton = screen.getByLabelText('Table of Contents');
-    act(() => {
-      fireEvent.click(fabButton);
-    });
+    fireEvent.click(fabButton);
 
     expect(screen.getByLabelText('Close Table of Contents')).toBeDefined();
 
     // Click a link inside the mobile panel
     const link = screen.getAllByText('One')[1]; 
     
-    act(() => {
-      fireEvent.click(link);
-    });
+    fireEvent.click(link);
 
     // Panel should close
     expect(screen.queryByLabelText('Close Table of Contents')).toBeNull();
@@ -194,9 +186,7 @@ describe('TableOfContents Component', () => {
     
     // Open panel
     const fabButton = screen.getByLabelText('Table of Contents');
-    act(() => {
-      fireEvent.click(fabButton);
-    });
+    fireEvent.click(fabButton);
 
     // The backdrop is the first div with bg-black/40 (you can also add testid if needed, but we can query by className or structure)
     // It's the previous sibling of the panel. The panel has the close button.
@@ -204,11 +194,9 @@ describe('TableOfContents Component', () => {
     const panel = closeBtn.parentElement;
     const backdrop = panel?.previousSibling as Element;
 
-    act(() => {
-      if (backdrop) {
-        fireEvent.click(backdrop);
-      }
-    });
+    if (backdrop) {
+      fireEvent.click(backdrop);
+    }
 
     // Panel should close
     expect(screen.queryByLabelText('Close Table of Contents')).toBeNull();

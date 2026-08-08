@@ -12,7 +12,7 @@ type Heading = {
 export default function TableOfContents({
   contentSelector = "article",
 }: {
-  contentSelector?: string;
+  readonly contentSelector?: string;
 }) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>("");
@@ -122,6 +122,7 @@ export default function TableOfContents({
 
       {/* Mobile Floating Button */}
       <button
+        type="button"
         onClick={() => setIsOpen(true)}
         className="toc-fab lg:hidden fixed bottom-6 right-6 p-3 rounded-full bg-[var(--surface)] border border-[var(--border)] shadow-lg text-[var(--text-primary)] z-40 hover:bg-[var(--surface-raised)] transition-colors"
         aria-label="Table of Contents"
@@ -132,12 +133,16 @@ export default function TableOfContents({
       {/* Mobile Slide-out Panel */}
       {isOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex justify-end">
-          <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
+          <button
+            type="button"
+            className="fixed inset-0 w-full h-full bg-black/40 backdrop-blur-sm animate-fade-in cursor-default"
             onClick={() => setIsOpen(false)}
+            aria-label="Close Table of Contents overlay"
+            tabIndex={-1}
           />
           <div className="toc-panel relative w-[80%] max-w-sm h-full bg-[var(--bg-primary)] border-l border-[var(--border)] p-6 shadow-2xl overflow-y-auto transform transition-transform">
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="absolute top-6 right-6 p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Close Table of Contents"

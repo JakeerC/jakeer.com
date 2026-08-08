@@ -21,9 +21,9 @@ const getText = (children: any): string => {
 };
 
 export const components = {
-  h2: (props: any) => {
-    const text = getText(props.children);
-    const id = props.id || slugify(text);
+  h2: ({ children, id: propId, ...rest }: any) => {
+    const text = getText(children);
+    const id = propId || slugify(text);
     return (
       <h2
         id={id}
@@ -34,13 +34,15 @@ export const components = {
           margin: "2.5rem 0 1rem",
           color: "var(--text-primary)",
         }}
-        {...props}
-      />
+        {...rest}
+      >
+        {children}
+      </h2>
     );
   },
-  h3: (props: any) => {
-    const text = getText(props.children);
-    const id = props.id || slugify(text);
+  h3: ({ children, id: propId, ...rest }: any) => {
+    const text = getText(children);
+    const id = propId || slugify(text);
     return (
       <h3
         id={id}
@@ -51,8 +53,10 @@ export const components = {
           margin: "2rem 0 0.75rem",
           color: "var(--text-primary)",
         }}
-        {...props}
-      />
+        {...rest}
+      >
+        {children}
+      </h3>
     );
   },
   pre: (props: any) => {
