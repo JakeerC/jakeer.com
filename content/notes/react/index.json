@@ -1,0 +1,21 @@
+{
+  "displayOrder": 4,
+  "label": "React",
+  "description": "Hooks, render optimization, state management, and server components.",
+  "icon": "React",
+  "color": "#61dafb",
+  "principles": [
+    {
+      "label": "COMPONENT LIFECYCLE",
+      "text": "Understanding mounts, updates, and unmounts."
+    },
+    {
+      "label": "PERFORMANCE",
+      "text": "Memoization, lazy loading, and rendering."
+    },
+    {
+      "label": "STATE MANAGEMENT",
+      "text": "Context, reducers, and global state."
+    }
+  ]
+}

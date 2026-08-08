@@ -15,11 +15,15 @@ import {
   ADMIN_CATEGORY_OPTIONS as CATEGORY_OPTIONS,
   ADMIN_LANG_OPTIONS as LANG_OPTIONS,
   ADMIN_LEVEL_OPTIONS as LEVEL_OPTIONS,
-  ADMIN_TOPIC_OPTIONS as TOPIC_OPTIONS,
-  ADMIN_SUBTOPIC_MAP as SUBTOPIC_MAP,
 } from "../../../lib/constants";
 
-export function AdminClient({ initialData }: { initialData?: any }) {
+interface AdminClientProps {
+  initialData?: any;
+  topicOptions?: { label: string; value: string }[];
+  subtopicMap?: Record<string, { label: string; value: string }[]>;
+}
+
+export function AdminClient({ initialData, topicOptions = [], subtopicMap = {} }: AdminClientProps) {
   const router = useRouter();
   
   const [id, setId] = useState<string | undefined>(initialData?.id);
@@ -261,8 +265,8 @@ export function AdminClient({ initialData }: { initialData?: any }) {
               <FieldControl label="Topic" type="select" value={noteTopic} onChange={(val) => {
                 setNoteTopic(val);
                 setNoteSubtopic("");
-              }} options={[{ label: "Select Topic", value: "" }, ...TOPIC_OPTIONS]} />
-              <FieldControl label="Subtopic" type="select" value={noteSubtopic} onChange={setNoteSubtopic} options={[{ label: "Select Subtopic", value: "" }, ...(SUBTOPIC_MAP[noteTopic] || [])]} />
+              }} options={[{ label: "Select Topic", value: "" }, ...topicOptions]} />
+              <FieldControl label="Subtopic" type="select" value={noteSubtopic} onChange={setNoteSubtopic} options={[{ label: "Select Subtopic", value: "" }, ...(subtopicMap[noteTopic] || [])]} />
               <FieldControl label="Order" type="number" value={noteOrder} onChange={setNoteOrder} min={1} />
             </>
           )}

@@ -1,0 +1,21 @@
+{
+  "displayOrder": 3,
+  "label": "TypeScript",
+  "description": "Advanced types, generics, utility types, and type guards.",
+  "icon": "TypeScript",
+  "color": "#3178c6",
+  "principles": [
+    {
+      "label": "TYPE SAFETY",
+      "text": "Catching errors at compile time."
+    },
+    {
+      "label": "GENERICS",
+      "text": "Writing reusable, type-safe components."
+    },
+    {
+      "label": "ADVANCED TYPES",
+      "text": "Mapped types, conditional types, and more."
+    }
+  ]
+}

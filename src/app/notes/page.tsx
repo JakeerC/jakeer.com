@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import { NotesTopicCard } from "@/components/NotesTopicCard";
-import { knowledgeBases } from "@/lib/constants";
+import { getAllKnowledgeBases } from "@/lib/mdx";
 
 export const metadata = {
   title: "Notes - Knowledge Base | Jakeer Chilakala",
@@ -9,6 +9,7 @@ export const metadata = {
 };
 
 export default function NotesIndexPage() {
+  const knowledgeBases = getAllKnowledgeBases();
   const totalTopics = knowledgeBases.length;
   const totalNotes = knowledgeBases.reduce(
     (acc, kb) => acc + kb.topics.reduce((tAcc, t) => tAcc + t.notes.length, 0),
@@ -87,3 +88,4 @@ export default function NotesIndexPage() {
     </div>
   );
 }
+

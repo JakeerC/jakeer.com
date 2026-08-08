@@ -1,0 +1,21 @@
+{
+  "displayOrder": 9,
+  "label": "Docker/K8s",
+  "description": "Containerization, orchestration, Helm charts, and networking.",
+  "icon": "Docker/K8s",
+  "color": "#2496ed",
+  "principles": [
+    {
+      "label": "CONTAINERIZATION",
+      "text": "Building and optimizing Docker images."
+    },
+    {
+      "label": "ORCHESTRATION",
+      "text": "Kubernetes architecture and resources."
+    },
+    {
+      "label": "OPERATIONS",
+      "text": "Networking, storage, and Helm charts."
+    }
+  ]
+}

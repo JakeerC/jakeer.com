@@ -1,4 +1,4 @@
-import { knowledgeBases } from "@/lib/constants";
+import { getKnowledgeBase } from "@/lib/mdx";
 import { NotesSidebar } from "@/components/NotesSidebar";
 import { notFound } from "next/navigation";
 
@@ -10,7 +10,7 @@ export default async function TopicLayout({
   readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
-  const knowledgeBase = knowledgeBases.find((kb) => kb.slug === topic);
+  const knowledgeBase = getKnowledgeBase(topic);
 
   if (!knowledgeBase) {
     notFound();
@@ -30,3 +30,4 @@ export default async function TopicLayout({
     </div>
   );
 }
+

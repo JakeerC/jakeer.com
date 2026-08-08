@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AdminClient } from "../components/AdminClient";
 import { redirect } from "next/navigation";
 import { getDraftById } from "../actions";
+import { getAdminTopicOptions, getAdminSubtopicMap } from "@/lib/mdx";
 
 export default async function EditDraftPage({
   params,
@@ -28,5 +29,5 @@ export default async function EditDraftPage({
     redirect("/admin");
   }
 
-  return <AdminClient initialData={initialData} />;
+  return <AdminClient initialData={initialData} topicOptions={getAdminTopicOptions()} subtopicMap={getAdminSubtopicMap()} />;
 }

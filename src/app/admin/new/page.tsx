@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { AdminClient } from "../components/AdminClient";
 import { redirect } from "next/navigation";
+import { getAdminTopicOptions, getAdminSubtopicMap } from "@/lib/mdx";
 
 export default async function NewDraftPage() {
   const supabase = await createClient();
@@ -10,5 +11,5 @@ export default async function NewDraftPage() {
     redirect("/admin");
   }
 
-  return <AdminClient />;
+  return <AdminClient topicOptions={getAdminTopicOptions()} subtopicMap={getAdminSubtopicMap()} />;
 }

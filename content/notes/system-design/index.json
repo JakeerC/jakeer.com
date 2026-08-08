@@ -1,0 +1,21 @@
+{
+  "displayOrder": 8,
+  "label": "System Design",
+  "description": "CAP theorem, caching, databases, and messaging.",
+  "icon": "System Design",
+  "color": "#ec4899",
+  "principles": [
+    {
+      "label": "DEFINITION FIRST",
+      "text": "The first sentence answers 'what is it'."
+    },
+    {
+      "label": "TRADE-OFFS WITH REAL NUMBERS",
+      "text": "Every note has a trade-off table."
+    },
+    {
+      "label": "REVIEWED, NOT ABANDONED",
+      "text": "Every claim is checked against primary sources."
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { knowledgeBases } from "@/lib/constants";
+import { getKnowledgeBase, getAllKnowledgeBases } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import TechIcon from "@/components/TechIcon";
@@ -9,7 +9,7 @@ export async function generateMetadata({
   readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
-  const kb = knowledgeBases.find((k) => k.slug === topic);
+  const kb = getKnowledgeBase(topic);
   if (!kb) return { title: "Not Found" };
   return {
     title: `${kb.label} Notes | Jakeer Chilakala`,
@@ -23,7 +23,7 @@ export default async function TopicOverviewPage({
   readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
-  const knowledgeBase = knowledgeBases.find((kb) => kb.slug === topic);
+  const knowledgeBase = getKnowledgeBase(topic);
 
   if (!knowledgeBase) {
     notFound();

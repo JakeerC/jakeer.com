@@ -1,0 +1,21 @@
+{
+  "displayOrder": 5,
+  "label": "AI/ML",
+  "description": "LLMs, prompt engineering, RAG, embeddings, and fine-tuning.",
+  "icon": "AI/ML",
+  "color": "#10a37f",
+  "principles": [
+    {
+      "label": "LARGE LANGUAGE MODELS",
+      "text": "Architecture, tokens, and context windows."
+    },
+    {
+      "label": "PROMPT ENGINEERING",
+      "text": "Techniques for better model outputs."
+    },
+    {
+      "label": "APPLIED AI",
+      "text": "RAG, embeddings, and vector databases."
+    }
+  ]
+}

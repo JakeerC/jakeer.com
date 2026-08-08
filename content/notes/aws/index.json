@@ -1,0 +1,21 @@
+{
+  "displayOrder": 10,
+  "label": "AWS",
+  "description": "Core services, IAM, Lambda, S3, EC2, and VPC.",
+  "icon": "AWS",
+  "color": "#ff9900",
+  "principles": [
+    {
+      "label": "CLOUD NATIVE",
+      "text": "Designing for scale and resilience."
+    },
+    {
+      "label": "SECURITY",
+      "text": "IAM, VPCs, and least privilege."
+    },
+    {
+      "label": "SERVERLESS",
+      "text": "Lambda, API Gateway, and DynamoDB."
+    }
+  ]
+}
