@@ -30,13 +30,13 @@ export default function SnippetsPage() {
       <div className="divider mb-12" />
 
       {/* Category grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 bg-[var(--border)] gap-[1px] border border-[var(--border)]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map((cat) => {
           return (
             <Link
               key={cat.slug}
               href={`/snippets/${cat.slug}`}
-              className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] p-6 group flex flex-col gap-5 transition-colors"
+              className="card p-6 group flex flex-col gap-5 transition-all"
             >
               <div className="flex items-start justify-between">
                 <div

@@ -2,8 +2,7 @@ import { LuClock, LuCalendar } from "react-icons/lu";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
-import { getContentBySlug } from "@/lib/mdx";
-import { knowledgeBases } from "@/lib/constants";
+import { getContentBySlug, getKnowledgeBase } from "@/lib/mdx";
 import TableOfContents from "@/components/TableOfContents";
 
 // Import identical custom MDX components used in writing
@@ -18,7 +17,7 @@ export async function generateMetadata({
   const note = getContentBySlug(`notes/${topic}`, slug);
   if (!note) return { title: "Not Found" };
   return {
-    title: `${note.frontmatter.title} | ${knowledgeBases.find((k) => k.slug === topic)?.label} Notes`,
+    title: `${note.frontmatter.title} | ${getKnowledgeBase(topic)?.label ?? topic} Notes`,
     description: (note.frontmatter.description as string) || "Note",
   };
 }

@@ -1,0 +1,21 @@
+{
+  "displayOrder": 2,
+  "label": "JavaScript",
+  "description": "Closures, event loop, ES modules, and async patterns.",
+  "icon": "JavaScript",
+  "color": "#f7df1e",
+  "principles": [
+    {
+      "label": "THE EVENT LOOP",
+      "text": "Understanding the call stack and task queues."
+    },
+    {
+      "label": "ASYNC PATTERNS",
+      "text": "Promises, async/await, and error handling."
+    },
+    {
+      "label": "UNDER THE HOOD",
+      "text": "Execution context, closures, and prototypes."
+    }
+  ]
+}

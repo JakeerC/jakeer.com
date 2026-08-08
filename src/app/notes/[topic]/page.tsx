@@ -1,4 +1,4 @@
-import { knowledgeBases } from "@/lib/constants";
+import { getKnowledgeBase, getAllKnowledgeBases } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import TechIcon from "@/components/TechIcon";
@@ -9,7 +9,7 @@ export async function generateMetadata({
   readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
-  const kb = knowledgeBases.find((k) => k.slug === topic);
+  const kb = getKnowledgeBase(topic);
   if (!kb) return { title: "Not Found" };
   return {
     title: `${kb.label} Notes | Jakeer Chilakala`,
@@ -23,7 +23,7 @@ export default async function TopicOverviewPage({
   readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
-  const knowledgeBase = knowledgeBases.find((kb) => kb.slug === topic);
+  const knowledgeBase = getKnowledgeBase(topic);
 
   if (!knowledgeBase) {
     notFound();
@@ -106,12 +106,11 @@ export default async function TopicOverviewPage({
       </div>
 
       {/* Feature Pillars */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)] rounded-xl overflow-hidden mb-20">
         {knowledgeBase.principles.map((principle) => (
           <div
             key={principle.label}
-            className="p-6 rounded-xl border bg-[var(--bg-secondary)]"
-            style={{ borderColor: "var(--border)" }}
+            className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors p-6 flex flex-col"
           >
             <h4
               className="text-xs font-bold tracking-widest uppercase mb-3"
@@ -144,8 +143,7 @@ export default async function TopicOverviewPage({
                 <Link
                   key={note.slug}
                   href={`/notes/${knowledgeBase.slug}/${note.slug}`}
-                  className="p-5 rounded-lg border bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-all group block"
-                  style={{ borderColor: "var(--border)" }}
+                  className="card p-5 group flex flex-col"
                 >
                   <h3
                     className="font-semibold mb-2 group-hover:underline underline-offset-4"

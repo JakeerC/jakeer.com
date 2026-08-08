@@ -1,0 +1,21 @@
+{
+  "displayOrder": 1,
+  "label": "Java",
+  "description": "JVM internals, Spring Boot, design patterns, and concurrency.",
+  "icon": "Java",
+  "color": "#f89820",
+  "principles": [
+    {
+      "label": "CORE CONCEPTS",
+      "text": "Deep dive into JVM internals and memory management."
+    },
+    {
+      "label": "SPRING BOOT",
+      "text": "Production-ready patterns and best practices."
+    },
+    {
+      "label": "PERFORMANCE",
+      "text": "Concurrency, threading, and optimization."
+    }
+  ]
+}

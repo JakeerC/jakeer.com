@@ -1,0 +1,21 @@
+{
+  "displayOrder": 6,
+  "label": "MCP",
+  "description": "Model Context Protocol, tool use, and server architecture.",
+  "icon": "MCP",
+  "color": "#8b5cf6",
+  "principles": [
+    {
+      "label": "PROTOCOL BASICS",
+      "text": "Understanding the Model Context Protocol."
+    },
+    {
+      "label": "TOOL USE",
+      "text": "Exposing functions and APIs to models."
+    },
+    {
+      "label": "SERVER ARCHITECTURE",
+      "text": "Building robust MCP servers."
+    }
+  ]
+}

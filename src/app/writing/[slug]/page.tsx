@@ -158,6 +158,20 @@ export default async function ArticlePage({
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
+      {/* Hero Image */}
+      <div 
+        className="relative w-full aspect-[21/9] sm:aspect-[2/1] md:aspect-[2.5/1] mb-12 rounded-2xl overflow-hidden border" 
+        style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+      >
+        <Image 
+          src={(post.frontmatter.image as string) || "/placeholder-hero.jpg"} 
+          alt={(post.frontmatter.title as string) || "Hero Image"} 
+          fill 
+          priority
+          className="object-cover" 
+        />
+      </div>
+
       {/* Back */}
       <Link
         href="/writing"

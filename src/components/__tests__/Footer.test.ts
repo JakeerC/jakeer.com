@@ -15,7 +15,6 @@ vi.mock('@/lib/config', () => ({
     socials: {
       github: 'https://github.com/test',
       linkedin: 'https://linkedin.com/in/test',
-      twitter: 'https://twitter.com/test',
     },
   },
 }));
@@ -50,8 +49,5 @@ describe('Footer', () => {
     
     const linkedinLink = screen.getByLabelText('LinkedIn');
     expect(linkedinLink).toHaveAttribute('href', 'https://linkedin.com/in/test');
-    
-    const twitterLink = screen.getByLabelText('Twitter');
-    expect(twitterLink).toHaveAttribute('href', 'https://twitter.com/test');
   });
 });

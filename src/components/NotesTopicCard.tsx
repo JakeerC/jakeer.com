@@ -25,26 +25,9 @@ export function NotesTopicCard({
   return (
     <Link
       href={`/notes/${slug}`}
-      className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-all block group h-full rounded-xl border"
-      style={{
-        borderColor: "var(--border)",
-        "--hover-border-color": color,
-      } as React.CSSProperties}
+      className="card group flex flex-col h-full transition-all"
     >
-      <article
-        className="p-6 md:p-8 h-full flex flex-col cursor-pointer transition-colors"
-        style={{
-          borderBottom: "4px solid transparent",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = color;
-          e.currentTarget.style.borderBottomColor = color;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "var(--border)";
-          e.currentTarget.style.borderBottomColor = "transparent";
-        }}
-      >
+      <article className="p-6 md:p-8 h-full flex flex-col cursor-pointer">
         {/* Icon & Label */}
         <div className="flex items-center gap-3 mb-4">
           <div
@@ -80,7 +63,8 @@ export function NotesTopicCard({
             {noteCount} notes · {totalReadingTime} min
           </div>
           <div
-            className="text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1"
+            className="text-sm font-semibold opacity-0 group-hover:opacity-100
+            transition-opacity flex items-center gap-1"
             style={{ color }}
           >
             Start here <span>→</span>

@@ -1,0 +1,21 @@
+{
+  "displayOrder": 7,
+  "label": "CI/CD",
+  "description": "GitHub Actions, Jenkins, Docker builds, and deployment strategies.",
+  "icon": "CI/CD",
+  "color": "#2088ff",
+  "principles": [
+    {
+      "label": "AUTOMATION",
+      "text": "Automating builds, tests, and deployments."
+    },
+    {
+      "label": "PIPELINES",
+      "text": "Designing efficient CI/CD pipelines."
+    },
+    {
+      "label": "DEPLOYMENT",
+      "text": "Blue/green, canary, and rolling updates."
+    }
+  ]
+}
