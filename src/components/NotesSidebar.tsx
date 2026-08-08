@@ -6,8 +6,8 @@ import { useState } from "react";
 import { LuChevronRight, LuChevronDown } from "react-icons/lu";
 
 export interface NotesSidebarProps {
-  knowledgeBase: any;
-  topics: any[];
+  readonly knowledgeBase: any;
+  readonly topics: any[];
 }
 
 export function NotesSidebar({ knowledgeBase, topics }: NotesSidebarProps) {
@@ -26,6 +26,7 @@ export function NotesSidebar({ knowledgeBase, topics }: NotesSidebarProps) {
       {/* Mobile Toggle */}
       <div className="lg:hidden mb-4">
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 text-sm font-semibold py-2 px-4 rounded-md border w-full justify-between"
           style={{
@@ -66,8 +67,8 @@ export function NotesSidebar({ knowledgeBase, topics }: NotesSidebarProps) {
               </Link>
             </div>
 
-            {groupedNotes.map((group, i) => (
-              <div key={i}>
+            {groupedNotes.map((group) => (
+              <div key={group.label}>
                 <h5
                   className="text-xs font-bold mb-2 uppercase"
                   style={{ color: "var(--text-primary)" }}

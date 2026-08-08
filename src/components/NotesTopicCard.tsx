@@ -4,13 +4,13 @@ import Link from "next/link";
 import TechIcon from "./TechIcon";
 
 export interface NotesTopicCardProps {
-  slug: string;
-  label: string;
-  description: string;
-  icon: string;
-  color: string;
-  noteCount: number;
-  totalReadingTime: number; // in minutes
+  readonly slug: string;
+  readonly label: string;
+  readonly description: string;
+  readonly icon: string;
+  readonly color: string;
+  readonly noteCount: number;
+  readonly totalReadingTime: number; // in minutes
 }
 
 export function NotesTopicCard({

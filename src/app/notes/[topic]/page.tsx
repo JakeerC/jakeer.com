@@ -6,7 +6,7 @@ import TechIcon from "@/components/TechIcon";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ topic: string }>;
+  readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
   const kb = knowledgeBases.find((k) => k.slug === topic);
@@ -20,7 +20,7 @@ export async function generateMetadata({
 export default async function TopicOverviewPage({
   params,
 }: {
-  params: Promise<{ topic: string }>;
+  readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
   const knowledgeBase = knowledgeBases.find((kb) => kb.slug === topic);
@@ -107,9 +107,9 @@ export default async function TopicOverviewPage({
 
       {/* Feature Pillars */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-        {knowledgeBase.principles.map((principle, i) => (
+        {knowledgeBase.principles.map((principle) => (
           <div
-            key={i}
+            key={principle.label}
             className="p-6 rounded-xl border bg-[var(--bg-secondary)]"
             style={{ borderColor: "var(--border)" }}
           >
@@ -131,8 +131,8 @@ export default async function TopicOverviewPage({
 
       {/* Sub-Topics */}
       <div className="space-y-12">
-        {knowledgeBase.topics.map((subtopic, i) => (
-          <section key={i}>
+        {knowledgeBase.topics.map((subtopic) => (
+          <section key={subtopic.label}>
             <h2
               className="text-2xl font-display font-bold mb-6"
               style={{ color: "var(--text-primary)" }}

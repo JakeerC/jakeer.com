@@ -6,8 +6,8 @@ export default async function TopicLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
-  params: Promise<{ topic: string }>;
+  readonly children: React.ReactNode;
+  readonly params: Promise<{ topic: string }>;
 }) {
   const { topic } = await params;
   const knowledgeBase = knowledgeBases.find((kb) => kb.slug === topic);

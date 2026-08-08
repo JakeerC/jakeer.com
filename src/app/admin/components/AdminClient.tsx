@@ -39,14 +39,14 @@ export function AdminClient({ initialData }: { initialData?: any }) {
   const [selectedTags, setSelectedTags] = useState<string[]>(
     m.tags ? m.tags.split(",").map((t: string) => t.trim()) : []
   );
-  const [readTime, setReadTime] = useState(m.readTime ? parseInt(m.readTime) : 5);
+  const [readTime, setReadTime] = useState(m.readTime ? Number.parseInt(m.readTime) : 5);
   const [lang, setLang] = useState(m.lang || "");
   const [level, setLevel] = useState(m.level || "BEGINNER");
   const [toolCategory, setToolCategory] = useState(m.toolCategory || "Development");
   const [link, setLink] = useState(m.link || "");
   const [noteTopic, setNoteTopic] = useState(m.noteTopic || "");
   const [noteSubtopic, setNoteSubtopic] = useState(m.noteSubtopic || "");
-  const [noteOrder, setNoteOrder] = useState(m.noteOrder ? parseInt(m.noteOrder) : 1);
+  const [noteOrder, setNoteOrder] = useState(m.noteOrder ? Number.parseInt(m.noteOrder) : 1);
   const [markdown, setMarkdown] = useState(initialData?.markdown || "");
   const [images, setImages] = useState<{ filename: string; base64Data: string }[]>(m.images || []);
 

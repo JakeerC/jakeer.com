@@ -12,7 +12,7 @@ import { components } from "@/app/writing/[slug]/page";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ topic: string; slug: string }>;
+  readonly params: Promise<{ topic: string; slug: string }>;
 }): Promise<Metadata> {
   const { topic, slug } = await params;
   const note = getContentBySlug(`notes/${topic}`, slug);
@@ -26,7 +26,7 @@ export async function generateMetadata({
 export default async function NoteDetailPage({
   params,
 }: {
-  params: Promise<{ topic: string; slug: string }>;
+  readonly params: Promise<{ topic: string; slug: string }>;
 }) {
   const { topic, slug } = await params;
   const note = getContentBySlug(`notes/${topic}`, slug);
