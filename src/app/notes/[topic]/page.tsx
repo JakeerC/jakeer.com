@@ -106,11 +106,11 @@ export default async function TopicOverviewPage({
       </div>
 
       {/* Feature Pillars */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)] rounded-xl overflow-hidden mb-20">
         {knowledgeBase.principles.map((principle) => (
           <div
             key={principle.label}
-            className="card p-6 flex flex-col"
+            className="bg-[var(--bg-primary)] hover:bg-[var(--surface-raised)] transition-colors p-6 flex flex-col"
           >
             <h4
               className="text-xs font-bold tracking-widest uppercase mb-3"
