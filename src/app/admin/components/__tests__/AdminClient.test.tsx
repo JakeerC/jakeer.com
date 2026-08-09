@@ -232,6 +232,14 @@ describe('AdminClient', () => {
     expect(screen.getByText('External Link')).toBeInTheDocument();
   });
 
+  it('renders notes specific fields', () => {
+    render(<AdminClient initialData={{ category: 'notes' }} />);
+    // Notes should have Topic, Subtopic, Order
+    expect(screen.getByText('Topic')).toBeInTheDocument();
+    expect(screen.getByText('Subtopic')).toBeInTheDocument();
+    expect(screen.getByText('Order')).toBeInTheDocument();
+  });
+
   it('can open and close asset drawer and select an asset', async () => {
     // Mock navigator.clipboard
     const originalClipboard = navigator.clipboard;

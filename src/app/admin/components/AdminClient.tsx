@@ -26,9 +26,9 @@ import {
 } from "../../../lib/constants";
 
 interface AdminClientProps {
-  initialData?: any;
-  topicOptions?: { label: string; value: string }[];
-  subtopicMap?: Record<string, { label: string; value: string }[]>;
+  readonly initialData?: any;
+  readonly topicOptions?: readonly { readonly label: string; readonly value: string }[];
+  readonly subtopicMap?: Readonly<Record<string, readonly { readonly label: string; readonly value: string }[]>>;
 }
 
 export function AdminClient({
@@ -226,6 +226,13 @@ export function AdminClient({
     }
   };
 
+  const showDescription = ["writing", "snippets", "tools", "notes"].includes(category);
+  const showTags = ["writing", "snippets", "notes"].includes(category);
+  const showReadTime = ["writing", "notes"].includes(category);
+  const showLanguageLevel = category === "snippets";
+  const showToolFields = category === "tools";
+  const showNotesFields = category === "notes";
+
   return (
     <div
       className={`mx-auto px-6 py-16 transition-all duration-300 ${isFullWidth ? "max-w-full" : "max-w-4xl"}`}
@@ -334,10 +341,7 @@ export function AdminClient({
               onChange={setSlug}
             />
 
-            {(category === "writing" ||
-              category === "snippets" ||
-              category === "tools" ||
-              category === "notes") && (
+            {showDescription && (
               <FieldControl
                 label="Description"
                 type="text"
@@ -347,9 +351,7 @@ export function AdminClient({
               />
             )}
 
-            {(category === "writing" ||
-              category === "snippets" ||
-              category === "notes") && (
+            {showTags && (
               <FieldControl
                 label="Tags"
                 type="tags"
@@ -360,7 +362,7 @@ export function AdminClient({
               />
             )}
 
-            {(category === "writing" || category === "notes") && (
+            {showReadTime && (
               <FieldControl
                 label="Read Time"
                 type="range"
@@ -372,7 +374,7 @@ export function AdminClient({
               />
             )}
 
-            {category === "snippets" && (
+            {showLanguageLevel && (
               <>
                 <FieldControl
                   label="Language"
@@ -391,7 +393,7 @@ export function AdminClient({
               </>
             )}
 
-            {category === "tools" && (
+            {showToolFields && (
               <>
                 <FieldControl
                   label="Tool Category"
@@ -411,7 +413,7 @@ export function AdminClient({
               </>
             )}
 
-            {category === "notes" && (
+            {showNotesFields && (
               <>
                 <FieldControl
                   label="Topic"
@@ -461,12 +463,12 @@ export function AdminClient({
           <div className="flex flex-col space-y-6">
             <div className="flex flex-col space-y-2">
               <div className="flex justify-between items-center">
-                <label
+                <span
                   className="text-sm font-medium"
                   style={{ color: "var(--text-primary)" }}
                 >
                   Content (Markdown)
-                </label>
+                </span>
                 <Button
                   size="sm"
                   variant="outline"

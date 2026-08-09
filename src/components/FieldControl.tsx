@@ -96,7 +96,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
 
       case "multiselect":
       case "tags":
-      case "creatable-select":
+      case "creatable-select": {
         const customStyles = {
           control: (provided: any) => ({
             ...provided,
@@ -185,6 +185,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
             classNamePrefix="react-select"
           />
         );
+      }
 
       case "range":
         return (
