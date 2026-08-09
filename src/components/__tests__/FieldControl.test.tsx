@@ -226,4 +226,15 @@ describe('FieldControl with react-select', () => {
     // userEvent with multiple select replaces selection unless we do ctrl click, so it returns ['b'] in our simple mock
     expect(handleChange).toHaveBeenCalledWith(['b']);
   });
+
+  it('renders creatable-select', async () => {
+    const user = userEvent.setup();
+    const handleChange = vi.fn();
+    const options = [{ label: 'A', value: 'a' }, { label: 'B', value: 'b' }];
+    render(<FieldControl type="creatable-select" value="a" onChange={handleChange} options={options} />);
+    
+    const select = screen.getByTestId('react-select-creatable');
+    await user.selectOptions(select, 'b');
+    expect(handleChange).toHaveBeenCalledWith('b');
+  });
 });

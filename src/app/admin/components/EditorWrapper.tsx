@@ -22,7 +22,6 @@ import {
   tablePlugin,
   InsertTable,
   frontmatterPlugin,
-  InsertFrontmatter,
   linkPlugin,
   linkDialogPlugin,
   ListsToggle,

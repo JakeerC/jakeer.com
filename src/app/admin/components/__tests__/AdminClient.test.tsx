@@ -33,6 +33,28 @@ vi.mock('next/dynamic', () => ({
 }));
 
 describe('AdminClient', () => {
+  it('navigates between step 1 and step 2 using stepper buttons', () => {
+    render(<AdminClient initialData={null} />);
+    
+    // initially on Step 1
+    expect(screen.getByPlaceholderText('E.g. My New Post')).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-editor')).not.toBeInTheDocument();
+    
+    // click Next
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+    
+    // now on Step 2
+    expect(screen.queryByPlaceholderText('E.g. My New Post')).not.toBeInTheDocument();
+    expect(screen.getByTestId('mock-editor')).toBeInTheDocument();
+    
+    // click Back
+    fireEvent.click(screen.getByRole('button', { name: /Back/i }));
+    
+    // back on Step 1
+    expect(screen.getByPlaceholderText('E.g. My New Post')).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-editor')).not.toBeInTheDocument();
+  });
+
   it('handles archive, unarchive, and delete actions', async () => {
     const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
     const confirmMock = vi.spyOn(window, 'confirm').mockImplementation(() => true);
@@ -43,6 +65,8 @@ describe('AdminClient', () => {
 
     // Fresh render - archived
     const { unmount } = render(<AdminClient initialData={{ id: '123' }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
     const archiveBtn = screen.getByRole('button', { name: /Archive/i });
     fireEvent.click(archiveBtn);
     expect(confirmMock).toHaveBeenCalled();
@@ -53,6 +77,7 @@ describe('AdminClient', () => {
     unmount();
     
     render(<AdminClient initialData={{ id: '123', is_archived: true }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
     
     const unarchiveBtn = screen.getByRole('button', { name: /Unarchive/i });
     fireEvent.click(unarchiveBtn);
@@ -69,6 +94,7 @@ describe('AdminClient', () => {
     alertMock.mockRestore();
     confirmMock.mockRestore();
   });
+
   it('renders and handles save error', async () => {
     const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
     vi.mocked(actions.saveDraftAction).mockRejectedValue(new Error('Test error'));
@@ -80,6 +106,8 @@ describe('AdminClient', () => {
     
     const slugInput = screen.getByPlaceholderText('my-new-post');
     fireEvent.change(slugInput, { target: { value: 'test-title' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
 
     const editor = screen.getByTestId('mock-editor');
     fireEvent.change(editor, { target: { value: 'test markdown content' } });
@@ -103,13 +131,16 @@ describe('AdminClient', () => {
 
     render(<AdminClient initialData={null} />);
 
-    // Validation fail
+    fireEvent.change(screen.getByPlaceholderText('E.g. My New Post'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('my-new-post'), { target: { value: 'test' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
+    // Validation fail (content empty)
     const saveButton = screen.getByRole('button', { name: /Save/i });
     fireEvent.click(saveButton);
     expect(alertMock).toHaveBeenCalledWith('Please fill in title, slug, and content.');
 
-    fireEvent.change(screen.getByPlaceholderText('E.g. My New Post'), { target: { value: 'Test' } });
-    fireEvent.change(screen.getByPlaceholderText('my-new-post'), { target: { value: 'test' } });
     fireEvent.change(screen.getByTestId('mock-editor'), { target: { value: 'content' } });
 
     fireEvent.click(saveButton);
@@ -144,6 +175,7 @@ describe('AdminClient', () => {
     vi.mocked(actions.createPRForContent).mockRejectedValue(new Error('PR fail'));
 
     render(<AdminClient initialData={{ id: '123', branch_name: 'draft' }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
 
     const createPRButton = screen.getByRole('button', { name: /Create PR/i });
     fireEvent.click(createPRButton);
@@ -160,6 +192,7 @@ describe('AdminClient', () => {
     vi.mocked(actions.mergePRAction).mockRejectedValue(new Error('Publish fail'));
 
     render(<AdminClient initialData={{ id: '123', pr_number: 42 }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
 
     const publishButton = screen.getByRole('button', { name: /Publish/i });
     fireEvent.click(publishButton);
@@ -218,8 +251,10 @@ describe('AdminClient', () => {
 
     render(<AdminClient initialData={null} />);
     
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
     // Open drawer
-    const openAssetBtns = screen.getAllByRole('button', { name: /Upload Asset/i });
+    const openAssetBtns = screen.getAllByRole('button', { name: /Add Asset/i });
     fireEvent.click(openAssetBtns[openAssetBtns.length - 1]);
     
     // Click our mock
