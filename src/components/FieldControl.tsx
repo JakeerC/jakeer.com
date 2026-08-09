@@ -12,6 +12,7 @@ export type FieldControlProps = {
     | "number"
     | "url"
     | "select"
+    | "creatable-select"
     | "multiselect"
     | "tags"
     | "textarea"
@@ -95,6 +96,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
 
       case "multiselect":
       case "tags":
+      case "creatable-select":
         const customStyles = {
           control: (provided: any) => ({
             ...provided,
@@ -134,20 +136,25 @@ export const FieldControl: React.FC<FieldControlProps> = ({
           }),
         };
 
-        const isMulti = true;
-        const currentSelected =
-          type === "tags"
-            ? (value || []).map((v: string) => ({ label: v, value: v }))
-            : value;
+        const isMulti = type !== "creatable-select";
+        let currentSelected: any = value;
+        if (type === "tags") {
+          currentSelected = (value || []).map((v: string) => ({ label: v, value: v }));
+        } else if (type === "creatable-select") {
+          currentSelected = value ? { label: value, value: value } : null;
+        }
+
         const handleChange = (selected: any) => {
           if (type === "tags") {
             onChange(selected ? selected.map((s: any) => s.value) : []);
+          } else if (type === "creatable-select") {
+            onChange(selected ? selected.value : "");
           } else {
             onChange(selected);
           }
         };
 
-        if (type === "tags") {
+        if (type === "tags" || type === "creatable-select") {
           return (
             <CreatableSelect
               instanceId={selectId}
@@ -155,7 +162,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
               options={options}
               value={currentSelected}
               onChange={handleChange}
-              placeholder={placeholder || "Type and press enter..."}
+              placeholder={placeholder || (type === "tags" ? "Type and press enter..." : "Select or type...")}
               styles={customStyles}
               isDisabled={disabled}
               className="react-select-container"

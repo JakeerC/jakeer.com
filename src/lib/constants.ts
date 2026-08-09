@@ -236,6 +236,16 @@ export const ADMIN_CATEGORY_OPTIONS = [
   { label: "Note", value: "notes" },
 ];
 
+export const ADMIN_TOOL_CATEGORY_OPTIONS = [
+  { label: "Development", value: "Development" },
+  { label: "Security", value: "Security" },
+  { label: "DevOps", value: "DevOps" },
+  { label: "Productivity", value: "Productivity" },
+  { label: "Testing", value: "Testing" },
+  { label: "Design", value: "Design" },
+  { label: "Database", value: "Database" },
+];
+
 export const ADMIN_TOPIC_OPTIONS = [
   { label: "Java", value: "java" },
   { label: "JavaScript", value: "javascript" },
