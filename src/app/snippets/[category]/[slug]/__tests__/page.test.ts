@@ -89,5 +89,41 @@ describe('SnippetDetailPage', () => {
       });
       expect(el).toBeTruthy();
     });
+
+    it('h2 should render correctly and generate id', () => {
+      const H2 = components.h2;
+      
+      // string children
+      let el = H2({ children: 'Heading Two' });
+      expect(el).toBeTruthy();
+      expect(el.props.id).toBe('heading-two');
+
+      // array children
+      el = H2({ children: ['Heading', ' ', 'Two'] });
+      expect(el.props.id).toBe('heading-two');
+
+      // object children with props.children
+      el = H2({ children: { props: { children: 'Nested Heading' } } });
+      expect(el.props.id).toBe('nested-heading');
+
+      // other types
+      el = H2({ children: 123 });
+      expect(el.props.id).toBe('');
+
+      // existing id
+      el = H2({ children: 'Heading', id: 'custom-id' });
+      expect(el.props.id).toBe('custom-id');
+    });
+
+    it('h3 should render correctly and generate id', () => {
+      const H3 = components.h3;
+      
+      const el = H3({ children: 'Heading Three' });
+      expect(el).toBeTruthy();
+      expect(el.props.id).toBe('heading-three');
+
+      const elWithId = H3({ children: 'Heading', id: 'custom-h3' });
+      expect(elWithId.props.id).toBe('custom-h3');
+    });
   });
 });

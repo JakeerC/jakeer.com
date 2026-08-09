@@ -22,7 +22,6 @@ import {
   tablePlugin,
   InsertTable,
   frontmatterPlugin,
-  InsertFrontmatter,
   linkPlugin,
   linkDialogPlugin,
   ListsToggle,
@@ -50,7 +49,7 @@ export const Editor: FC<EditorProps> = ({
 
   return (
     <div
-      className="border rounded-md overflow-hidden"
+      className="border rounded-md"
       style={{
         borderColor: "var(--border)",
         backgroundColor: "var(--bg-secondary)",
@@ -83,6 +82,11 @@ export const Editor: FC<EditorProps> = ({
               java: "Java",
               python: "Python",
               c: "C",
+              json: "JSON",
+              mermaid: "Mermaid",
+              yml: "YAML",
+              sql: "SQL",
+              toml: "TOML",
             },
           }),
           imagePlugin({ imageUploadHandler }),
@@ -115,7 +119,6 @@ export const Editor: FC<EditorProps> = ({
                   <InsertTable />
                   <InsertThematicBreak />
                   <InsertCodeBlock />
-                  <InsertFrontmatter />
                 </div>
               </DiffSourceToggleWrapper>
             ),
@@ -127,7 +130,43 @@ export const Editor: FC<EditorProps> = ({
           font-family: inherit;
         }
         .mdxeditor-toolbar {
-          background: transparent !important;
+          position: sticky !important;
+          top: 50 !important;
+          z-index: 50 !important;
+          background-color: var(--bg-secondary) !important;
+        }
+
+        /* Dark Mode Overrides */
+        .dark .dark-editor .mdxeditor {
+          background-color: var(--surface) !important;
+          color: var(--text-primary) !important;
+        }
+
+        .dark .dark-editor .cm-editor {
+          background-color: #1e1e1e !important;
+          color: #d4d4d4 !important;
+        }
+
+        .dark .dark-editor .cm-gutters {
+          background-color: #1e1e1e !important;
+          color: #858585 !important;
+          border-right-color: #404040 !important;
+        }
+
+        .dark .dark-editor .cm-activeLine,
+        .dark .dark-editor .cm-activeLineGutter {
+          background-color: #2c2c2c !important;
+        }
+
+        .dark .dark-editor [class*="diffSource"],
+        .dark .dark-editor [data-lexical-decorator] {
+          background-color: #1e1e1e !important;
+          color: #d4d4d4 !important;
+        }
+
+        .dark .dark-editor .mdxeditor-toolbar {
+          background-color: var(--bg-secondary) !important;
+          border-bottom: 1px solid var(--border) !important;
         }
       `}</style>
     </div>

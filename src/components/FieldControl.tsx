@@ -12,6 +12,7 @@ export type FieldControlProps = {
     | "number"
     | "url"
     | "select"
+    | "creatable-select"
     | "multiselect"
     | "tags"
     | "textarea"
@@ -95,89 +96,8 @@ export const FieldControl: React.FC<FieldControlProps> = ({
 
       case "multiselect":
       case "tags":
-        const customStyles = {
-          control: (provided: any) => ({
-            ...provided,
-            backgroundColor: "var(--bg-primary)",
-            borderColor: "var(--border)",
-            color: "var(--text-primary)",
-          }),
-          menu: (provided: any) => ({
-            ...provided,
-            backgroundColor: "var(--bg-primary)",
-            color: "var(--text-primary)",
-            zIndex: 50,
-          }),
-          option: (provided: any, state: any) => ({
-            ...provided,
-            backgroundColor: state.isFocused ? "var(--accent)" : "transparent",
-            color: state.isFocused
-              ? "var(--bg-primary)"
-              : "var(--text-primary)",
-            cursor: "pointer",
-          }),
-          multiValue: (provided: any) => ({
-            ...provided,
-            backgroundColor: "var(--accent)",
-          }),
-          multiValueLabel: (provided: any) => ({
-            ...provided,
-            color: "#fff",
-          }),
-          singleValue: (provided: any) => ({
-            ...provided,
-            color: "var(--text-primary)",
-          }),
-          input: (provided: any) => ({
-            ...provided,
-            color: "var(--text-primary)",
-          }),
-        };
-
-        const isMulti = true;
-        const currentSelected =
-          type === "tags"
-            ? (value || []).map((v: string) => ({ label: v, value: v }))
-            : value;
-        const handleChange = (selected: any) => {
-          if (type === "tags") {
-            onChange(selected ? selected.map((s: any) => s.value) : []);
-          } else {
-            onChange(selected);
-          }
-        };
-
-        if (type === "tags") {
-          return (
-            <CreatableSelect
-              instanceId={selectId}
-              isMulti={isMulti}
-              options={options}
-              value={currentSelected}
-              onChange={handleChange}
-              placeholder={placeholder || "Type and press enter..."}
-              styles={customStyles}
-              isDisabled={disabled}
-              className="react-select-container"
-              classNamePrefix="react-select"
-            />
-          );
-        }
-
-        return (
-          <Select
-            instanceId={selectId}
-            isMulti={isMulti}
-            options={options}
-            value={currentSelected}
-            onChange={handleChange}
-            placeholder={placeholder}
-            styles={customStyles}
-            isDisabled={disabled}
-            className="react-select-container"
-            classNamePrefix="react-select"
-          />
-        );
+      case "creatable-select":
+        return renderSelect(type, value, onChange, options, selectId, placeholder, disabled);
 
       case "range":
         return (
@@ -250,3 +170,103 @@ export const FieldControl: React.FC<FieldControlProps> = ({
     </div>
   );
 };
+
+function renderSelect(
+  type: "multiselect" | "tags" | "creatable-select",
+  value: any,
+  onChange: (val: any) => void,
+  options?: any[],
+  selectId?: string,
+  placeholder?: string,
+  disabled?: boolean
+) {
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      backgroundColor: "var(--bg-primary)",
+      borderColor: "var(--border)",
+      color: "var(--text-primary)",
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      backgroundColor: "var(--bg-primary)",
+      color: "var(--text-primary)",
+      zIndex: 50,
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "var(--accent)" : "transparent",
+      color: state.isFocused ? "var(--bg-primary)" : "var(--text-primary)",
+      cursor: "pointer",
+    }),
+    multiValue: (provided: any) => ({
+      ...provided,
+      backgroundColor: "var(--accent)",
+    }),
+    multiValueLabel: (provided: any) => ({
+      ...provided,
+      color: "#fff",
+    }),
+    singleValue: (provided: any) => ({
+      ...provided,
+      color: "var(--text-primary)",
+    }),
+    input: (provided: any) => ({
+      ...provided,
+      color: "var(--text-primary)",
+    }),
+  };
+
+  const isMulti = type !== "creatable-select";
+  let currentSelected: any = value;
+  if (type === "tags") {
+    currentSelected = (value || []).map((v: string) => ({
+      label: v,
+      value: v,
+    }));
+  } else if (type === "creatable-select") {
+    currentSelected = value ? { label: value, value: value } : null;
+  }
+
+  const handleChange = (selected: any) => {
+    if (type === "tags") {
+      onChange(selected ? selected.map((s: any) => s.value) : []);
+    } else if (type === "creatable-select") {
+      onChange(selected ? selected.value : "");
+    } else {
+      onChange(selected);
+    }
+  };
+
+  if (type === "tags" || type === "creatable-select") {
+    return (
+      <CreatableSelect
+        instanceId={selectId}
+        isMulti={isMulti}
+        options={options}
+        value={currentSelected}
+        onChange={handleChange}
+        placeholder={placeholder || (type === "tags" ? "Type and press enter..." : "Select or type...")}
+        styles={customStyles}
+        isDisabled={disabled}
+        className="react-select-container"
+        classNamePrefix="react-select"
+      />
+    );
+  }
+
+  return (
+    <Select
+      instanceId={selectId}
+      isMulti={isMulti}
+      options={options}
+      value={currentSelected}
+      onChange={handleChange}
+      placeholder={placeholder}
+      styles={customStyles}
+      isDisabled={disabled}
+      className="react-select-container"
+      classNamePrefix="react-select"
+    />
+  );
+}

@@ -581,7 +581,8 @@ code {
   }
 }
 
-h2[id], h3[id] {
+h2[id],
+h3[id] {
   scroll-margin-top: 6rem;
 }
 
@@ -618,4 +619,37 @@ h2[id], h3[id] {
     grid-template-columns: 220px minmax(0, 1fr) 220px;
     gap: 4rem;
   }
+}
+
+/* ─── MDX Editor Dark Mode Overrides ───────────────────── */
+.dark .dark-editor .mdxeditor {
+  background-color: var(--surface) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .dark-editor .cm-editor {
+  background-color: #1e1e1e !important;
+  color: #d4d4d4 !important;
+}
+
+.dark .dark-editor .cm-gutters {
+  background-color: #1e1e1e !important;
+  color: #858585 !important;
+  border-right-color: #404040 !important;
+}
+
+.dark .dark-editor .cm-activeLine,
+.dark .dark-editor .cm-activeLineGutter {
+  background-color: #2c2c2c !important;
+}
+
+.dark .dark-editor [class*="diffSource"],
+.dark .dark-editor [data-lexical-decorator] {
+  background-color: #1e1e1e !important;
+  color: #d4d4d4 !important;
+}
+
+.dark .dark-editor .mdxeditor-toolbar {
+  background-color: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border) !important;
 }

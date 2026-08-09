@@ -58,6 +58,15 @@ describe('AssetList', () => {
     });
   });
 
+  it('handles string error state', async () => {
+    vi.mocked(getAssetsAction).mockRejectedValue('String error');
+    render(<AssetList />);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Failed to load assets.')).toBeInTheDocument();
+    });
+  });
+
   it('filters assets based on search', async () => {
     vi.mocked(getAssetsAction).mockResolvedValue(mockAssets);
     render(<AssetList />);

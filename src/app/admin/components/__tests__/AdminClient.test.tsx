@@ -26,13 +26,43 @@ vi.mock('next/navigation', () => ({
 // Mock dynamic import for Editor
 vi.mock('next/dynamic', () => ({
   default: () => {
-    return function MockEditor({ onChange }: any) {
-      return <input data-testid="mock-editor" onChange={e => onChange(e.target.value)} />;
+    return function MockEditor({ onChange, imageUploadHandler }: any) {
+      return (
+        <div>
+          <input data-testid="mock-editor" onChange={e => onChange(e.target.value)} />
+          <button data-testid="mock-upload" onClick={() => imageUploadHandler?.(new File([''], 'test.png'))}>Upload</button>
+        </div>
+      );
     };
   }
 }));
 
 describe('AdminClient', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+  it('navigates between step 1 and step 2 using stepper buttons', () => {
+    render(<AdminClient initialData={null} />);
+    
+    // initially on Step 1
+    expect(screen.getByPlaceholderText('E.g. My New Post')).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-editor')).not.toBeInTheDocument();
+    
+    // click Next
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+    
+    // now on Step 2
+    expect(screen.queryByPlaceholderText('E.g. My New Post')).not.toBeInTheDocument();
+    expect(screen.getByTestId('mock-editor')).toBeInTheDocument();
+    
+    // click Back
+    fireEvent.click(screen.getByRole('button', { name: /Back/i }));
+    
+    // back on Step 1
+    expect(screen.getByPlaceholderText('E.g. My New Post')).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-editor')).not.toBeInTheDocument();
+  });
+
   it('handles archive, unarchive, and delete actions', async () => {
     const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
     const confirmMock = vi.spyOn(window, 'confirm').mockImplementation(() => true);
@@ -43,6 +73,8 @@ describe('AdminClient', () => {
 
     // Fresh render - archived
     const { unmount } = render(<AdminClient initialData={{ id: '123' }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
     const archiveBtn = screen.getByRole('button', { name: /Archive/i });
     fireEvent.click(archiveBtn);
     expect(confirmMock).toHaveBeenCalled();
@@ -53,6 +85,7 @@ describe('AdminClient', () => {
     unmount();
     
     render(<AdminClient initialData={{ id: '123', is_archived: true }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
     
     const unarchiveBtn = screen.getByRole('button', { name: /Unarchive/i });
     fireEvent.click(unarchiveBtn);
@@ -69,6 +102,7 @@ describe('AdminClient', () => {
     alertMock.mockRestore();
     confirmMock.mockRestore();
   });
+
   it('renders and handles save error', async () => {
     const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
     vi.mocked(actions.saveDraftAction).mockRejectedValue(new Error('Test error'));
@@ -80,6 +114,8 @@ describe('AdminClient', () => {
     
     const slugInput = screen.getByPlaceholderText('my-new-post');
     fireEvent.change(slugInput, { target: { value: 'test-title' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
 
     const editor = screen.getByTestId('mock-editor');
     fireEvent.change(editor, { target: { value: 'test markdown content' } });
@@ -103,13 +139,16 @@ describe('AdminClient', () => {
 
     render(<AdminClient initialData={null} />);
 
-    // Validation fail
+    fireEvent.change(screen.getByPlaceholderText('E.g. My New Post'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByPlaceholderText('my-new-post'), { target: { value: 'test' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
+    // Validation fail (content empty)
     const saveButton = screen.getByRole('button', { name: /Save/i });
     fireEvent.click(saveButton);
     expect(alertMock).toHaveBeenCalledWith('Please fill in title, slug, and content.');
 
-    fireEvent.change(screen.getByPlaceholderText('E.g. My New Post'), { target: { value: 'Test' } });
-    fireEvent.change(screen.getByPlaceholderText('my-new-post'), { target: { value: 'test' } });
     fireEvent.change(screen.getByTestId('mock-editor'), { target: { value: 'content' } });
 
     fireEvent.click(saveButton);
@@ -144,6 +183,7 @@ describe('AdminClient', () => {
     vi.mocked(actions.createPRForContent).mockRejectedValue(new Error('PR fail'));
 
     render(<AdminClient initialData={{ id: '123', branch_name: 'draft' }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
 
     const createPRButton = screen.getByRole('button', { name: /Create PR/i });
     fireEvent.click(createPRButton);
@@ -160,6 +200,7 @@ describe('AdminClient', () => {
     vi.mocked(actions.mergePRAction).mockRejectedValue(new Error('Publish fail'));
 
     render(<AdminClient initialData={{ id: '123', pr_number: 42 }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
 
     const publishButton = screen.getByRole('button', { name: /Publish/i });
     fireEvent.click(publishButton);
@@ -199,6 +240,14 @@ describe('AdminClient', () => {
     expect(screen.getByText('External Link')).toBeInTheDocument();
   });
 
+  it('renders notes specific fields', () => {
+    render(<AdminClient initialData={{ category: 'notes' }} />);
+    // Notes should have Topic, Subtopic, Order
+    expect(screen.getByText('Topic')).toBeInTheDocument();
+    expect(screen.getByText('Subtopic')).toBeInTheDocument();
+    expect(screen.getByText('Order')).toBeInTheDocument();
+  });
+
   it('can open and close asset drawer and select an asset', async () => {
     // Mock navigator.clipboard
     const originalClipboard = navigator.clipboard;
@@ -218,8 +267,10 @@ describe('AdminClient', () => {
 
     render(<AdminClient initialData={null} />);
     
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
     // Open drawer
-    const openAssetBtns = screen.getAllByRole('button', { name: /Upload Asset/i });
+    const openAssetBtns = screen.getAllByRole('button', { name: /Add Asset/i });
     fireEvent.click(openAssetBtns[openAssetBtns.length - 1]);
     
     // Click our mock
@@ -234,5 +285,110 @@ describe('AdminClient', () => {
     
     alertMock.mockRestore();
     Object.assign(navigator, { clipboard: originalClipboard });
+  });
+
+  it('initializes tags from metadata', () => {
+    render(<AdminClient initialData={{ metadata: { tags: "react, nextjs" } }} />);
+    // CreatableSelect renders the selected values as text in the document
+    expect(screen.getByText('react')).toBeInTheDocument();
+    expect(screen.getByText('nextjs')).toBeInTheDocument();
+  });
+
+  it('handles image upload', async () => {
+    render(<AdminClient initialData={null} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+    
+    const mockFileReader = {
+      readAsDataURL: vi.fn(function(this: any) {
+        if (this.onload) this.onload();
+      }),
+      result: 'data:image/png;base64,mockbase64',
+      onload: null as any,
+      onerror: null as any,
+    };
+    const OriginalFileReader = window.FileReader;
+    window.FileReader = function() {
+      return mockFileReader;
+    } as any;
+
+    fireEvent.click(screen.getByTestId('mock-upload'));
+    // mockFileReader.onload is called by readAsDataURL now
+    
+    fireEvent.click(screen.getByRole('button', { name: /Back/i }));
+    fireEvent.change(screen.getByPlaceholderText('E.g. My New Post'), { target: { value: 'T' } });
+    fireEvent.change(screen.getByPlaceholderText('my-new-post'), { target: { value: 't' } });
+    
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+    fireEvent.change(screen.getByTestId('mock-editor'), { target: { value: 'c' } });
+    
+    vi.mocked(actions.saveDraftAction).mockResolvedValue({ id: '123', branchName: 'b' } as any);
+    const saveButton = screen.getByRole('button', { name: /Save/i });
+    fireEvent.click(saveButton);
+    
+    await waitFor(() => {
+      expect(actions.saveDraftAction).toHaveBeenCalledWith(expect.objectContaining({
+        metadata: expect.objectContaining({
+          images: expect.arrayContaining([
+            expect.objectContaining({ base64Data: 'mockbase64' })
+          ])
+        })
+      }));
+    });
+    
+    window.FileReader = OriginalFileReader;
+  });
+
+  it('handles archive error', async () => {
+    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const confirmMock = vi.spyOn(window, 'confirm').mockImplementation(() => true);
+    vi.mocked(actions.archiveDraftAction).mockRejectedValue(new Error('Archive error'));
+
+    render(<AdminClient initialData={{ id: '123' }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
+    fireEvent.click(screen.getByRole('button', { name: /Archive/i }));
+    
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Error archiving: Archive error');
+    });
+    
+    alertMock.mockRestore();
+    confirmMock.mockRestore();
+  });
+
+
+
+  it('handles delete cancel and error', async () => {
+    const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const confirmMock = vi.spyOn(window, 'confirm').mockImplementationOnce(() => false).mockImplementationOnce(() => true);
+    vi.mocked(actions.deleteDraftAction).mockRejectedValue(new Error('Delete error'));
+
+    render(<AdminClient initialData={{ id: '123' }} />);
+    fireEvent.click(screen.getByRole('button', { name: /Next: Edit Content/i }));
+
+    const deleteBtn = screen.getByRole('button', { name: /Delete/i });
+    
+    // Cancel
+    fireEvent.click(deleteBtn);
+    expect(actions.deleteDraftAction).not.toHaveBeenCalled();
+
+    // Error
+    fireEvent.click(deleteBtn);
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith('Error deleting: Delete error');
+    });
+
+    alertMock.mockRestore();
+    confirmMock.mockRestore();
+  });
+
+  it('resets subtopic when topic changes', () => {
+    render(<AdminClient initialData={{ category: 'notes', metadata: { noteTopic: 'old-topic', noteSubtopic: 'old-sub' } }} topicOptions={[{label: 'T1', value: 't1'}]} />);
+    
+    const selects = screen.getAllByRole('combobox');
+    fireEvent.change(selects[1], { target: { value: 't1' } }); // Topic select
+    
+    // The subtopic select should be reset (empty string)
+    expect(selects[2]).toHaveValue('');
   });
 });

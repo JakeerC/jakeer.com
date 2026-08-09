@@ -91,6 +91,7 @@ vi.mock("octokit", () => {
 
 import {
   getDrafts,
+  getDraftById,
   saveDraftAction,
   createPRForContent,
   mergePRAction,
@@ -344,5 +345,182 @@ describe("admin actions", () => {
     );
     expect(result.success).toBe(true);
   });
+
+  it("getDrafts should query archived drafts if true", async () => {
+    mockSelect().then = (res: any) => res({ data: [{ id: "1" }], error: null });
+    
+    await getDrafts(true);
+    expect(mockEq).toHaveBeenCalledWith("is_archived", true);
+  });
+
+  it("getDrafts should handle 42P01 error", async () => {
+    mockSelect().then = (res: any) => res({ data: null, error: { code: '42P01' } });
+    
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const data = await getDrafts();
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(data).toEqual([]);
+    consoleSpy.mockRestore();
+  });
+
+  it("getDrafts should throw on generic error", async () => {
+    mockSelect().then = (res: any) => res({ data: null, error: { message: 'error' } });
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await expect(getDrafts()).rejects.toThrow();
+    consoleSpy.mockRestore();
+  });
+
+  it("getDraftById should return draft", async () => {
+    mockSingle.mockResolvedValueOnce({ data: { id: "1" }, error: null });
+    
+    const data = await getDraftById("1");
+    expect(data).toEqual({ id: "1" });
+  });
+
+  it("getDraftById should handle 42P01 error", async () => {
+    mockSingle.mockResolvedValueOnce({ data: null, error: { code: '42P01' } });
+    
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const data = await getDraftById("1");
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(data).toBeNull();
+    consoleSpy.mockRestore();
+  });
+
+  it("getDraftById should handle 22P02 error", async () => {
+    mockSingle.mockResolvedValueOnce({ data: null, error: { code: '22P02' } });
+    
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const data = await getDraftById("1");
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(data).toBeNull();
+    consoleSpy.mockRestore();
+  });
+
+  it("getDraftById should throw on generic error", async () => {
+    mockSingle.mockResolvedValueOnce({ data: null, error: { message: 'error' } });
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await expect(getDraftById("1")).rejects.toThrow();
+    consoleSpy.mockRestore();
+  });
+
+  it("saveDraftAction with notes category", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    await saveDraftAction({
+      title: "Test Note",
+      slug: "test-note",
+      category: "notes",
+      markdown: "Some content",
+      metadata: { noteTopic: "test-topic" },
+    });
+
+    expect(mockCreateTree).toHaveBeenCalledWith(
+      expect.objectContaining({
+        tree: expect.arrayContaining([
+          expect.objectContaining({
+            path: "content/notes/test-topic/test-note.mdx",
+            type: "blob",
+          }),
+        ]),
+      }),
+    );
+  });
+
+  it("archiveDraftAction should handle github error", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSingle.mockResolvedValueOnce({ data: { pr_number: 42 }, error: null });
+    mockUpdatePull.mockRejectedValueOnce(new Error("github error"));
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await archiveDraftAction("test-id");
+    
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(result.success).toBe(true);
+    consoleSpy.mockRestore();
+  });
+
+  it("deleteDraftAction should handle github error", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSingle.mockResolvedValueOnce({ data: { branch_name: "test-branch" }, error: null });
+    mockDeleteRef.mockRejectedValueOnce(new Error("github error"));
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await deleteDraftAction("test-id");
+    
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(result.success).toBe(true);
+    consoleSpy.mockRestore();
+  });
+
+  it("syncDraftsAction should handle github error", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSelect.mockReturnValueOnce({
+      or: vi.fn().mockReturnValue({
+        not: vi.fn().mockResolvedValue({
+          data: [{ id: "test-id", pr_number: 42 }],
+          error: null
+        })
+      })
+    });
+    mockGetPull.mockRejectedValueOnce(new Error("github error"));
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await syncDraftsAction();
+    
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(result.success).toBe(true);
+    consoleSpy.mockRestore();
+  });
+
+  it("checkAssetExistsAction should handle BucketNotFound error", async () => {
+    mockList.mockResolvedValueOnce({ data: null, error: { name: "BucketNotFound", message: "" } });
+    const exists = await checkAssetExistsAction("test.png");
+    expect(exists).toBe(false);
+  });
+
+  it("checkAssetExistsAction should throw on generic error", async () => {
+    mockList.mockResolvedValueOnce({ data: null, error: { message: "error" } });
+    await expect(checkAssetExistsAction("test.png")).rejects.toThrow();
+  });
+
+  it("uploadAssetAction should throw if missing file", async () => {
+    const formData = new FormData();
+    await expect(uploadAssetAction(formData)).rejects.toThrow("File and fileName are required");
+  });
+
+  it("uploadAssetAction should throw if file exceeds 5MB", async () => {
+    const formData = new FormData();
+    const fakeFile = new File([""], "test.png", { type: "image/png" });
+    Object.defineProperty(fakeFile, 'size', { value: 6 * 1024 * 1024 });
+    formData.append("file", fakeFile);
+    formData.append("fileName", "test.png");
+    await expect(uploadAssetAction(formData)).rejects.toThrow("File size exceeds 5MB limit.");
+  });
+
+  it("uploadAssetAction should throw on upload error", async () => {
+    const file = new File(["dummy content"], "test.png", { type: "image/png" });
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("fileName", "test.png");
+    formData.append("overwrite", "false");
+
+    mockUpload.mockResolvedValueOnce({ data: null, error: { message: "error" } });
+
+    await expect(uploadAssetAction(formData)).rejects.toThrow();
+  });
+
+  it("getAssetsAction should handle BucketNotFound error", async () => {
+    mockList.mockResolvedValueOnce({ data: null, error: { name: "BucketNotFound", message: "" } });
+    const assets = await getAssetsAction();
+    expect(assets).toEqual([]);
+  });
+
+  it("getAssetsAction should throw on generic error", async () => {
+    mockList.mockResolvedValueOnce({ data: null, error: { message: "error" } });
+    await expect(getAssetsAction()).rejects.toThrow();
+  });
 });
+
 
