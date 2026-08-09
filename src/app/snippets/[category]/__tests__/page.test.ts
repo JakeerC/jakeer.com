@@ -48,4 +48,34 @@ describe('SnippetCategoryPage', () => {
     
     expect(screen.getByText('No snippets yet — coming soon.')).toBeInTheDocument();
   });
+
+  it('renders fallback values and handles grid fillers for different lengths', async () => {
+    const makeSnippets = (count: number) => Array.from({ length: count }).map((_, i) => ({
+      slug: `test-${i}`,
+      frontmatter: { title: `T${i}`, description: 'D', tags: ['react'] },
+      content: ''
+    }));
+
+    // length 1 (covers missing date/level fallbacks as well)
+    vi.mocked(mdx.getAllContent).mockReturnValue(makeSnippets(1));
+    let result = await SnippetCategoryPage({ params: Promise.resolve({ category: 'react' }) });
+    const { render, screen } = await import('@testing-library/react');
+    let { unmount } = render(result as React.ReactElement);
+    
+    expect(screen.getByText('INTERMEDIATE')).toBeInTheDocument();
+    expect(screen.getByText('Just now')).toBeInTheDocument();
+    unmount();
+
+    // length 2
+    vi.mocked(mdx.getAllContent).mockReturnValue(makeSnippets(2));
+    result = await SnippetCategoryPage({ params: Promise.resolve({ category: 'react' }) });
+    ({ unmount } = render(result as React.ReactElement));
+    unmount();
+
+    // length 3
+    vi.mocked(mdx.getAllContent).mockReturnValue(makeSnippets(3));
+    result = await SnippetCategoryPage({ params: Promise.resolve({ category: 'react' }) });
+    ({ unmount } = render(result as React.ReactElement));
+    unmount();
+  });
 });

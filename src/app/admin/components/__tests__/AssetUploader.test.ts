@@ -35,6 +35,14 @@ describe('AssetUploader', () => {
     expect(screen.getByDisplayValue('hello.png')).toBeInTheDocument();
   });
 
+  it('ignores file change if no file is selected', async () => {
+    render(<AssetUploader />);
+    const input = screen.getByLabelText(/Select File/i);
+    fireEvent.change(input, { target: { files: [] } });
+    
+    expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
+  });
+
   it('handles file size limit', async () => {
     render(<AssetUploader />);
     
@@ -161,6 +169,25 @@ describe('AssetUploader', () => {
     
     await waitFor(() => {
       expect(screen.getByText('Upload failed')).toBeInTheDocument();
+    });
+  });
+
+  it('handles string upload error', async () => {
+    vi.mocked(checkAssetExistsAction).mockResolvedValue(false);
+    vi.mocked(uploadAssetAction).mockRejectedValue('Upload failed');
+    
+    render(<AssetUploader />);
+    
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const input = screen.getByLabelText(/Select File/i);
+    
+    await userEvent.upload(input, file);
+    
+    const uploadBtn = screen.getByRole('button', { name: /Upload Asset/i });
+    fireEvent.click(uploadBtn);
+    
+    await waitFor(() => {
+      expect(screen.getByText('An error occurred during upload.')).toBeInTheDocument();
     });
   });
 });
