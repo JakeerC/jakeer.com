@@ -289,7 +289,9 @@ describe('AdminClient', () => {
 
   it('initializes tags from metadata', () => {
     render(<AdminClient initialData={{ metadata: { tags: "react, nextjs" } }} />);
-    // Testing initialization simply by rendering it with tags.
+    // CreatableSelect renders the selected values as text in the document
+    expect(screen.getByText('react')).toBeInTheDocument();
+    expect(screen.getByText('nextjs')).toBeInTheDocument();
   });
 
   it('handles image upload', async () => {
@@ -385,6 +387,8 @@ describe('AdminClient', () => {
     
     const selects = screen.getAllByRole('combobox');
     fireEvent.change(selects[1], { target: { value: 't1' } }); // Topic select
-    // State is updated internally, covering the onChange lines.
+    
+    // The subtopic select should be reset (empty string)
+    expect(selects[2]).toHaveValue('');
   });
 });

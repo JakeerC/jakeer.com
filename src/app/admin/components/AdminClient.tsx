@@ -35,7 +35,7 @@ export function AdminClient({
   initialData,
   topicOptions = [],
   subtopicMap = {},
-}: AdminClientProps) {
+}: Readonly<AdminClientProps>) {
   const router = useRouter();
 
   const [id, setId] = useState<string | undefined>(initialData?.id);
@@ -107,124 +107,44 @@ export function AdminClient({
     });
   };
 
-  const getPayload = () => ({
+  const {
+    handleSave,
+    handleCreatePR,
+    handlePublish,
+    handleArchive,
+    handleUnarchive,
+    handleDelete,
+  } = useAdminActions({
     id,
+    setId,
+    branchName,
+    setBranchName,
+    prNumber,
+    setPrNumber,
+    setPrUrl,
     title,
     slug,
     category,
     markdown,
     description,
-    branchName,
-    metadata: {
-      tags: selectedTags.join(","),
-      readTime: `${readTime} min read`,
-      lang,
-      level,
-      toolCategory,
-      link,
-      noteTopic,
-      noteSubtopic,
-      noteOrder,
-      images,
-    },
+    selectedTags,
+    readTime,
+    lang,
+    level,
+    toolCategory,
+    link,
+    noteTopic,
+    noteSubtopic,
+    noteOrder,
+    images,
+    setIsSaving,
+    setIsCreatingPR,
+    setIsPublishing,
+    setIsArchiving,
+    setIsArchived,
+    setIsDeleting,
+    router,
   });
-
-  const handleSave = async () => {
-    if (!title || !slug || !markdown) {
-      alert("Please fill in title, slug, and content.");
-      return;
-    }
-    setIsSaving(true);
-    try {
-      const res = await saveDraftAction(getPayload());
-      setId(res.id);
-      setBranchName(res.branchName);
-      alert("Saved successfully! Draft pushed to Github branch.");
-    } catch (e: any) {
-      alert("Error saving: " + e.message);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleCreatePR = async () => {
-    if (!id || !branchName) return;
-    setIsCreatingPR(true);
-    try {
-      const res = await createPRForContent(id, branchName, title, category);
-      setPrNumber(res.prNumber);
-      setPrUrl(res.prUrl);
-      alert("Pull Request created successfully!");
-    } catch (e: any) {
-      alert("Error creating PR: " + e.message);
-    } finally {
-      setIsCreatingPR(false);
-    }
-  };
-
-  const handlePublish = async () => {
-    if (!id || !prNumber) return;
-    setIsPublishing(true);
-    try {
-      await mergePRAction(id, prNumber);
-      alert("Published successfully!");
-      router.push("/admin");
-      router.refresh();
-    } catch (e: any) {
-      alert("Error publishing: " + e.message);
-    } finally {
-      setIsPublishing(false);
-    }
-  };
-
-  const handleArchive = async () => {
-    if (!id) return;
-    if (!window.confirm("Are you sure you want to archive this draft?")) return;
-    setIsArchiving(true);
-    try {
-      await archiveDraftAction(id);
-      alert("Archived successfully!");
-      router.push("/admin");
-      router.refresh();
-    } catch (e: any) {
-      alert("Error archiving: " + e.message);
-      setIsArchiving(false);
-    }
-  };
-
-  const handleUnarchive = async () => {
-    if (!id) return;
-    if (!window.confirm("Are you sure you want to unarchive this draft?"))
-      return;
-    setIsArchiving(true);
-    try {
-      await unarchiveDraftAction(id);
-      alert("Unarchived successfully!");
-      setIsArchived(false);
-    } catch (e: any) {
-      alert("Error unarchiving: " + e.message);
-    } finally {
-      setIsArchiving(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!id) return;
-    if (
-      !window.confirm("Are you sure you want to permanently delete this draft?")
-    )
-      return;
-    setIsDeleting(true);
-    try {
-      await deleteDraftAction(id);
-      alert("Deleted successfully!");
-      router.push("/admin");
-      router.refresh();
-    } catch (e: any) {
-      alert("Error deleting: " + e.message);
-      setIsDeleting(false);
-    }
-  };
 
   const showDescription = ["writing", "snippets", "tools", "notes"].includes(category);
   const showTags = ["writing", "snippets", "notes"].includes(category);
@@ -463,12 +383,13 @@ export function AdminClient({
           <div className="flex flex-col space-y-6">
             <div className="flex flex-col space-y-2">
               <div className="flex justify-between items-center">
-                <span
+                <label
+                  htmlFor="markdown-input"
                   className="text-sm font-medium"
                   style={{ color: "var(--text-primary)" }}
                 >
                   Content (Markdown)
-                </span>
+                </label>
                 <Button
                   size="sm"
                   variant="outline"
@@ -601,4 +522,164 @@ export function AdminClient({
       )}
     </div>
   );
+}
+
+function useAdminActions({
+  id,
+  setId,
+  branchName,
+  setBranchName,
+  prNumber,
+  setPrNumber,
+  setPrUrl,
+  title,
+  slug,
+  category,
+  markdown,
+  description,
+  selectedTags,
+  readTime,
+  lang,
+  level,
+  toolCategory,
+  link,
+  noteTopic,
+  noteSubtopic,
+  noteOrder,
+  images,
+  setIsSaving,
+  setIsCreatingPR,
+  setIsPublishing,
+  setIsArchiving,
+  setIsArchived,
+  setIsDeleting,
+  router,
+}: any) {
+  const getPayload = () => ({
+    id,
+    title,
+    slug,
+    category,
+    markdown,
+    description,
+    branchName,
+    metadata: {
+      tags: selectedTags.join(","),
+      readTime: `${readTime} min read`,
+      lang,
+      level,
+      toolCategory,
+      link,
+      noteTopic,
+      noteSubtopic,
+      noteOrder,
+      images,
+    },
+  });
+
+  const handleSave = async () => {
+    if (!title || !slug || !markdown) {
+      alert("Please fill in title, slug, and content.");
+      return;
+    }
+    setIsSaving(true);
+    try {
+      const res = await saveDraftAction(getPayload());
+      setId(res.id);
+      setBranchName(res.branchName);
+      alert("Saved successfully! Draft pushed to Github branch.");
+    } catch (e: any) {
+      alert("Error saving: " + e.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCreatePR = async () => {
+    if (!id || !branchName) return;
+    setIsCreatingPR(true);
+    try {
+      const res = await createPRForContent(id, branchName, title, category);
+      setPrNumber(res.prNumber);
+      setPrUrl(res.prUrl);
+      alert("Pull Request created successfully!");
+    } catch (e: any) {
+      alert("Error creating PR: " + e.message);
+    } finally {
+      setIsCreatingPR(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!id || !prNumber) return;
+    setIsPublishing(true);
+    try {
+      await mergePRAction(id, prNumber);
+      alert("Published successfully!");
+      router.push("/admin");
+      router.refresh();
+    } catch (e: any) {
+      alert("Error publishing: " + e.message);
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
+  const handleArchive = async () => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to archive this draft?")) return;
+    setIsArchiving(true);
+    try {
+      await archiveDraftAction(id);
+      alert("Archived successfully!");
+      router.push("/admin");
+      router.refresh();
+    } catch (e: any) {
+      alert("Error archiving: " + e.message);
+      setIsArchiving(false);
+    }
+  };
+
+  const handleUnarchive = async () => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to unarchive this draft?"))
+      return;
+    setIsArchiving(true);
+    try {
+      await unarchiveDraftAction(id);
+      alert("Unarchived successfully!");
+      setIsArchived(false);
+    } catch (e: any) {
+      alert("Error unarchiving: " + e.message);
+    } finally {
+      setIsArchiving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!id) return;
+    if (
+      !window.confirm("Are you sure you want to permanently delete this draft?")
+    )
+      return;
+    setIsDeleting(true);
+    try {
+      await deleteDraftAction(id);
+      alert("Deleted successfully!");
+      router.push("/admin");
+      router.refresh();
+    } catch (e: any) {
+      alert("Error deleting: " + e.message);
+      setIsDeleting(false);
+    }
+  };
+
+  return {
+    handleSave,
+    handleCreatePR,
+    handlePublish,
+    handleArchive,
+    handleUnarchive,
+    handleDelete,
+  };
 }
