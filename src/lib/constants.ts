@@ -18,6 +18,7 @@ import {
   SiGnubash,
   SiAuth0,
   SiJavascript,
+  SiSplunk,
 } from "react-icons/si";
 import { FaJava, FaAws, FaDocker } from "react-icons/fa";
 import { MdArchitecture } from "react-icons/md";
@@ -377,6 +378,7 @@ export const iconMap: Record<string, IconType> = {
   Redis: SiRedis,
   Security: SiAuth0,
   "Shell / Bash": SiGnubash,
+  Splunk: SiSplunk,
   "Spring Boot": SiSpringboot,
   Storybook: SiStorybook,
   "System Design": MdArchitecture,

@@ -80,7 +80,7 @@ export default function HomePage() {
               style={{ animationDelay: "300ms" }}
             >
               <Link
-                href="/writing"
+                href="/about"
                 id="hero-read-blog"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
                 style={{
@@ -88,7 +88,7 @@ export default function HomePage() {
                   color: "var(--bg-primary)",
                 }}
               >
-                Read the Blog <LuArrowRight size={15} />
+                More about me <LuArrowRight size={15} />
               </Link>
               <Link
                 href="/projects"
