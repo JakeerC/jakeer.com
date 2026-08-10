@@ -32,7 +32,8 @@ export function getAllContent(category: string): MdxContent[] {
         frontmatter: data,
         content
       };
-    });
+    })
+    .filter(item => !item.frontmatter.draft);
 
   // Sort writing and snippets by date by default
   if (category === "writing" || category === "snippets") {

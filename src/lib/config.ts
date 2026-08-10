@@ -5,18 +5,17 @@ export const siteConfig = {
   tagline: "Building Reliable Systems",
   description:
     "Senior Software Engineer at Wells Fargo. JavaScript and React on the frontend, Java and Spring Boot on the backend. Passionate about building robust, scalable systems that real users depend on.",
-  url: "https://jakeerchilakala.dev",
+  url: "https://jakeer.vercel.app",
 
   stats: [
     { value: "8+", label: "Years Experience" },
-    { value: "50+", label: "Projects Delivered" },
     { value: "20+", label: "Articles Published" },
     { value: "5+", label: "Teams Worked With" },
   ],
 
   socials: {
-    github: "#", // replace with real URL
-    linkedin: "#",
+    github: "https://github.com/JakeerC",
+    linkedin: "https://www.linkedin.com/in/jakeerc",
     twitter: "#",
     medium: "#",
     devto: "#",
