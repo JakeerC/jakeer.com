@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { LuArrowRight, LuCode, LuFileText, LuWrench } from "react-icons/lu";
+import {
+  LuArrowRight,
+  LuCode,
+  LuFileText,
+  LuWrench,
+  LuBook,
+  LuFolder,
+} from "react-icons/lu";
 import { siteConfig } from "@/lib/config";
 import StatCounter from "@/components/StatCounter";
 import ArticleCard from "@/components/ArticleCard";
@@ -30,7 +37,7 @@ export default function HomePage() {
               className="section-label animate-fade-in"
               style={{ animationDelay: "0ms" }}
             >
-              {siteConfig.name}
+              01 · {siteConfig.name}
             </p>
 
             {/* Headline */}
@@ -334,19 +341,21 @@ export default function HomePage() {
                 </div>
 
                 {/* View source button */}
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80 shrink-0 self-start"
-                  style={{
-                    borderColor: "var(--border-strong)",
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  <FaGithub />
-                  View Source
-                </a>
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80 shrink-0 self-start"
+                    style={{
+                      borderColor: "var(--border-strong)",
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    <FaGithub />
+                    View Source
+                  </a>
+                )}
               </div>
             </div>
           ))}
@@ -379,7 +388,7 @@ export default function HomePage() {
             What is Here
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border)] border border-[var(--border)]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--surface-raised)] border border-[var(--border)]">
           {[
             {
               icon: LuCode,
@@ -401,6 +410,20 @@ export default function HomePage() {
               href: "/writing",
               description:
                 "Technical deep-dives, tutorials, and perspectives on software engineering.",
+            },
+            {
+              icon: LuBook,
+              label: "Notes",
+              href: "/notes",
+              description:
+                "A digital garden of knowledge, concepts, and ideas I'm learning.",
+            },
+            {
+              icon: LuFolder,
+              label: "Projects",
+              href: "/projects",
+              description:
+                "A showcase of open-source and professional systems I've built.",
             },
           ].map(({ icon: Icon, label, href, description }) => (
             <Link
@@ -468,7 +491,7 @@ export default function HomePage() {
               and developer tooling.
             </p>
             <Link
-              href="mailto:jakeer@example.com"
+              href="mailto:jakeerchilakala@gmail.com"
               id="cta-contact"
               className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-95"
               style={{

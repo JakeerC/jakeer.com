@@ -70,7 +70,7 @@ export const projects = [
     description:
       "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and dead-letter queue support for financial-grade reliability.",
     tags: ["Java", "Spring Boot", "Kafka", "Redis", "PostgreSQL"],
-    github: "#",
+    github: "",
     demo: "",
     status: "Production",
     features: [
@@ -86,8 +86,8 @@ export const projects = [
     description:
       "A battle-tested component library used across 5 internal Wells Fargo applications — accessible, theme-able, and fully typed with comprehensive Storybook documentation.",
     tags: ["React", "TypeScript", "Storybook", "Vite", "CSS Modules"],
-    github: "#",
-    demo: "#",
+    github: "",
+    demo: "",
     status: "Active",
     features: [
       "WCAG 2.1 AA compliant out of the box",
@@ -102,7 +102,7 @@ export const projects = [
     description:
       "Express.js middleware implementing token bucket and sliding window algorithms for precise API rate limiting with Redis-backed distributed counters.",
     tags: ["Node.js", "Redis", "TypeScript", "Express"],
-    github: "#",
+    github: "",
     demo: "",
     status: "Open Source",
     features: [
@@ -118,8 +118,8 @@ export const projects = [
     description:
       "A personal developer dashboard aggregating GitHub stats, Jira tickets, Confluence docs, and CI/CD pipeline status in a single unified interface.",
     tags: ["Next.js", "React", "TypeScript", "GitHub API"],
-    github: "#",
-    demo: "#",
+    github: "",
+    demo: "",
     status: "Personal",
     features: [
       "Real-time GitHub activity graph",
@@ -137,7 +137,7 @@ export const featuredProjects = [
     description:
       "High-throughput payment processing service handling 10K+ transactions/sec with automatic retry, idempotency, and DLQ support.",
     tags: ["Java", "Spring Boot", "Kafka", "Redis"],
-    link: siteConfig.socials.github,
+    link: "",
     features: [
       "Idempotent API design",
       "Distributed tracing with Zipkin",
@@ -150,7 +150,7 @@ export const featuredProjects = [
     description:
       "A battle-tested component library used across 5 internal Wells Fargo apps — accessible, theme-able, and fully typed.",
     tags: ["React", "TypeScript", "Storybook", "Vite"],
-    link: siteConfig.socials.github,
+    link: "",
     features: [
       "WCAG 2.1 AA compliant",
       "Dark & light themes",

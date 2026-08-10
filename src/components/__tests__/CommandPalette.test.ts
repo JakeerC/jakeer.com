@@ -35,7 +35,9 @@ describe('CommandPalette', () => {
 
   it('renders correctly when open', async () => {
     const setOpen = vi.fn();
-    render(<CommandPalette open={true} setOpen={setOpen} />);
+    await act(async () => {
+      render(<CommandPalette open={true} setOpen={setOpen} />);
+    });
     
     // Check if the search input is rendered
     expect(screen.getByPlaceholderText('Search blogs, snippets, tools, anything...')).toBeInTheDocument();
@@ -78,7 +80,9 @@ describe('CommandPalette', () => {
     const mockWindowOpen = vi.fn();
     window.open = mockWindowOpen;
 
-    render(<CommandPalette open={true} setOpen={setOpen} />);
+    await act(async () => {
+      render(<CommandPalette open={true} setOpen={setOpen} />);
+    });
     
     await waitFor(() => {
       expect(screen.getByText('Test Post')).toBeInTheDocument();
@@ -138,7 +142,9 @@ describe('CommandPalette', () => {
     } as any);
 
     const setOpen = vi.fn();
-    render(<CommandPalette open={true} setOpen={setOpen} />);
+    await act(async () => {
+      render(<CommandPalette open={true} setOpen={setOpen} />);
+    });
     
     const el = screen.getByText('Switch to Light Mode');
     el.click();

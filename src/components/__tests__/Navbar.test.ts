@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Navbar from '../Navbar';
 import { usePathname } from 'next/navigation';
@@ -68,37 +68,47 @@ describe('Navbar', () => {
     authStateChangeCallback = undefined;
   });
 
-  it('renders correctly', () => {
-    render(<Navbar />);
+  it('renders correctly', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     expect(screen.getByText('JC')).toBeInTheDocument();
   });
 
-  it('handles theme toggler', () => {
-    render(<Navbar />);
+  it('handles theme toggler', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     const themeBtn = screen.getAllByRole('button', { name: /Toggle dark mode/i })[0];
     
     fireEvent.click(themeBtn);
     expect(mockSetTheme).toHaveBeenCalledWith('dark');
   });
 
-  it('handles neo style toggler', () => {
-    render(<Navbar />);
+  it('handles neo style toggler', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     const neoBtn = screen.getByRole('button', { name: /Toggle neo style/i });
     
     fireEvent.click(neoBtn);
     expect(mockSetTheme).toHaveBeenCalledWith('neo-light');
   });
 
-  it('opens search with search button', () => {
-    render(<Navbar />);
+  it('opens search with search button', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     const searchBtn = screen.getAllByRole('button', { name: /Search/i })[0];
     
     fireEvent.click(searchBtn);
     expect(screen.getByTestId('command-palette')).toBeInTheDocument();
   });
 
-  it('handles mobile menu toggle and closing on link click', () => {
-    render(<Navbar />);
+  it('handles mobile menu toggle and closing on link click', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     const menuBtn = screen.getByRole('button', { name: /Toggle menu/i });
     
     // Toggle on
@@ -110,8 +120,10 @@ describe('Navbar', () => {
     fireEvent.click(mobileLink!);
   });
 
-  it('handles keyboard shortcuts for search and escape', () => {
-    render(<Navbar />);
+  it('handles keyboard shortcuts for search and escape', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     
     // cmd+k
     fireEvent.keyDown(document, { key: 'k', metaKey: true });
@@ -122,15 +134,19 @@ describe('Navbar', () => {
     expect(screen.queryByTestId('command-palette')).not.toBeInTheDocument();
   });
 
-  it('highlights active link', () => {
+  it('highlights active link', async () => {
     vi.mocked(usePathname).mockReturnValue('/about');
-    render(<Navbar />);
+    await act(async () => {
+      render(<Navbar />);
+    });
     const aboutLinks = screen.getAllByText('About');
     expect(aboutLinks.length).toBeGreaterThan(0);
   });
 
-  it('handles scroll event to add blur effect', () => {
-    render(<Navbar />);
+  it('handles scroll event to add blur effect', async () => {
+    await act(async () => {
+      render(<Navbar />);
+    });
     fireEvent.scroll(window, { target: { scrollY: 100 } });
     const navElement = screen.getByRole('navigation').parentElement;
     expect(navElement?.className).toContain('backdrop-blur-md');
@@ -147,7 +163,9 @@ describe('Navbar', () => {
       }
     } as any);
 
-    render(<Navbar />);
+    await act(async () => {
+      render(<Navbar />);
+    });
     
     await waitFor(() => {
       expect(screen.queryAllByText('Admin Dashboard').length).toBeGreaterThan(0);
@@ -160,8 +178,9 @@ describe('Navbar', () => {
   });
 
   it('updates session on auth state change', async () => {
-    const { act } = await import('@testing-library/react');
-    render(<Navbar />);
+    await act(async () => {
+      render(<Navbar />);
+    });
     
     // Trigger auth state change
     await act(async () => {
@@ -181,10 +200,11 @@ describe('Navbar', () => {
     Object.defineProperty(HTMLElement.prototype, 'offsetLeft', { configurable: true, value: 50 });
     Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, value: 100 });
     
-    render(<Navbar />);
+    await act(async () => {
+      render(<Navbar />);
+    });
     
     // Advance timer to trigger setTimeout
-    const { act } = await import('@testing-library/react');
     act(() => {
       vi.advanceTimersByTime(50);
     });
@@ -196,10 +216,11 @@ describe('Navbar', () => {
     vi.useFakeTimers();
     vi.mocked(usePathname).mockReturnValue('/non-existent');
     
-    render(<Navbar />);
+    await act(async () => {
+      render(<Navbar />);
+    });
     
     // Advance timer to trigger setTimeout
-    const { act } = await import('@testing-library/react');
     act(() => {
       vi.advanceTimersByTime(50);
     });

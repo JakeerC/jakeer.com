@@ -61,16 +61,18 @@ export default function ProjectsPage() {
 
                 {/* Action buttons */}
                 <div className="flex items-center gap-2">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80"
-                    style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
-                  >
-                  <GithubIcon />
-                    Source
-                  </a>
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80"
+                      style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+                    >
+                    <GithubIcon />
+                      Source
+                    </a>
+                  )}
                   {project.demo && (
                     <a
                       href={project.demo}
