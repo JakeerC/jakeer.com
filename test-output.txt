@@ -1,0 +1,879 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/Users/jakeerchilakala/Projects/jakeer.com[39m
+
+ [31m❯[39m src/components/mdx/__tests__/custom-components.test.tsx [2m([22m[2m6 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 158[2mms[22m[39m
+       [32m✓[39m renders with default info type[32m 40[2mms[22m[39m
+       [32m✓[39m renders with title[32m 6[2mms[22m[39m
+       [32m✓[39m renders children correctly[32m 2[2mms[22m[39m
+[31m       [31m×[31m renders children and tooltip info[39m[32m 104[2mms[22m[39m
+       [32m✓[39m renders children[32m 2[2mms[22m[39m
+       [32m✓[39m renders children[32m 1[2mms[22m[39m
+ [31m❯[39m src/app/admin/components/__tests__/FormattingHelp.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 491[2mms[22m[39m
+     [32m✓[39m renders all sections[32m 122[2mms[22m[39m
+[31m     [31m×[31m renders custom JSX component examples[39m[32m 120[2mms[22m[39m
+     [32m✓[39m renders standard markdown examples[32m 129[2mms[22m[39m
+[31m     [31m×[31m renders CodeBlockClient for all code snippets[39m[32m 118[2mms[22m[39m
+ [32m✓[39m src/app/about/__tests__/page.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 573[2mms[22m[39m
+[90mstderr[2m | src/components/__tests__/Navbar.test.ts[2m > [22m[2mNavbar[2m > [22m[2mopens search with search button
+[22m[39mAn update to Navbar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/__tests__/CommandPalette.test.ts[2m > [22m[2mCommandPalette[2m > [22m[2mtriggers commands on selection
+[22m[39mAn update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/__tests__/Navbar.test.ts[2m > [22m[2mNavbar[2m > [22m[2mhandles mobile menu toggle and closing on link click
+[22m[39mAn update to Navbar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to Navbar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+Not implemented: navigation to another Document
+[90mstderr[2m | src/components/__tests__/Navbar.test.ts[2m > [22m[2mNavbar[2m > [22m[2mhandles keyboard shortcuts for search and escape
+[22m[39mAn update to Navbar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to Navbar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/components/__tests__/CommandPalette.test.ts[2m > [22m[2mCommandPalette[2m > [22m[2mhandles switch to light mode when theme is dark
+[22m[39mAn update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ForwardRef inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [32m✓[39m src/components/__tests__/CommandPalette.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 575[2mms[22m[39m
+     [33m[2m✓[22m[39m renders correctly when open [33m 391[2mms[22m[39m
+[90mstderr[2m | src/components/__tests__/Navbar.test.ts[2m > [22m[2mNavbar[2m > [22m[2mhandles scroll event to add blur effect
+[22m[39mAn update to Navbar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [32m✓[39m src/components/__tests__/Navbar.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 663[2mms[22m[39m
+ [32m✓[39m src/app/admin/components/__tests__/AssetUploader.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 740[2mms[22m[39m
+Not implemented: Window's alert() method
+ [32m✓[39m src/app/admin/components/__tests__/AdminClient.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 1374[2mms[22m[39m
+     [33m[2m✓[22m[39m navigates between step 1 and step 2 using stepper buttons [33m 467[2mms[22m[39m
+ [32m✓[39m src/app/admin/components/__tests__/AssetList.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 363[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/Button.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 229[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/FieldControl.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 422[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/FaqItem.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 246[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/NotesSidebar.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 186[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/CodeBlockClient.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 264[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/StatCounter.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 387[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/NotesTopicCard.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 276[2mms[22m[39m
+ [32m✓[39m src/app/admin/components/__tests__/AssetManager.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 188[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/ThemeProvider.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m src/components/TableOfContents.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 110[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/ArticleCard.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 137[2mms[22m[39m
+ [32m✓[39m src/app/snippets/[category]/__tests__/page.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 155[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/TableOfContents.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 175[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/Tag.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/utils.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 55[2mms[22m[39m
+ [32m✓[39m src/app/admin/__tests__/actions.test.ts [2m([22m[2m33 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/PageHeader.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/Footer.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/TechIcon.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/CodeBlock.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 103[2mms[22m[39m
+ [32m✓[39m src/app/writing/[slug]/__tests__/page.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/actions.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/tools/__tests__/page.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/app/writing/__tests__/page.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/lib/slugify.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/snippets/[category]/[slug]/__tests__/page.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/components/mdx/__tests__/custom-components.test.tsx[2m > [22mMDX Custom Components[2m > [22mMoreInfo[2m > [22mrenders children and tooltip info
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Extra details. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<span[31m
+      [33mclass[31m=[32m"more-info"[31m
+    [36m>[31m
+      [36m<span[31m
+        [33mclass[31m=[32m"more-info__text"[31m
+      [36m>[31m
+        [0mHover me[0m
+      [36m</span>[31m
+      [36m<button[31m
+        [33maria-expanded[31m=[32m"false"[31m
+        [33maria-label[31m=[32m"More info: Extra details"[31m
+        [33mclass[31m=[32m"more-info__trigger"[31m
+        [33mtype[31m=[32m"button"[31m
+      [36m>[31m
+        [0m*[0m
+      [36m</button>[31m
+    [36m</span>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/components/mdx/__tests__/custom-components.test.tsx:[2m37:21[22m[39m
+    [90m 35|[39m       // The tooltip text shouldn't be fully visible/active until hove…
+    [90m 36|[39m       [90m// but it exists in the DOM[39m
+    [90m 37|[39m       [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Extra details'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   |[39m                     [31m^[39m
+    [90m 38|[39m     })[33m;[39m
+    [90m 39|[39m   })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/admin/components/__tests__/FormattingHelp.test.tsx[2m > [22mFormattingHelp[2m > [22mrenders custom JSX component examples
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Callout Block
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h4[39m
+  [33mclass[39m=[32m"font-semibold mb-2"[39m
+[36m>[39m
+  [0mCallout Block[0m
+[36m</h4>[39m
+
+Ignored nodes: comments, script, style
+[36m<h4[39m
+  [33mclass[39m=[32m"font-semibold mb-2"[39m
+[36m>[39m
+  [0mCallout Block[0m
+[36m</h4>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6 overflow-y-auto pr-4 h-full pb-20"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<h3[39m
+          [33mclass[39m=[32m"text-lg font-semibold mb-2"[39m
+          [33mstyle[39m=[32m"color: var(--text-primary);"[39m
+        [36m>[39m
+          [0mCustom JSX Components[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"text-sm mb-4"[39m
+          [33mstyle[39m=[32m"color: var(--text-secondary);"[39m
+        [36m>[39m
+          [0mYou can use these custom React components directly in your markdown content. Alternatively, use the ✦ Insert... dropdown in the editor toolbar.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-4 text-sm"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border border-[var(--border)] rounded-md p-4 bg-[var(--bg-secondary)]"[39m
+          [36m>[39m
+            [36m<h4[39m
+              [33mclass[39m=[32m"font-semibold mb-2"[39m
+            [36m>[39m
+              [0mCallout Block[0m
+            [36m</h4>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-[var(--text-secondary)] mb-4"[39m
+            [36m>[39m
+              [0mTypes: info, warning, success, error. Title is optional.[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mb-4"[39m
+            [36m>[39m
+              [36m<aside[39m
+                [33mclass[39m=[32m"callout callout--info"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"callout__header"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33mclass[39m=[32m"callout__icon"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"20"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"20"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"12"[39m
+                      [33mcy[39m=[32m"12"[39m
+                      [33mr[39m=[32m"10"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 16v-4"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 8h.01"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<strong[39m
+                    [33mclass[39m=[32m"callout__title"[39m
+                  [36m>[39m
+                    [0mPro Tip[0m
+                  [36m</strong>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"callout__body"[39m
+                [36m>[39m
+                  [0mThis is an important note![0m
+                [36m</div>[39m
+              [36m</aside>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"rounded-xl overflow-hidden border group"[39m
+              [33mstyle[39m=[32m"border-color: var(--border);"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-end justify-between px-4 pt-2 border-b"[39m
+                [33mstyle[39m=[32m"background: var(--surface-raised); border-color: var(--border);"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center gap-5"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex items-center gap-2 mb-2.5"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"w-3 h-3 rounded-full bg-[#ff5f56]"[39m
+                    [36m/>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"w-3 h-3 rounded-full bg-[#ffbd2e]"[39m
+                    [36m/>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"w-3 h-3 rounded-full bg-[#27c93f]"[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-[13px] font-medium font-mono lowercase tracking-wide border-b-2 pb-2 px-1"[39m
+                    [33mstyle[39m=[32m"color: var(--text-primary); border-color: var(--text-primary); margin-bottom: -1px;"[39m
+                  [36m>[39m
+                    [0mmdx[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center gap-2 mb-1.5"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33maria-label[39m=[32m"Wrap text"[39m
+                    [33mclass[39m=[32m"btn inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 px-4 py-2 text-sm rounded-md border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--surface-raised)] px-2 py-1.5"[39m
+                    [33mstyle[39m=[32m"background: var(--surface); color: var(--text-muted);"[39m
+                    [33mtitle[39m=[32m"Wrap text"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"14"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"14"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<line[39m
+                        [33mx1[39m=[32m"3"[39m
+                        [33mx2[39m=[32m"21"[39m
+                        [33my1[39m=[32m"6"[39m
+                        [33my2[39m=[32m"6"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M3 12h15a3 3 0 1 1 0 6h-4"[39m
+                      [36m/>[39m
+                      [36m<polyline[39m
+                        [33mpoin...
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2m❯[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/app/admin/components/__tests__/FormattingHelp.test.tsx:[2m27:19[22m[39m
+    [90m 25|[39m
+    [90m 26|[39m     [90m// Check component titles[39m
+    [90m 27|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Callout Block'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   |[39m                   [31m^[39m
+    [90m 28|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Sparky Text'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m 29|[39m     expect(screen.getByText('More Info (Tooltip)')).toBeInTheDocument(…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/admin/components/__tests__/FormattingHelp.test.tsx[2m > [22mFormattingHelp[2m > [22mrenders CodeBlockClient for all code snippets
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="code-block-client"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6 overflow-y-auto pr-4 h-full pb-20"[39m
+    [36m>[39m
+      [36m<div>[39m
+        [36m<h3[39m
+          [33mclass[39m=[32m"text-lg font-semibold mb-2"[39m
+          [33mstyle[39m=[32m"color: var(--text-primary);"[39m
+        [36m>[39m
+          [0mCustom JSX Components[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"text-sm mb-4"[39m
+          [33mstyle[39m=[32m"color: var(--text-secondary);"[39m
+        [36m>[39m
+          [0mYou can use these custom React components directly in your markdown content. Alternatively, use the ✦ Insert... dropdown in the editor toolbar.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-4 text-sm"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border border-[var(--border)] rounded-md p-4 bg-[var(--bg-secondary)]"[39m
+          [36m>[39m
+            [36m<h4[39m
+              [33mclass[39m=[32m"font-semibold mb-2"[39m
+            [36m>[39m
+              [0mCallout Block[0m
+            [36m</h4>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-[var(--text-secondary)] mb-4"[39m
+            [36m>[39m
+              [0mTypes: info, warning, success, error. Title is optional.[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mb-4"[39m
+            [36m>[39m
+              [36m<aside[39m
+                [33mclass[39m=[32m"callout callout--info"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"callout__header"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33mclass[39m=[32m"callout__icon"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"20"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"20"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"12"[39m
+                      [33mcy[39m=[32m"12"[39m
+                      [33mr[39m=[32m"10"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 16v-4"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 8h.01"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<strong[39m
+                    [33mclass[39m=[32m"callout__title"[39m
+                  [36m>[39m
+                    [0mPro Tip[0m
+                  [36m</strong>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"callout__body"[39m
+                [36m>[39m
+                  [0mThis is an important note![0m
+                [36m</div>[39m
+              [36m</aside>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"rounded-xl overflow-hidden border group"[39m
+              [33mstyle[39m=[32m"border-color: var(--border);"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-end justify-between px-4 pt-2 border-b"[39m
+                [33mstyle[39m=[32m"background: var(--surface-raised); border-color: var(--border);"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center gap-5"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex items-center gap-2 mb-2.5"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"w-3 h-3 rounded-full bg-[#ff5f56]"[39m
+                    [36m/>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"w-3 h-3 rounded-full bg-[#ffbd2e]"[39m
+                    [36m/>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"w-3 h-3 rounded-full bg-[#27c93f]"[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-[13px] font-medium font-mono lowercase tracking-wide border-b-2 pb-2 px-1"[39m
+                    [33mstyle[39m=[32m"color: var(--text-primary); border-color: var(--text-primary); margin-bottom: -1px;"[39m
+                  [36m>[39m
+                    [0mmdx[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center gap-2 mb-1.5"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33maria-label[39m=[32m"Wrap text"[39m
+                    [33mclass[39m=[32m"btn inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 px-4 py-2 text-sm rounded-md border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--surface-raised)] px-2 py-1.5"[39m
+                    [33mstyle[39m=[32m"background: var(--surface); color: var(--text-muted);"[39m
+                    [33mtitle[39m=[32m"Wrap text"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"14"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"14"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<line[39m
+                        [33mx1[39m=[32m"3"[39m
+                        [33mx2[39m=[32m"21"[39m
+                        [33my1[39m=[32m"6"[39m
+                        [33my2[39m=[32m"6"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M3 12h15a3 3 0 1 1 0 6h-4"[39m
+                      [36m/>[39m
+                      [36m<polyline[39m
+                        [33mpoin...
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m109:15[22m[39m
+[36m [2m❯[22m src/app/admin/components/__tests__/FormattingHelp.test.tsx:[2m53:31[22m[39m
+    [90m 51|[39m     [34mrender[39m([33m<[39m[33mFormattingHelp[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m 52|[39m
+    [90m 53|[39m     [35mconst[39m codeBlocks [33m=[39m screen[33m.[39m[34mgetAllByTestId[39m([32m'code-block-client'[39m)[33m;[39m
+    [90m   |[39m                               [31m^[39m
+    [90m 54|[39m     [34mexpect[39m(codeBlocks[33m.[39mlength)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m 55|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m32 passed[39m[22m[90m (34)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m214 passed[39m[22m[90m (217)[39m
+[2m   Start at [22m 14:51:05
+[2m   Duration [22m 7.55s[2m (transform 1.53s, setup 6.00s, import 4.50s, tests 8.20s, environment 27.71s)[22m
+

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SoundProvider } from "@/providers/SoundProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/Navbar";
@@ -55,19 +56,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          themes={['light', 'dark', 'neo-light', 'neo-dark', 'system']}
-          disableTransitionOnChange={false}
-        >
-          <Navbar />
-          <main className="pt-14 min-h-screen">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+        <SoundProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            themes={['light', 'dark', 'neo-light', 'neo-dark', 'system']}
+            disableTransitionOnChange={false}
+          >
+            <Navbar />
+            <main className="pt-14 min-h-screen">
+              {children}
+            </main>
+            <Footer />
+          </ThemeProvider>
+        </SoundProvider>
         <Analytics />
         <SpeedInsights />
       </body>

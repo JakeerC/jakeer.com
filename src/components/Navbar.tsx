@@ -12,7 +12,11 @@ import {
   LuMenu,
   LuPalette,
   LuLogOut,
+  LuVolume2,
+  LuVolumeX,
 } from "react-icons/lu";
+import useSound from "use-sound";
+import { useSoundContext } from "@/providers/SoundProvider";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -36,6 +40,21 @@ export default function Navbar() {
 
   const [session, setSession] = useState<unknown>(null);
   const supabase = createClient();
+
+  const { soundEnabled, toggleSound } = useSoundContext();
+  const [playSwitch] = useSound("/sounds/switch-on.mp3", { volume: 0.5 });
+  const [playPageLoad] = useSound("/sounds/pop-down.mp3", { volume: 0.3 });
+
+  useEffect(() => {
+    if (!soundEnabled) return;
+    if (
+      pathname.startsWith("/writing") ||
+      pathname.startsWith("/notes") ||
+      pathname.startsWith("/snippets")
+    ) {
+      playPageLoad();
+    }
+  }, [pathname, soundEnabled, playPageLoad]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
@@ -103,11 +122,13 @@ export default function Navbar() {
   const isDark = resolvedTheme?.endsWith("dark") || false;
 
   const toggleDark = () => {
+    if (soundEnabled) playSwitch();
     if (isNeo) return;
     setTheme(isDark ? "light" : "dark");
   };
 
   const toggleNeo = () => {
+    if (soundEnabled) playSwitch();
     if (isNeo) setTheme(isDark ? "dark" : "light");
     else setTheme("neo-light");
   };
@@ -177,6 +198,9 @@ export default function Navbar() {
                         : "opacity-60 hover:opacity-100",
                     )}
                     style={{ color: "var(--text-primary)" }}
+                    onClick={() => {
+                      if (soundEnabled) playSwitch();
+                    }}
                   >
                     {item.label}
                   </Link>
@@ -245,6 +269,22 @@ export default function Navbar() {
                 aria-label="Toggle dark mode"
               >
                 {isDark ? <LuSun size={16} /> : <LuMoon size={16} />}
+              </Button>
+            )}
+
+            {/* Sound toggle */}
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  toggleSound();
+                  if (!soundEnabled) playSwitch(); // play sound when turning on
+                }}
+                className="p-2 hidden md:flex"
+                aria-label="Toggle sound"
+              >
+                {soundEnabled ? <LuVolume2 size={16} /> : <LuVolumeX size={16} />}
               </Button>
             )}
 

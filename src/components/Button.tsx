@@ -1,4 +1,8 @@
+"use client";
+
 import React from 'react';
+import useSound from 'use-sound';
+import { useSoundContext } from '@/providers/SoundProvider';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -17,8 +21,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   leftIcon,
   rightIcon,
   children,
+  onClick,
   ...props
 }, ref) => {
+  const { soundEnabled } = useSoundContext();
+  const [playClick] = useSound("/sounds/switch-on.mp3", { volume: 0.5 });
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (soundEnabled && !props.disabled) playClick();
+    if (onClick) onClick(e);
+  };
+
   const baseClasses = "btn inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
   
   const sizeClasses = {
@@ -39,6 +52,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     <button
       ref={ref}
       className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      onClick={handleClick}
       {...props}
     >
       {leftIcon && <span className="shrink-0 flex items-center justify-center">{leftIcon}</span>}
