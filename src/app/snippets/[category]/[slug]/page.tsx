@@ -9,6 +9,7 @@ import { Tag } from "@/components/Tag";
 import Image from "next/image";
 import TableOfContents from "@/components/TableOfContents";
 import { slugify } from "@/lib/slugify";
+import { Callout, SparkyText, MoreInfo, SwirlyUnderline, HighlightText } from "@/components/mdx";
 
 // Helper to extract plain text from MDX children
 const getText = (children: any): string => {
@@ -80,6 +81,11 @@ export const components = {
       className="rounded-lg border border-[var(--border)] my-6"
     />
   ),
+  Callout,
+  SparkyText,
+  MoreInfo,
+  SwirlyUnderline,
+  HighlightText,
 };
 export default async function SnippetDetailPage({
   params,
