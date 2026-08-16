@@ -6,7 +6,7 @@ interface HighlightTextProps {
 }
 
 export function HighlightText({
-  color = "amber",
+  color = "pink",
   children,
 }: HighlightTextProps) {
   return (
