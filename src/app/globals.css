@@ -621,6 +621,358 @@ h3[id] {
   }
 }
 
+/* ─── MDX Custom Components ────────────────────────────── */
+
+/* --- Callout --- */
+.callout {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+  border-left: 3px solid var(--callout-accent);
+  background: var(--callout-bg);
+  animation: callout-enter 0.4s ease-out both;
+}
+
+.callout__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.callout__icon {
+  color: var(--callout-accent);
+  flex-shrink: 0;
+}
+
+.callout__title {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--callout-accent);
+  letter-spacing: 0.01em;
+}
+
+.callout__body {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.callout__body p {
+  margin: 0.4rem 0;
+}
+
+.callout__body p:first-child {
+  margin-top: 0;
+}
+
+.callout__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Callout variants */
+.callout--info {
+  --callout-accent: hsl(215, 100%, 60%);
+  --callout-bg: hsl(215, 80%, 96%);
+}
+
+.callout--warning {
+  --callout-accent: hsl(37, 100%, 50%);
+  --callout-bg: hsl(45, 90%, 95%);
+}
+
+.callout--success {
+  --callout-accent: hsl(145, 80%, 38%);
+  --callout-bg: hsl(145, 60%, 95%);
+}
+
+.callout--error {
+  --callout-accent: hsl(340, 95%, 50%);
+  --callout-bg: hsl(340, 80%, 96%);
+}
+
+.dark .callout--info {
+  --callout-accent: hsl(215, 100%, 72%);
+  --callout-bg: hsl(215, 40%, 14%);
+}
+
+.dark .callout--warning {
+  --callout-accent: hsl(43, 100%, 65%);
+  --callout-bg: hsl(37, 30%, 14%);
+}
+
+.dark .callout--success {
+  --callout-accent: hsl(160, 80%, 55%);
+  --callout-bg: hsl(155, 30%, 13%);
+}
+
+.dark .callout--error {
+  --callout-accent: hsl(340, 95%, 65%);
+  --callout-bg: hsl(340, 30%, 14%);
+}
+
+@keyframes callout-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- SparkyText --- */
+.sparky-text {
+  position: relative;
+  display: inline;
+  background: linear-gradient(
+    120deg,
+    var(--accent) 0%,
+    hsl(280, 80%, 60%) 25%,
+    hsl(340, 90%, 60%) 50%,
+    hsl(45, 100%, 55%) 75%,
+    var(--accent) 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+.sparky-text:hover {
+  animation-duration: 1.5s;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* --- MoreInfo --- */
+.more-info {
+  position: relative;
+  display: inline;
+}
+
+.more-info__text {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent);
+  cursor: help;
+}
+
+.more-info__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: -0.5em;
+  margin-left: 1px;
+  width: 1em;
+  height: 1em;
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease;
+  padding: 0;
+  font-family: inherit;
+}
+
+.more-info__trigger:hover {
+  background: var(--accent);
+  color: white;
+  transform: scale(1.15);
+}
+
+.more-info__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  max-width: 320px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow:
+    0 8px 24px -4px rgba(0, 0, 0, 0.12),
+    0 2px 8px -2px rgba(0, 0, 0, 0.06);
+  z-index: 50;
+  pointer-events: none;
+  animation: tooltip-enter 0.2s ease-out both;
+  white-space: normal;
+  text-align: left;
+}
+
+.more-info__tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--border);
+}
+
+.dark .more-info__tooltip {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes tooltip-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* --- SwirlyUnderline --- */
+.swirly-underline {
+  position: relative;
+  display: inline;
+}
+
+.swirly-underline__text {
+  position: relative;
+  font-weight: 500;
+}
+
+.swirly-underline__svg {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  color: var(--accent);
+  overflow: visible;
+}
+
+.swirly-underline__svg path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: underline-draw 0.8s ease-out 0.2s forwards;
+}
+
+.swirly-underline:hover .swirly-underline__svg path {
+  animation: underline-draw 0.4s ease-out forwards;
+}
+
+@keyframes underline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- HighlightText --- */
+.highlight-text {
+  position: relative;
+  display: inline;
+  padding: 0.05em 0.2em;
+  border-radius: 0.15em;
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  animation: highlight-draw 0.8s ease-out 0.3s forwards;
+  color: inherit;
+
+  /* Reset browser <mark> defaults */
+  -webkit-text-fill-color: initial;
+}
+
+.highlight-text--amber {
+  background-image: linear-gradient(
+    to right,
+    hsla(48, 100%, 60%, 0.35) 50%,
+    transparent 50%
+  );
+}
+
+.highlight-text--blue {
+  background-image: linear-gradient(
+    to right,
+    hsla(215, 100%, 65%, 0.25) 50%,
+    transparent 50%
+  );
+}
+
+.highlight-text--green {
+  background-image: linear-gradient(
+    to right,
+    hsla(145, 80%, 50%, 0.25) 50%,
+    transparent 50%
+  );
+}
+
+.highlight-text--pink {
+  background-image: linear-gradient(
+    to right,
+    hsla(340, 90%, 60%, 0.25) 50%,
+    transparent 50%
+  );
+}
+
+.dark .highlight-text--amber {
+  background-image: linear-gradient(
+    to right,
+    hsla(48, 100%, 50%, 0.2) 50%,
+    transparent 50%
+  );
+}
+
+.dark .highlight-text--blue {
+  background-image: linear-gradient(
+    to right,
+    hsla(215, 100%, 70%, 0.15) 50%,
+    transparent 50%
+  );
+}
+
+.dark .highlight-text--green {
+  background-image: linear-gradient(
+    to right,
+    hsla(145, 80%, 50%, 0.15) 50%,
+    transparent 50%
+  );
+}
+
+.dark .highlight-text--pink {
+  background-image: linear-gradient(
+    to right,
+    hsla(340, 90%, 60%, 0.15) 50%,
+    transparent 50%
+  );
+}
+
+@keyframes highlight-draw {
+  to {
+    background-position: 0 0;
+  }
+}
+
 /* ─── MDX Editor Dark Mode Overrides ───────────────────── */
 .dark .dark-editor .mdxeditor {
   background-color: var(--surface) !important;

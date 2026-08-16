@@ -14,6 +14,7 @@ import { FieldControl } from "../../../components/FieldControl";
 import { Button } from "../../../components/Button";
 import { useRouter } from "next/navigation";
 import { AssetManager } from "./AssetManager";
+import { FormattingHelp } from "./FormattingHelp";
 
 const Editor = dynamic(() => import("./EditorWrapper"), { ssr: false });
 
@@ -90,6 +91,7 @@ export function AdminClient({
   );
   const [isFullWidth, setIsFullWidth] = useState(false);
   const [isAssetDrawerOpen, setIsAssetDrawerOpen] = useState(false);
+  const [isHelpDrawerOpen, setIsHelpDrawerOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
 
   const handleImageUpload = async (image: File) => {
@@ -390,13 +392,22 @@ export function AdminClient({
                 >
                   Content (Markdown)
                 </label>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setIsAssetDrawerOpen(true)}
-                >
-                  Add Asset
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setIsHelpDrawerOpen(true)}
+                  >
+                    Formatting Help
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setIsAssetDrawerOpen(true)}
+                  >
+                    Add Asset
+                  </Button>
+                </div>
               </div>
               <Editor
                 markdown={markdown}
@@ -491,7 +502,7 @@ export function AdminClient({
 
       {isAssetDrawerOpen && (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity">
-          <div className="w-[500px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
+          <div className="w-1/3 min-w-[400px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
             <div className="flex justify-between items-center mb-6 shrink-0">
               <h2
                 className="text-xl font-bold"
@@ -516,6 +527,31 @@ export function AdminClient({
                   );
                 }}
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isHelpDrawerOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity">
+          <div className="w-1/3 min-w-[400px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
+            <div className="flex justify-between items-center mb-6 shrink-0">
+              <h2
+                className="text-xl font-bold"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Formatting Help
+              </h2>
+              <button
+                type="button"
+                onClick={() => setIsHelpDrawerOpen(false)}
+                className="text-xl font-bold p-2 hover:bg-black/5 rounded text-[var(--text-primary)]"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <FormattingHelp />
             </div>
           </div>
         </div>
