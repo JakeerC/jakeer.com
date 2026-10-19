@@ -11,6 +11,9 @@
     "test:watch": "vitest",
     "test:changed": "vitest run --changed",
     "test:watch:changed": "vitest --changed",
+    "validate:content": "npx tsx scripts/validate-content.ts",
+    "prebuild": "npm run validate:content",
+    "gen:types": "npx supabase gen types typescript --local > src/lib/supabase/database.types.ts",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -52,7 +55,9 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "zod": "^4.6.6"
   }
 }

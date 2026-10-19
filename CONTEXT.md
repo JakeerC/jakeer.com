@@ -26,6 +26,8 @@ This file is the durable architecture and workflow reference for agents working 
 | Theme tokens and global layout styles | `src/app/globals.css`, `tailwind.config.ts` | Prefer existing CSS variables and design tokens over one-off colors. |
 | Admin metadata options | `src/lib/constants.ts` | Topic/subtopic options for notes are derived dynamically from `content/notes` in `src/lib/mdx.ts`. |
 | Future improvements and feature priorities | `ROADMAP.md` | Use this when planning new work; update it when items start or finish. |
+| Phase 0 implementation record | `docs/Phase-0-Foundation-Implementation.md` | Durable record of P0 content validation, Supabase RLS/Storage, env boundaries, and publishing hardening. |
+| Phase 0 implementation plan | `docs/plans/P0 — Foundation & Correctness: Implementation Plan.md` | Detailed task breakdown, design decisions, and work slices for P0. |
 
 ## Route map
 
@@ -82,23 +84,23 @@ The client-side command palette in `src/components/CommandPalette.tsx` calls the
 
 ### Admin publishing workflow
 
-The normal content workflow is:
+The content workflow is:
 
 1. Authenticate through Supabase on `/admin`.
-2. Save a draft. `saveDraftAction()` writes the draft to Supabase and creates/updates a GitHub branch named `content/<category>-<slug>-<timestamp>`.
-3. The branch contains the generated MDX under the appropriate `content/` path and any editor-uploaded images under `public/assets/`.
-4. Create a pull request with `createPRForContent()`.
-5. Publish by squash-merging the PR with `mergePRAction()`, then archive the draft.
+2. Save a draft. `saveDraftAction()` writes the draft to Supabase and creates/updates a deterministic GitHub branch named `content/<category>-<slug>-<draftId>`. For new content, the draft record is created first to establish the UUID before the branch is initialized.
+3. The branch contains the generated MDX under the appropriate `content/` path and any editor-uploaded images under `public/assets/`. Frontmatter strings are escaped via `escapeYamlString()` (`src/lib/sanitize.ts`) to prevent frontmatter injection.
+4. Draft states follow a strict state machine (`src/lib/draft-states.ts`): `draft` -> `branch_created` -> `pr_open` -> `merged` -> `archived` (or `failed`). All draft updates are owner-scoped with `.eq("user_id", user.id)`.
+5. Create a pull request with `createPRForContent()`. The action is idempotent: it checks for existing open PRs on the branch before creating a new one.
+6. Publish by squash-merging the PR with `mergePRAction()`. The action verifies GitHub confirms `prAfterMerge.merged === true` before updating the status to `archived`; unconfirmed merges transition to `failed`.
 
-The GitHub repository is currently hardcoded in `src/app/admin/actions.ts` as owner `JakeerC` and repo `jakeer.com`. Do not silently change this when modifying the workflow.
+The GitHub repository is hardcoded in `src/app/admin/actions.ts` as owner `JakeerC` and repo `jakeer.com`. Do not silently change this when modifying the workflow.
 
-The admin database/storage contract currently assumes:
+The admin database/storage contract includes:
 
-- Supabase table: `content_drafts`.
-- Supabase Storage bucket: `assets`.
-- Authenticated users are required for every admin server action.
-- Missing `content_drafts` or `assets` resources are handled as empty/unavailable in several dashboard paths.
-- This repository does not contain a `supabase/` migrations directory, so database schema changes need to be checked against the connected Supabase project before implementation.
+- Supabase table: `content_drafts` with RLS policies (`authenticated` only, checked via `(select auth.uid()) = user_id`), status check constraint, and indexes on `user_id`, `category`, `archived`, and `status`.
+- Supabase Storage bucket: `assets` with authenticated RLS policies (SELECT, INSERT, UPDATE, DELETE).
+- Versioned SQL migrations are tracked in `supabase/migrations/` and verified with `supabase/tests/security_verification.sql`.
+- TypeScript database types are maintained in `src/lib/supabase/database.types.ts` (`npm run gen:types`).
 
 ## Content authoring contract
 
@@ -124,11 +126,13 @@ All MDX content may use the registered custom components. Preserve valid MDX and
 
 ## Environment and integration boundaries
 
-The application references these environment variables:
+Environment variables are validated centrally through `src/lib/env.ts` (`requireEnv`, `optionalEnv`, `getSupabaseUrl`, `getSupabasePublishableKey`, `getGitHubToken`):
 
-- `NEXT_PUBLIC_SUPABASE_URL` — browser/server Supabase project URL.
+- `NEXT_PUBLIC_SUPABASE_URL` — browser/server Supabase project URL (accessed directly for static inlining in client bundles).
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — publishable Supabase key used by browser, server, and request-hook clients.
-- `GITHUB_TOKEN` — server-only token used by admin actions for branches, commits, pull requests, and asset blobs.
+- `GITHUB_TOKEN` — server-only token used by admin actions for branches, commits, pull requests, and asset blobs. Accessed lazily at publish time so non-publishing operations do not crash if it is unset.
+
+Non-null assertions (`!`) on environment variables are avoided. Missing variables throw actionable error messages that never echo secret values.
 
 `.env*` files are ignored by Git. Never print, commit, or expose their values. A `NEXT_PUBLIC_` variable is browser-visible; do not put secrets in one. For any Supabase-related implementation, read `.agents/skills/supabase/SKILL.md` first and follow its current documentation/security workflow.
 
@@ -137,9 +141,11 @@ The application references these environment variables:
 ```bash
 npm install
 npm run dev
+npm run validate:content   # validates all frontmatter, links, and schemas (runs in prebuild)
+npm run gen:types          # regenerates src/lib/supabase/database.types.ts
 npm run lint
 npm test
-npm run build
+npm run build              # triggers prebuild (validate:content) before Next.js build
 ```
 
 Use a targeted Vitest test while iterating, then run the full suite for cross-cutting changes. Tests live beside the relevant source area under `__tests__/`, with additional unit tests in `src/lib/` and `src/components/`.
@@ -160,4 +166,4 @@ Before changing Next.js behavior, read the relevant versioned guidance in `node_
 
 ## Planning future work
 
-Use [`ROADMAP.md`](./ROADMAP.md) for prioritized improvements and feature ideas. If a change affects the route structure, content model, integrations, environment variables, or verification workflow, update this context file together with the implementation.
+Use [`ROADMAP.md`](./ROADMAP.md) for prioritized improvements and feature ideas. For detailed work plans and historical implementation records, refer to [`docs/plans/`](./docs/plans/) and [`docs/Phase-0-Foundation-Implementation.md`](./docs/Phase-0-Foundation-Implementation.md). If a change affects the route structure, content model, integrations, environment variables, or verification workflow, update this context file together with the implementation.

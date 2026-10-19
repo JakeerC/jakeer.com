@@ -27,7 +27,7 @@ Statuses used below: `Proposed`, `In progress`, `Complete`, and `Deferred`.
 
 ### 1. Add content contract validation
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** `content/`, `src/lib/mdx.ts`, `scripts/`, package scripts
 
 Create a validation command for all MDX and notes metadata. It should validate frontmatter fields and types, duplicate slugs, valid note topics, `index.json` shape, note ordering, snippet category tags, tool URLs, and references to local images.
@@ -47,7 +47,7 @@ Create a validation command for all MDX and notes metadata. It should validate f
 
 ### 2. Formalize the Supabase database and Storage security baseline
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** Supabase project, admin actions, generated database types
 
 Document and version the `content_drafts` table and `assets` Storage bucket contract. Add the appropriate migrations or declarative schema, RLS policies, Storage policies, indexes, and generated TypeScript types.
@@ -64,7 +64,7 @@ Document and version the `content_drafts` table and `assets` Storage bucket cont
 
 ### 3. Add environment validation and safe failure states
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** Supabase clients, admin actions, application startup/build
 
 Replace non-null environment assertions with clear validation at the server boundary. Make missing integrations produce actionable admin errors while keeping public pages usable when the admin integration is unavailable.
@@ -78,7 +78,7 @@ Replace non-null environment assertions with clear validation at the server boun
 
 ### 4. Make publishing operations idempotent and recoverable
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** `src/app/admin/actions.ts`, admin client components, Supabase draft state
 
 Harden the current save → branch/commit → PR → merge workflow against retries, duplicate submissions, stale PRs, partial failures, and branch collisions.
