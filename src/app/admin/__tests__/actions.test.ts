@@ -58,7 +58,8 @@ const mockCreatePull = vi
 const mockMergePull = vi.fn().mockResolvedValue({ data: { merged: true } });
 const mockUpdatePull = vi.fn().mockResolvedValue({ data: { state: "closed" } });
 const mockDeleteRef = vi.fn().mockResolvedValue({ data: {} });
-const mockGetPull = vi.fn().mockResolvedValue({ data: { state: "closed", merged: false } });
+const mockGetPull = vi.fn().mockResolvedValue({ data: { state: "closed", merged: true } });
+const mockListPulls = vi.fn().mockResolvedValue({ data: [] });
 
 vi.mock("octokit", () => {
   return {
@@ -80,6 +81,7 @@ vi.mock("octokit", () => {
         },
         pulls: {
           get: mockGetPull,
+          list: mockListPulls,
           create: mockCreatePull,
           merge: mockMergePull,
           update: mockUpdatePull,
@@ -123,8 +125,10 @@ describe("admin actions", () => {
     mockNot.mockReturnValue(chainableQuery);
     
     mockSingle.mockResolvedValue({ data: { id: "test-id" } });
-    mockUpdate.mockReturnValue({ eq: mockEq });
-    mockDelete.mockReturnValue({ eq: mockEq });
+    mockUpdate.mockReturnValue(chainableQuery);
+    mockDelete.mockReturnValue(chainableQuery);
+    mockListPulls.mockResolvedValue({ data: [] });
+    mockGetPull.mockResolvedValue({ data: { state: "closed", merged: true } });
   });
 
   it("saveDraftAction should push to github and save to supabase", async () => {
@@ -520,6 +524,78 @@ describe("admin actions", () => {
   it("getAssetsAction should throw on generic error", async () => {
     mockList.mockResolvedValueOnce({ data: null, error: { message: "error" } });
     await expect(getAssetsAction()).rejects.toThrow();
+  });
+
+  it("createPRForContent should update existing PR if one is already open (idempotent)", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockListPulls.mockResolvedValueOnce({
+      data: [{ number: 99, html_url: "https://github.com/pr/99" }],
+    });
+
+    const result = await createPRForContent(
+      "test-id",
+      "test-branch",
+      "Existing PR Draft",
+      "writing"
+    );
+
+    expect(mockListPulls).toHaveBeenCalled();
+    expect(mockUpdatePull).toHaveBeenCalledWith(
+      expect.objectContaining({ pull_number: 99, title: "Add writing: Existing PR Draft" })
+    );
+    expect(result.prNumber).toBe(99);
+    expect(result.prUrl).toBe("https://github.com/pr/99");
+  });
+
+  it("mergePRAction should throw and mark status failed if merge is unconfirmed", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockGetPull.mockResolvedValueOnce({ data: { state: "closed", merged: false } });
+
+    await expect(mergePRAction("test-id", 42)).rejects.toThrow(
+      "PR merge was not confirmed. Draft marked as failed for retry."
+    );
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({ status: "failed" })
+    );
+  });
+
+  it("saveDraftAction uses deterministic branch naming based on draft id", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSingle.mockResolvedValueOnce({ data: { id: "deterministic-uuid-123" } });
+
+    const result = await saveDraftAction({
+      title: "Deterministic Post",
+      slug: "deterministic-post",
+      category: "writing",
+      markdown: "Content",
+      metadata: {},
+    });
+
+    expect(result.branchName).toBe("content/writing-deterministic-post-deterministic-uuid-123");
+  });
+
+  it("saveDraftAction sanitizes frontmatter values to prevent YAML injection", async () => {
+    process.env.GITHUB_TOKEN = "test-token";
+    mockSingle.mockResolvedValueOnce({ data: { id: "sanitized-uuid" } });
+
+    await saveDraftAction({
+      title: 'Title with "quotes" and: colons',
+      slug: "quoted-post",
+      category: "writing",
+      markdown: "Body",
+      description: 'Desc with "quotes"',
+      metadata: { tags: 'react, "advanced: topic"' },
+    });
+
+    expect(mockCreateTree).toHaveBeenCalledWith(
+      expect.objectContaining({
+        tree: expect.arrayContaining([
+          expect.objectContaining({
+            content: expect.stringContaining('\\"quotes\\"'),
+          }),
+        ]),
+      })
+    );
   });
 });
 
