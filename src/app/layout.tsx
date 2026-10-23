@@ -5,9 +5,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { siteConfig } from "@/lib/config";
+import { buildSiteJsonLd } from "@/lib/metadata";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
     default:  siteConfig.name,
     template: `%s | ${siteConfig.name}`,
@@ -55,6 +57,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteJsonLd()) }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

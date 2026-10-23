@@ -104,7 +104,7 @@ Harden the current save → branch/commit → PR → merge workflow against retr
 
 ### 5. Remove duplicated content metadata
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** `src/lib/constants.ts`, home page, snippets, writing index
 
 Reduce drift between committed MDX and manually maintained values. The home page’s recent writing should be derived from writing frontmatter or use a small explicit `featured`/`homeOrder` contract. Snippet category counts should be derived from actual files, or clearly become editorial overrides.
@@ -118,7 +118,7 @@ Reduce drift between committed MDX and manually maintained values. The home page
 
 ### 6. Add draft preview before creating a pull request
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** admin editor, MDX rendering, preview route/component
 
 Allow authenticated authors to preview the exact rendered title, metadata, code blocks, images, and custom MDX components before opening a PR.
@@ -132,7 +132,7 @@ Allow authenticated authors to preview the exact rendered title, metadata, code 
 
 ### 7. Improve the editor and asset workflow
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** `src/app/admin/components/`, Supabase Storage, GitHub asset commits
 
 Add autosave status, unsaved-change protection, image size/type validation, asset removal, markdown source editing, and a clear distinction between reusable Storage assets and assets committed with a draft.
@@ -146,7 +146,7 @@ Add autosave status, unsaved-change protection, image size/type validation, asse
 
 ### 8. Expand content discovery
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** command palette, writing, notes, snippets, tools
 
 Make search and navigation cover notes, projects, tags, and direct detail URLs. Fix snippet search results so they open the selected snippet rather than only its category.
@@ -160,7 +160,7 @@ Make search and navigation cover notes, projects, tags, and direct detail URLs. 
 
 ### 9. Add related content and taxonomy navigation
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** MDX metadata, detail pages, notes sidebar, tags
 
 Add related writing, snippets, and notes based on explicit tags/topics. Provide tag landing pages only if they improve navigation without creating duplicate or low-value pages.
@@ -178,7 +178,7 @@ Add related writing, snippets, and notes based on explicit tags/topics. Provide 
 
 ### 10. Establish CI and release checks
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** `.github/workflows/`, package scripts, repository protection
 
 Add a GitHub Actions workflow for install, type checking, linting, content validation, tests, and production build. Configure branch protection so content and code changes receive the same baseline checks.
@@ -192,7 +192,7 @@ Add a GitHub Actions workflow for install, type checking, linting, content valid
 
 ### 11. Improve SEO and content syndication
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** metadata, route handlers, public content
 
 Add sitemap generation, robots policy, canonical URLs, Open Graph images, structured data, RSS/Atom feeds for writing, and optionally JSON feeds for snippets/notes.
@@ -206,7 +206,7 @@ Add sitemap generation, robots policy, canonical URLs, Open Graph images, struct
 
 ### 12. Measure and improve content loading performance
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** `src/lib/mdx.ts`, route rendering, Shiki, Next.js caching
 
 Profile MDX parsing, filesystem reads, Shiki highlighting, and route generation before selecting caching or static generation changes.
@@ -220,7 +220,7 @@ Profile MDX parsing, filesystem reads, Shiki highlighting, and route generation 
 
 ### 13. Complete accessibility and responsive QA
 
-**Status:** Proposed  
+**Status:** Complete  
 **Scope:** shared components, public routes, admin UI, themes
 
 Audit keyboard navigation, focus management, color contrast, reduced motion, headings, landmarks, form labels, error announcements, mobile layouts, and both classic/neo themes.

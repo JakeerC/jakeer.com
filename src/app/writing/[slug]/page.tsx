@@ -1,152 +1,38 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LuArrowLeft, LuClock, LuCalendar } from "react-icons/lu";
 import Link from "next/link";
 import TechIcon from "@/components/TechIcon";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import CodeBlock from "@/components/CodeBlock";
 import Image from "next/image";
 import { Tag } from "@/components/Tag";
 import TableOfContents from "@/components/TableOfContents";
 
 import { notFound } from "next/navigation";
 import { getContentBySlug } from "@/lib/mdx";
-import { slugify } from "@/lib/slugify";
-import { Callout, SparkyText, MoreInfo, SwirlyUnderline, HighlightText } from "@/components/mdx";
-
-// Helper to extract plain text from MDX children
-const getText = (children: any): string => {
-  if (typeof children === "string") return children;
-  if (Array.isArray(children)) return children.map(getText).join("");
-  if (typeof children === "object" && children !== null && children.props?.children) {
-    return getText(children.props.children);
-  }
-  return "";
-};
+import { mdxComponents } from "@/components/mdx/registry";
+import { buildMetadata, buildArticleJsonLd } from "@/lib/metadata";
+import { getWritingProjections } from "@/lib/content-projections";
+import { getRelatedItems, type ContentIdentity } from "@/lib/related-content";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const resolvedParams = await params;
-  const post = getContentBySlug("writing", resolvedParams.slug);
-  if (!post) return { title: "Not Found" };
-  return {
+  const { slug } = await params;
+  const post = getContentBySlug("writing", slug);
+  if (!post || post.frontmatter.draft) return { title: "Not Found" };
+  return buildMetadata({
     title: post.frontmatter.title as string,
-    description: post.frontmatter.description as string,
-  };
+    description: post.frontmatter.description as string | undefined,
+    canonicalPath: `/writing/${slug}`,
+    publishedTime: post.frontmatter.date as string | undefined,
+    tags: post.frontmatter.tags as string[] | undefined,
+  });
 }
 
-export const components = {
-  h2: (props: any) => {
-    const text = getText(props.children);
-    const id = props.id || slugify(text);
-    return (
-      <h2
-        id={id}
-        style={{
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          fontSize: "1.5rem",
-          fontWeight: 700,
-          margin: "2.5rem 0 1rem",
-          color: "var(--text-primary)",
-        }}
-        {...props}
-      />
-    );
-  },
-  h3: (props: any) => {
-    const text = getText(props.children);
-    const id = props.id || slugify(text);
-    return (
-      <h3
-        id={id}
-        style={{
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          fontSize: "1.2rem",
-          fontWeight: 600,
-          margin: "2rem 0 0.75rem",
-          color: "var(--text-primary)",
-        }}
-        {...props}
-      />
-    );
-  },
-  strong: (props: any) => (
-    <strong
-      style={{ color: "var(--text-primary)", fontWeight: 600 }}
-      {...props}
-    />
-  ),
-  code: (props: any) => {
-    return (
-      <code
-        style={{
-          background: "var(--tag-bg)",
-          border: "1px solid var(--tag-border)",
-          borderRadius: "4px",
-          padding: "0.15em 0.4em",
-          color: "var(--accent)",
-          fontSize: "0.85em",
-        }}
-        {...props}
-      />
-    );
-  },
-  li: (props: any) => (
-    <li
-      style={{ margin: "0.4rem 0", color: "var(--text-secondary)" }}
-      {...props}
-    />
-  ),
-  ul: (props: any) => (
-    <ul
-      style={{ paddingLeft: "1.25rem", margin: "1rem 0", listStyle: "disc" }}
-      {...props}
-    />
-  ),
-  p: (props: any) => (
-    <p
-      style={{ margin: "1rem 0", color: "var(--text-secondary)" }}
-      {...props}
-    />
-  ),
-  pre: (props: any) => {
-    const child = props.children;
-    if (child && child.props) {
-      const className = child.props.className || "";
-      const langMatch = className.match(/language-(.*)/);
-      const lang = langMatch ? langMatch[1] : "text";
-
-      const codeString =
-        typeof child.props.children === "string"
-          ? child.props.children
-          : Array.isArray(child.props.children)
-            ? child.props.children.join("")
-            : child.props.children || "";
-
-      return <CodeBlock code={String(codeString).trim()} lang={lang} />;
-    }
-    return <pre {...props} />;
-  },
-  img: (props: any) => (
-    <Image
-      src={props.src}
-      alt={props.alt || ""}
-      width={0}
-      height={0}
-      sizes="100vw"
-      style={{ width: "100%", height: "auto" }}
-      className="rounded-lg border border-[var(--border)] my-6"
-    />
-  ),
-  Callout,
-  SparkyText,
-  MoreInfo,
-  SwirlyUnderline,
-  HighlightText,
-};
+// Re-export for backwards compatibility (notes page and other consumers)
+export const components = mdxComponents;
 
 export default async function ArticlePage({
   params,
@@ -162,8 +48,39 @@ export default async function ArticlePage({
 
   const tags = (post.frontmatter.tags as string[]) || [];
 
+  const allWriting = getWritingProjections();
+  const currentIdentity: ContentIdentity = {
+    kind: "writing",
+    slug: resolvedParams.slug,
+    tags: (post.frontmatter.tags as string[]) || [],
+    date: post.frontmatter.date as string | undefined,
+  };
+  const relatedCandidates = allWriting.map((w) => ({
+    kind: "writing" as const,
+    slug: w.slug,
+    title: w.title,
+    href: `/writing/${w.slug}`,
+    tags: w.tags,
+    date: w.date,
+    score: 0,
+    topic: undefined,
+    subtopic: undefined,
+  }));
+  const related = getRelatedItems(currentIdentity, relatedCandidates, 3);
+
+  const jsonLd = buildArticleJsonLd({
+    title: post.frontmatter.title as string,
+    description: post.frontmatter.description as string | undefined,
+    canonicalPath: `/writing/${resolvedParams.slug}`,
+    publishedTime: post.frontmatter.date as string | undefined,
+  });
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Image */}
       <div 
         className="relative w-full aspect-[21/9] sm:aspect-[2/1] md:aspect-[2.5/1] mb-12 rounded-2xl overflow-hidden border" 
@@ -232,8 +149,32 @@ export default async function ArticlePage({
         className="prose prose-sm md:prose-base"
         style={{ color: "var(--text-primary)" }}
       >
-        <MDXRemote source={post.content} components={components} />
+        <MDXRemote source={post.content} components={mdxComponents} />
       </article>
+
+      {/* Related Writing */}
+      {related.length > 0 && (
+        <section className="mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
+          <h2
+            className="text-lg font-semibold mb-4"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Related Writing
+          </h2>
+          <div className="flex flex-col gap-3">
+            {related.map((item) => (
+              <Link
+                key={item.slug}
+                href={item.href}
+                className="text-sm font-medium hover:underline underline-offset-4"
+                style={{ color: "var(--accent)" }}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Footer nav */}
       <div

@@ -19,10 +19,16 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-import { recentPosts, featuredProjects } from "@/lib/constants";
+import { featuredProjects } from "@/lib/constants";
+import { getRecentWriting } from "@/lib/content-projections";
 import { FaFile, FaGithub, FaLinkedin } from "react-icons/fa";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const recentPosts = getRecentWriting(3).map((post, i) => ({
+    ...post,
+    index: i + 1,
+    excerpt: post.description,
+  }));
   return (
     <div className="max-w-7xl mx-auto px-6">
       {/* ══════════════════════════════════════════════════

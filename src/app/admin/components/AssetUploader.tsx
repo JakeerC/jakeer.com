@@ -37,6 +37,14 @@ export function AssetUploader({ onUploadComplete }: Readonly<{ onUploadComplete?
       return;
     }
 
+    const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+    const fileExt = selected.name.split('.').pop()?.toLowerCase();
+    const isAllowedExt = fileExt && ["png", "jpg", "jpeg", "gif", "webp"].includes(fileExt);
+    if ((selected.type && !ALLOWED_TYPES.includes(selected.type)) || (!selected.type && !isAllowedExt)) {
+      setError("Unsupported file format. Please upload PNG, JPEG, GIF, or WebP.");
+      return;
+    }
+
     setFile(selected);
     
     // Generate object URL for preview

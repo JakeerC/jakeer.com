@@ -9,9 +9,16 @@ export const metadata: Metadata = {
   description: "Ready-to-use code snippets for React, Java, Spring Boot, Git, AWS, and more.",
 };
 
-import { snippetCategories as categories } from "@/lib/constants";
+import { snippetCategories } from "@/lib/constants";
+import { getSnippetCategoryCount } from "@/lib/content-projections";
 
-export default function SnippetsPage() {
+export default async function SnippetsPage() {
+  // Derive actual counts from content files, falling back to 0 for empty categories
+  const categories = snippetCategories.map(cat => ({
+    ...cat,
+    count: getSnippetCategoryCount(cat.slug),
+  }));
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-16">
       {/* Header */}

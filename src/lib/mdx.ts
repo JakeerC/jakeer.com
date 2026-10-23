@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { cache } from 'react';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
@@ -10,7 +11,7 @@ export interface MdxContent {
   content: string;
 }
 
-export function getAllContent(category: string): MdxContent[] {
+export const getAllContent = cache((category: string): MdxContent[] => {
   const categoryDir = path.join(contentDirectory, category);
   
   if (!fs.existsSync(categoryDir)) {
@@ -44,9 +45,9 @@ export function getAllContent(category: string): MdxContent[] {
   }
 
   return allContent;
-}
+});
 
-export function getContentBySlug(category: string, slug: string): MdxContent | null {
+export const getContentBySlug = cache((category: string, slug: string): MdxContent | null => {
   const categoryDir = path.join(contentDirectory, category);
   const fullPathMdx = path.join(categoryDir, `${slug}.mdx`);
   const fullPathMd = path.join(categoryDir, `${slug}.md`);
@@ -62,12 +63,18 @@ export function getContentBySlug(category: string, slug: string): MdxContent | n
 
   const { data, content } = matter(fileContents);
 
+  // Filter out draft content from public detail routes.
+  // Admin and preview routes should use getAllContent or Supabase drafts directly.
+  if (data.draft === true) {
+    return null;
+  }
+
   return {
     slug,
     frontmatter: data,
     content
   };
-}
+});
 
 export function getAllNotes(): MdxContent[] {
   const notesDir = path.join(contentDirectory, "notes");
@@ -128,7 +135,7 @@ function estimateReadingMinutes(content: string): number {
  * Reads `content/notes/<topicSlug>/index.json` for metadata and
  * scans MDX files to build the topics array grouped by `subtopic` frontmatter.
  */
-export function getKnowledgeBase(topicSlug: string): KnowledgeBase | null {
+export const getKnowledgeBase = cache((topicSlug: string): KnowledgeBase | null => {
   const topicDir = path.join(contentDirectory, 'notes', topicSlug);
 
   // Read index.json config
@@ -188,7 +195,7 @@ export function getKnowledgeBase(topicSlug: string): KnowledgeBase | null {
     principles: config.principles,
     topics,
   };
-}
+});
 
 /**
  * Discover and build all knowledge bases from `content/notes/`.

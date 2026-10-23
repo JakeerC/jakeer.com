@@ -608,6 +608,16 @@ export async function uploadAssetAction(formData: FormData) {
     throw new Error("File and fileName are required");
   }
 
+  // Security: path traversal prevention
+  if (fileName.includes("..") || fileName.startsWith("/") || fileName.includes("\\")) {
+    throw new Error("Invalid fileName: path traversal not allowed");
+  }
+
+  const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+  if (file.type && !ALLOWED_TYPES.includes(file.type)) {
+    throw new Error("Unsupported image format. Allowed: PNG, JPEG, GIF, WebP");
+  }
+
   if (file.size > 5 * 1024 * 1024) {
     throw new Error("File size exceeds 5MB limit.");
   }
@@ -659,4 +669,18 @@ export async function getAssetsAction() {
   });
 
   return filesWithUrls;
+}
+
+export async function deleteAssetAction(fileName: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  if (!fileName || fileName.includes("..") || fileName.startsWith("/") || fileName.includes("\\")) {
+    throw new Error("Invalid asset name: path traversal not allowed");
+  }
+
+  const { error } = await supabase.storage.from("assets").remove([fileName]);
+  if (error) throw error;
+  return { success: true };
 }
