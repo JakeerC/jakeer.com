@@ -1,5 +1,4 @@
 import { IconType } from "react-icons";
-import { siteConfig } from "./config";
 import {
   SiReact,
   SiSpringboot,

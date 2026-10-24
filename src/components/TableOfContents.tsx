@@ -51,6 +51,18 @@ export default function TableOfContents({
     return () => observerRef.current?.disconnect();
   }, [contentSelector]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [isOpen]);
+
   if (headings.length < 2) return null;
 
   const h2Headings = headings.filter(h => h.level === 2);
@@ -145,7 +157,12 @@ export default function TableOfContents({
             aria-label="Close Table of Contents overlay"
             tabIndex={-1}
           />
-          <div className="toc-panel relative w-[80%] max-w-sm h-full bg-[var(--bg-primary)] border-l border-[var(--border)] p-6 shadow-2xl overflow-y-auto transform transition-transform">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Table of Contents"
+            className="toc-panel relative w-[80%] max-w-sm h-full bg-[var(--bg-primary)] border-l border-[var(--border)] p-6 shadow-2xl overflow-y-auto transform transition-transform"
+          >
             <button
               type="button"
               onClick={() => setIsOpen(false)}

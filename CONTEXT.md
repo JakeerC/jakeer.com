@@ -45,12 +45,16 @@ This file is the durable architecture and workflow reference for agents working 
 - `/notes/[topic]` — topic overview, principles, subtopics, and notes.
 - `/notes/[topic]/[slug]` — individual note detail page.
 - `/tools` — dynamically discovered external tools from `content/tools/`.
+- `/sitemap.xml` — dynamically generated XML sitemap of all public routes and content.
+- `/robots.txt` — crawler directives allowing public content and disallowing `/admin/`.
+- `/rss.xml` — public RSS syndication feed for writing.
 
 ### Admin routes
 
 - `/admin` — login screen or authenticated draft dashboard.
 - `/admin/new` — authenticated two-step content editor.
 - `/admin/[id]` — authenticated draft editor.
+- `/admin/[id]/preview` — authenticated draft preview rendering exact MDX components.
 - `/admin/assets` — authenticated Supabase Storage asset manager.
 
 Admin pages perform their own `supabase.auth.getUser()` checks. `src/proxy.ts` is the Next.js 16 request hook used to refresh Supabase cookies; it is not the authorization boundary by itself.
@@ -80,7 +84,7 @@ The current topic slugs are `java`, `javascript`, `typescript`, `react`, `ai-ml`
 
 ### Search and navigation
 
-The client-side command palette in `src/components/CommandPalette.tsx` calls the server action `getSearchData()` in `src/app/actions.ts`. Search data is assembled from writing, snippets, and tools MDX frontmatter. There is no separate search index or database.
+The client-side command palette in `src/components/CommandPalette.tsx` calls the server action `getSearchData()` in `src/app/actions.ts`. Search data is returned as a typed discriminated union covering writing, snippets, notes, tools, and projects with direct destination URLs (e.g. snippet results open `/snippets/<category>/<slug>`). There is no separate search index or database. Shared MDX components and code block rendering are centralized in `src/components/mdx/registry.tsx`.
 
 ### Admin publishing workflow
 
@@ -142,6 +146,7 @@ Non-null assertions (`!`) on environment variables are avoided. Missing variable
 npm install
 npm run dev
 npm run validate:content   # validates all frontmatter, links, and schemas (runs in prebuild)
+npm run typecheck          # TypeScript type checking
 npm run gen:types          # regenerates src/lib/supabase/database.types.ts
 npm run lint
 npm test

@@ -1,4 +1,4 @@
-import { getKnowledgeBase, getAllKnowledgeBases } from "@/lib/mdx";
+import { getKnowledgeBase } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import TechIcon from "@/components/TechIcon";

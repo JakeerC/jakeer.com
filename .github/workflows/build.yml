@@ -3,34 +3,74 @@ name: Build
 on:
   push:
     branches:
-      - main # Updated from master
+      - main
   pull_request:
     branches:
-      - main # Ensures PR target is main
+      - main
     types: [opened, synchronize, reopened]
 
 jobs:
-  sonarqube:
-    name: SonarQube
-    runs-on: macos-latest
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-ci
+      - name: Validate content
+        run: npm run validate:content
+
+  typecheck:
+    name: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-ci
+      - name: Type check
+        run: npm run typecheck
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-ci
+      - name: Lint
+        run: npm run lint
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-ci
+      - name: Run tests
+        run: npm test
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: [validate, typecheck, lint, test]
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: placeholder-anon-key
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-ci
+      - name: Build
+        run: npm run build
+
+  coverage:
+    name: coverage
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Shallow clones disabled for accurate blame/history
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci --ignore-scripts
-        
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-node-ci
       - name: Run tests with coverage
         run: npm run test:coverage
-        
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0
+        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

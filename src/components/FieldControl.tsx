@@ -60,6 +60,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
       case "textarea":
         return (
           <textarea
+            id={selectId}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
@@ -74,6 +75,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
       case "select":
         return (
           <select
+            id={selectId}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             className={baseClasses}
@@ -102,6 +104,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
       case "range":
         return (
           <input
+            id={selectId}
             type="range"
             min={min}
             max={max}
@@ -123,6 +126,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
               </div>
             )}
             <input
+              id={selectId}
               type={type}
               value={value}
               onChange={(e) =>
@@ -147,6 +151,7 @@ export const FieldControl: React.FC<FieldControlProps> = ({
     <div className={`flex flex-col space-y-2 ${className}`}>
       {label && (
         <label
+          htmlFor={selectId}
           className="text-sm font-medium flex justify-between"
           style={{ color: "var(--text-primary)" }}
         >

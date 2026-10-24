@@ -4,6 +4,7 @@ import * as mdx from '@/lib/mdx';
 
 vi.mock('@/lib/mdx', () => ({
   getContentBySlug: vi.fn(),
+  getAllContent: vi.fn().mockReturnValue([]),
 }));
 
 vi.mock('next-mdx-remote/rsc', () => ({
@@ -22,11 +23,12 @@ describe('ArticlePage', () => {
     });
 
     const meta = await generateMetadata({ params: Promise.resolve({ slug: 'test-post' }) });
-    expect(meta).toEqual({ title: 'Test Post', description: 'Test Desc' });
+    expect(meta.title).toBe('Test Post');
+    expect(meta.description).toBe('Test Desc');
   });
 
   it('generateMetadata should return Not Found if post missing', async () => {
-    vi.mocked(mdx.getContentBySlug).mockReturnValue(undefined);
+    vi.mocked(mdx.getContentBySlug).mockReturnValue(null);
     const meta = await generateMetadata({ params: Promise.resolve({ slug: 'missing' }) });
     expect(meta).toEqual({ title: 'Not Found' });
   });
@@ -48,7 +50,7 @@ describe('ArticlePage', () => {
   });
 
   it('ArticlePage should return notFound if missing', async () => {
-    vi.mocked(mdx.getContentBySlug).mockReturnValue(undefined);
+    vi.mocked(mdx.getContentBySlug).mockReturnValue(null);
     try {
       await ArticlePage({ params: Promise.resolve({ slug: 'missing' }) });
     } catch (e: any) {

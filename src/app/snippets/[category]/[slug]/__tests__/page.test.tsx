@@ -49,7 +49,7 @@ describe('SnippetDetailPage', () => {
   });
 
   it('SnippetDetailPage should return notFound if missing', async () => {
-    vi.mocked(mdx.getContentBySlug).mockReturnValue(undefined);
+    vi.mocked(mdx.getContentBySlug).mockReturnValue(null);
     try {
       await SnippetDetailPage({ params: Promise.resolve({ slug: 'missing', category: 'react' }) });
     } catch (e: any) {

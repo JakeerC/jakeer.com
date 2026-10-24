@@ -1,92 +1,32 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
 import { getContentBySlug } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import CodeBlock from "@/components/CodeBlock";
 import { Tag } from "@/components/Tag";
-import Image from "next/image";
 import TableOfContents from "@/components/TableOfContents";
-import { slugify } from "@/lib/slugify";
-import { Callout, SparkyText, MoreInfo, SwirlyUnderline, HighlightText } from "@/components/mdx";
+import { mdxComponents } from "@/components/mdx/registry";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/metadata";
 
-// Helper to extract plain text from MDX children
-const getText = (children: any): string => {
-  if (typeof children === "string") return children;
-  if (Array.isArray(children)) return children.map(getText).join("");
-  if (typeof children === "object" && children !== null && children.props?.children) {
-    return getText(children.props.children);
-  }
-  return "";
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string; slug: string }>;
+}): Promise<Metadata> {
+  const { category, slug } = await params;
+  const post = getContentBySlug("snippets", slug);
+  if (!post || post.frontmatter.draft) return { title: "Not Found" };
+  return buildMetadata({
+    title: post.frontmatter.title as string,
+    description: post.frontmatter.description as string | undefined,
+    canonicalPath: `/snippets/${category}/${slug}`,
+    tags: post.frontmatter.tags as string[] | undefined,
+  });
+}
 
-export const components = {
-  h2: ({ children, id: propId, ...rest }: any) => {
-    const text = getText(children);
-    const id = propId || slugify(text);
-    return (
-      <h2
-        id={id}
-        style={{
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          fontSize: "1.5rem",
-          fontWeight: 700,
-          margin: "2.5rem 0 1rem",
-          color: "var(--text-primary)",
-        }}
-        {...rest}
-      >
-        {children}
-      </h2>
-    );
-  },
-  h3: ({ children, id: propId, ...rest }: any) => {
-    const text = getText(children);
-    const id = propId || slugify(text);
-    return (
-      <h3
-        id={id}
-        style={{
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          fontSize: "1.2rem",
-          fontWeight: 600,
-          margin: "2rem 0 0.75rem",
-          color: "var(--text-primary)",
-        }}
-        {...rest}
-      >
-        {children}
-      </h3>
-    );
-  },
-  pre: (props: any) => {
-    // If MDX parses a code block, it usually passes it as <pre><code className="language-xyz">...</code></pre>
-    // We can just use our CodeBlock component.
-    const codeNode = props.children;
-    const codeStr = codeNode?.props?.children || "";
-    const className = codeNode?.props?.className || "";
-    const lang = className.replace("language-", "") || "typescript";
+export const components = mdxComponents;
 
-    return <CodeBlock code={codeStr.trim()} lang={lang} />;
-  },
-  img: (props: any) => (
-    <Image
-      src={props.src}
-      alt={props.alt || ""}
-      width={0}
-      height={0}
-      sizes="100vw"
-      style={{ width: "100%", height: "auto" }}
-      className="rounded-lg border border-[var(--border)] my-6"
-    />
-  ),
-  Callout,
-  SparkyText,
-  MoreInfo,
-  SwirlyUnderline,
-  HighlightText,
-};
 export default async function SnippetDetailPage({
   params,
 }: {
@@ -140,7 +80,7 @@ export default async function SnippetDetailPage({
               className="prose prose-sm md:prose-base max-w-none"
               style={{ color: "var(--text-primary)" }}
             >
-              <MDXRemote source={post.content} components={components} />
+              <MDXRemote source={post.content} components={mdxComponents} />
             </article>
           </div>
           

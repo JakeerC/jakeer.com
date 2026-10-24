@@ -33,7 +33,7 @@ export const siteConfig = {
   ],
 
   // Open Graph
-  ogImage: "/og-image.png",
+  ogImage: "",
   locale: "en_US",
 };
 

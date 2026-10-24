@@ -23,6 +23,13 @@ export function MoreInfo({ info, children }: MoreInfoProps) {
         onClick={handleToggle}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setIsOpen(false)}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            setIsOpen(false);
+          }
+        }}
         aria-label={`More info: ${info}`}
         aria-expanded={isOpen}
       >

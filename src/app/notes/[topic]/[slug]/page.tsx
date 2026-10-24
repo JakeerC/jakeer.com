@@ -5,8 +5,8 @@ import { notFound } from "next/navigation";
 import { getContentBySlug, getKnowledgeBase } from "@/lib/mdx";
 import TableOfContents from "@/components/TableOfContents";
 
-// Import identical custom MDX components used in writing
-import { components } from "@/app/writing/[slug]/page";
+// Import shared MDX component registry
+import { mdxComponents } from "@/components/mdx/registry";
 
 export async function generateMetadata({
   params,
@@ -73,7 +73,7 @@ export default async function NoteDetailPage({
           className="prose prose-sm md:prose-base"
           style={{ color: "var(--text-primary)" }}
         >
-          <MDXRemote source={note.content} components={components} />
+          <MDXRemote source={note.content} components={mdxComponents} />
         </article>
       </div>
 

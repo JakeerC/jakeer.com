@@ -20,8 +20,8 @@ describe('AssetList', () => {
   });
 
   const mockAssets = [
-    { id: '1', name: 'apple.png', url: 'https://mock.com/apple.png', updated_at: '2023-01-01' },
-    { id: '2', name: 'banana.jpg', url: 'https://mock.com/banana.jpg', updated_at: '2023-01-02' },
+    { id: '1', name: 'apple.png', url: 'https://mock.com/apple.png', updated_at: '2023-01-01', created_at: null, metadata: null },
+    { id: '2', name: 'banana.jpg', url: 'https://mock.com/banana.jpg', updated_at: '2023-01-02', created_at: null, metadata: null },
   ];
 
   it('renders loading state initially', () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import {
   saveDraftAction,
@@ -93,8 +93,118 @@ export function AdminClient({
   const [isAssetDrawerOpen, setIsAssetDrawerOpen] = useState(false);
   const [isHelpDrawerOpen, setIsHelpDrawerOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+  const [isDirty, setIsDirty] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [hasRecovery, setHasRecovery] = useState(false);
+  const [recoverySnapshot, setRecoverySnapshot] = useState<any>(null);
+
+  // Check for local recovery snapshot on mount
+  useEffect(() => {
+    try {
+      const recoveryKey = `draft_recovery_${id || "new"}`;
+      const saved = localStorage.getItem(recoveryKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.markdown && parsed.markdown !== (initialData?.markdown || "")) {
+          setTimeout(() => {
+            setRecoverySnapshot(parsed);
+            setHasRecovery(true);
+          }, 0);
+        }
+      }
+    } catch {
+      // localStorage may fail in private browsing
+    }
+  }, [id, initialData]);
+
+  // Save local recovery snapshot on changes
+  useEffect(() => {
+    if (!title && !markdown) return;
+    setTimeout(() => setIsDirty(true), 0);
+    try {
+      const recoveryKey = `draft_recovery_${id || "new"}`;
+      const snapshot = {
+        title,
+        slug,
+        markdown,
+        description,
+        category,
+        timestamp: Date.now(),
+      };
+      localStorage.setItem(recoveryKey, JSON.stringify(snapshot));
+    } catch {
+      // ignore
+    }
+  }, [id, title, slug, markdown, description, category]);
+
+  // Protect against unsaved navigation
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
+
+  // Close drawers on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (isAssetDrawerOpen) setIsAssetDrawerOpen(false);
+        if (isHelpDrawerOpen) setIsHelpDrawerOpen(false);
+      }
+    };
+    if (isAssetDrawerOpen || isHelpDrawerOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [isAssetDrawerOpen, isHelpDrawerOpen]);
+
+  const restoreRecovery = () => {
+    if (recoverySnapshot) {
+      if (recoverySnapshot.title) setTitle(recoverySnapshot.title);
+      if (recoverySnapshot.slug) setSlug(recoverySnapshot.slug);
+      if (recoverySnapshot.markdown) setMarkdown(recoverySnapshot.markdown);
+      if (recoverySnapshot.description) setDescription(recoverySnapshot.description);
+      if (recoverySnapshot.category) setCategory(recoverySnapshot.category);
+      setHasRecovery(false);
+      setStatusMessage("Restored unsaved local changes.");
+    }
+  };
+
+  const discardRecovery = () => {
+    try {
+      localStorage.removeItem(`draft_recovery_${id || "new"}`);
+    } catch {
+      // ignore
+    }
+    setHasRecovery(false);
+  };
 
   const handleImageUpload = async (image: File) => {
+    const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+
+    const mime = image.type || (
+      image.name.endsWith(".png") ? "image/png" :
+      image.name.endsWith(".jpg") || image.name.endsWith(".jpeg") ? "image/jpeg" :
+      image.name.endsWith(".gif") ? "image/gif" :
+      image.name.endsWith(".webp") ? "image/webp" : ""
+    );
+
+    if (!ALLOWED_TYPES.includes(mime)) {
+      alert("Unsupported image type. Only PNG, JPEG, GIF, and WebP are allowed.");
+      throw new Error("Unsupported image type");
+    }
+
+    if (image.size > MAX_SIZE) {
+      alert("Image is too large. Maximum size is 5MB.");
+      throw new Error("Image too large");
+    }
+
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -208,6 +318,39 @@ export function AdminClient({
       </div>
 
       <div className="space-y-6">
+        {/* Accessible live status region */}
+        <div aria-live="polite" className="sr-only">
+          {statusMessage}
+        </div>
+
+        {hasRecovery && (
+          <div
+            role="status"
+            className="p-4 rounded-xl flex items-center justify-between border mb-4 text-sm"
+            style={{
+              background: "var(--surface-raised)",
+              borderColor: "var(--accent)",
+              color: "var(--text-primary)",
+            }}
+          >
+            <div>
+              <span className="font-semibold" style={{ color: "var(--accent)" }}>
+                Unsaved local changes detected
+              </span>
+              <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>
+                A recovery copy from your previous session was found on this device.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={restoreRecovery}>
+                Restore
+              </Button>
+              <Button size="sm" variant="outline" onClick={discardRecovery}>
+                Discard
+              </Button>
+            </div>
+          </div>
+        )}
         {prUrl && (
           <div className="p-4 bg-green-50 text-green-700 border border-green-200 rounded-md">
             Success! View your PR here:{" "}
@@ -414,6 +557,61 @@ export function AdminClient({
                 onChange={setMarkdown}
                 imageUploadHandler={handleImageUpload}
               />
+
+              {images.length > 0 && (
+                <div
+                  className="p-4 rounded-xl border mt-6 text-sm"
+                  style={{
+                    borderColor: "var(--border)",
+                    background: "var(--surface-raised)",
+                  }}
+                >
+                  <p
+                    className="font-semibold mb-2 text-xs uppercase tracking-wider"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    Attached Draft Images ({images.length})
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {images.map((img) => (
+                      <div
+                        key={img.filename}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs"
+                        style={{
+                          borderColor: "var(--border)",
+                          background: "var(--surface)",
+                          color: "var(--text-primary)",
+                        }}
+                      >
+                        <span className="truncate max-w-[200px]">
+                          {img.filename}
+                        </span>
+                        <button
+                          type="button"
+                          className="text-red-500 hover:text-red-700 font-bold ml-1 text-sm"
+                          title="Remove image from draft"
+                          onClick={() => {
+                            setImages((prev) =>
+                              prev.filter((i) => i.filename !== img.filename),
+                            );
+                            setMarkdown((prev: string) =>
+                              prev.replace(
+                                new RegExp(
+                                  `!\\[[^\\]]*\\]\\(/assets/${img.filename}\\)`,
+                                  "g",
+                                ),
+                                "",
+                              ),
+                            );
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}
@@ -456,6 +654,14 @@ export function AdminClient({
                 )}
               </div>
               <div className="flex gap-3">
+                {id && (
+                  <Button
+                    onClick={() => router.push(`/admin/${id}/preview`)}
+                    variant="outline"
+                  >
+                    Preview
+                  </Button>
+                )}
                 <Button
                   onClick={handleSave}
                   disabled={
@@ -501,8 +707,17 @@ export function AdminClient({
       </div>
 
       {isAssetDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity">
-          <div className="w-1/3 min-w-[400px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
+        <div
+          className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity"
+          onClick={() => setIsAssetDrawerOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Asset Manager"
+            className="w-full sm:w-1/2 lg:w-1/3 sm:min-w-[400px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-6 shrink-0">
               <h2
                 className="text-xl font-bold"
@@ -512,6 +727,7 @@ export function AdminClient({
               </h2>
               <button
                 type="button"
+                aria-label="Close Asset Manager"
                 onClick={() => setIsAssetDrawerOpen(false)}
                 className="text-xl font-bold p-2 hover:bg-black/5 rounded text-[var(--text-primary)]"
               >
@@ -533,8 +749,17 @@ export function AdminClient({
       )}
 
       {isHelpDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity">
-          <div className="w-1/3 min-w-[400px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col">
+        <div
+          className="fixed inset-0 z-50 flex justify-end bg-black/50 transition-opacity"
+          onClick={() => setIsHelpDrawerOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Formatting Help"
+            className="w-full sm:w-1/2 lg:w-1/3 sm:min-w-[400px] h-full bg-[var(--bg-primary)] p-6 shadow-xl border-l border-[var(--border)] animate-in slide-in-from-right flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-6 shrink-0">
               <h2
                 className="text-xl font-bold"
@@ -544,6 +769,7 @@ export function AdminClient({
               </h2>
               <button
                 type="button"
+                aria-label="Close Formatting Help"
                 onClick={() => setIsHelpDrawerOpen(false)}
                 className="text-xl font-bold p-2 hover:bg-black/5 rounded text-[var(--text-primary)]"
               >
@@ -623,6 +849,10 @@ function useAdminActions({
       const res = await saveDraftAction(getPayload());
       setId(res.id);
       setBranchName(res.branchName);
+      try {
+        localStorage.removeItem(`draft_recovery_${res.id}`);
+        localStorage.removeItem("draft_recovery_new");
+      } catch {}
       alert("Saved successfully! Draft pushed to Github branch.");
     } catch (e: any) {
       alert("Error saving: " + e.message);

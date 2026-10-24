@@ -16,7 +16,7 @@ describe('ThemeProvider', () => {
   });
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as any).NODE_ENV = originalEnv;
     console.error = originalConsoleError;
   });
 

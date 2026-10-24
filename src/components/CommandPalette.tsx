@@ -12,11 +12,13 @@ import {
   LuMoon,
   LuSun,
   LuLink as LinkIcon,
+  LuBookOpen,
+  LuFolderOpen,
 } from "react-icons/lu";
 
 import { BiCode } from "react-icons/bi";
 import { HiHome } from "react-icons/hi";
-import { getSearchData } from "@/app/actions";
+import { getSearchData, type SearchResult } from "@/app/actions";
 
 interface CommandPaletteProps {
   open: boolean;
@@ -26,15 +28,70 @@ interface CommandPaletteProps {
 export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
-  
-  const [data, setData] = useState<{
-    posts: any[];
-    snippets: any[];
-    tools: any[];
-  }>({ posts: [], snippets: [], tools: [] });
+
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    getSearchData().then(setData).catch(() => {});
+    setTimeout(() => {
+      setLoading(true);
+      setError(false);
+    }, 0);
+    getSearchData()
+      .then((data: any) => {
+        if (Array.isArray(data?.results)) {
+          setResults(data.results);
+        } else if (data) {
+          const legacy: SearchResult[] = [];
+          if (Array.isArray(data.posts)) {
+            legacy.push(
+              ...data.posts.map((p: any) => ({
+                kind: "writing" as const,
+                slug: p.slug,
+                title: p.title,
+                description: p.excerpt || p.description || "",
+                href: `/writing/${p.slug}`,
+                tags: p.tags || [],
+              })),
+            );
+          }
+          if (Array.isArray(data.snippets)) {
+            legacy.push(
+              ...data.snippets.map((s: any) => ({
+                kind: "snippet" as const,
+                slug: s.slug || (s.title ? s.title.toLowerCase().replace(/\s+/g, "-") : "snippet"),
+                title: s.title,
+                description: s.description || "",
+                href: s.href || (s.slug ? `/snippets/${(s.category || "general").toLowerCase()}/${s.slug}` : `/snippets/${(s.category || "general").toLowerCase()}`),
+                tags: s.tags || [],
+                category: s.category || "general",
+              })),
+            );
+          }
+          if (Array.isArray(data.tools)) {
+            legacy.push(
+              ...data.tools.map((t: any) => ({
+                kind: "tool" as const,
+                slug: t.slug,
+                title: t.name || t.title,
+                description: t.description || "",
+                href: t.link || t.href || "",
+                external: true as const,
+                link: t.link || t.href || "",
+              })),
+            );
+          }
+          setResults(legacy);
+        } else {
+          setResults([]);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
   }, []);
 
   const runCommand = useCallback(
@@ -51,6 +108,12 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 
   const isDark = resolvedTheme === "dark";
 
+  const writingResults = results.filter((r) => r.kind === "writing");
+  const snippetResults = results.filter((r) => r.kind === "snippet");
+  const toolResults = results.filter((r) => r.kind === "tool");
+  const noteResults = results.filter((r) => r.kind === "note");
+  const projectResults = results.filter((r) => r.kind === "project");
+
   return (
     <Command.Dialog
       open={open}
@@ -64,8 +127,26 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
         <div className="cmdk-esc">ESC</div>
       </div>
 
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {loading && "Loading search results…"}
+        {error && "Failed to load search results. Please try again."}
+        {!loading && !error && results.length === 0 && "No results found."}
+      </div>
+
       <Command.List>
-        <Command.Empty>No results found.</Command.Empty>
+        {loading && (
+          <Command.Loading>
+            <div className="px-4 py-6 text-center text-sm opacity-60">
+              Loading…
+            </div>
+          </Command.Loading>
+        )}
+
+        {!loading && error && (
+          <div className="px-4 py-6 text-center text-sm opacity-60">
+            Failed to load results. Please try again.
+          </div>
+        )}
 
         <Command.Group heading="Recent searches">
           <Command.Item onSelect={() => runCommand(() => {})}>
@@ -74,52 +155,118 @@ export default function CommandPalette({ open, setOpen }: CommandPaletteProps) {
           </Command.Item>
         </Command.Group>
 
-        <Command.Group heading="Writing & Blogs">
-          {data.posts.map((post) => (
-            <Command.Item
-              key={post.slug}
-              value={`writing ${post.title} ${post.excerpt}`}
-              onSelect={() =>
-                runCommand(() => router.push(`/writing/${post.slug}`))
-              }
-            >
-              <LuFileText size={14} className="mr-3 opacity-60" />
-              {post.title}
-            </Command.Item>
-          ))}
-        </Command.Group>
+        {!loading && !error && <Command.Empty>No results found.</Command.Empty>}
 
-        <Command.Group heading="Tools">
-          {data.tools.map((tool) => (
-            <Command.Item
-              key={tool.slug}
-              value={`tool ${tool.name} ${tool.description}`}
-              onSelect={() =>
-                runCommand(() => window.open(tool.link, "_blank"))
-              }
-            >
-              <LuWrench size={14} className="mr-3 opacity-60" />
-              {tool.name}
-            </Command.Item>
-          ))}
-        </Command.Group>
+        {writingResults.length > 0 && (
+          <Command.Group heading="Writing & Blogs">
+            {writingResults.map((item) => (
+              <Command.Item
+                key={item.slug}
+                value={`writing ${item.title} ${item.description} ${item.tags.join(" ")}`}
+                onSelect={() =>
+                  runCommand(() => router.push(item.href))
+                }
+              >
+                <LuFileText size={14} className="mr-3 opacity-60" />
+                <span className="flex-1">{item.title}</span>
+                {item.description && (
+                  <span className="ml-2 text-xs opacity-50 truncate max-w-[200px] hidden sm:block">
+                    {item.description}
+                  </span>
+                )}
+              </Command.Item>
+            ))}
+          </Command.Group>
+        )}
 
-        <Command.Group heading="Snippets">
-          {data.snippets.map((item) => (
-            <Command.Item
-              key={item.title}
-              value={`snippet ${item.title} ${item.description}`}
-              onSelect={() =>
-                runCommand(() =>
-                  router.push(`/snippets/${item.category.toLowerCase()}`),
-                )
-              }
-            >
-              <BiCode size={14} className="mr-3 opacity-60" />
-              {item.title}
-            </Command.Item>
-          ))}
-        </Command.Group>
+        {snippetResults.length > 0 && (
+          <Command.Group heading="Snippets">
+            {snippetResults.map((item) => {
+              if (item.kind !== "snippet") return null;
+              return (
+                <Command.Item
+                  key={item.slug}
+                  value={`snippet ${item.title} ${item.description} ${item.tags.join(" ")}`}
+                  onSelect={() =>
+                    runCommand(() => router.push(item.href))
+                  }
+                >
+                  <BiCode size={14} className="mr-3 opacity-60" />
+                  <span className="flex-1">{item.title}</span>
+                  <span className="ml-2 text-xs opacity-50 capitalize">
+                    {item.category}
+                  </span>
+                </Command.Item>
+              );
+            })}
+          </Command.Group>
+        )}
+
+        {toolResults.length > 0 && (
+          <Command.Group heading="Tools">
+            {toolResults.map((item) => {
+              if (item.kind !== "tool") return null;
+              return (
+                <Command.Item
+                  key={item.slug}
+                  value={`tool ${item.title} ${item.description}`}
+                  onSelect={() =>
+                    runCommand(() =>
+                      window.open(item.href, "_blank"),
+                    )
+                  }
+                >
+                  <LuWrench size={14} className="mr-3 opacity-60" />
+                  <span className="flex-1">{item.title}</span>
+                  <span className="ml-2 text-xs opacity-50">(external)</span>
+                </Command.Item>
+              );
+            })}
+          </Command.Group>
+        )}
+
+        {noteResults.length > 0 && (
+          <Command.Group heading="Notes">
+            {noteResults.map((item) => {
+              if (item.kind !== "note") return null;
+              return (
+                <Command.Item
+                  key={`${item.topic}/${item.slug}`}
+                  value={`note ${item.title} ${item.subtopic} ${item.topic}`}
+                  onSelect={() =>
+                    runCommand(() => router.push(item.href))
+                  }
+                >
+                  <LuBookOpen size={14} className="mr-3 opacity-60" />
+                  <span className="flex-1">{item.title}</span>
+                  <span className="ml-2 text-xs opacity-50">{item.subtopic}</span>
+                </Command.Item>
+              );
+            })}
+          </Command.Group>
+        )}
+
+        {projectResults.length > 0 && (
+          <Command.Group heading="Projects">
+            {projectResults.map((item) => (
+              <Command.Item
+                key={item.slug}
+                value={`project ${item.title} ${item.description} ${item.tags.join(" ")}`}
+                onSelect={() =>
+                  runCommand(() => router.push("/projects"))
+                }
+              >
+                <LuFolderOpen size={14} className="mr-3 opacity-60" />
+                <span className="flex-1">{item.title}</span>
+                {item.tags.length > 0 && (
+                  <span className="ml-2 text-xs opacity-50 hidden sm:block">
+                    {item.tags.slice(0, 2).join(", ")}
+                  </span>
+                )}
+              </Command.Item>
+            ))}
+          </Command.Group>
+        )}
 
         <Command.Group heading="Actions">
           <Command.Item onSelect={() => runCommand(() => router.push("/"))}>
